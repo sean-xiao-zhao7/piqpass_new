@@ -11,17 +11,20 @@ if(isUserLoggedIn()) {
 	echo "
 	 <div class='dropdown' style='float: right; margin-left: 8px;'><a class='btn btn-default btn-sm' href='dashboard.php'>Dashboard</a></div>
 	 <div class='dropdown' style='float: right; margin-left: 8px;'><a class='btn btn-default btn-sm' href='user_settings.php'>User Settings</a></div>
-	 <div class='dropdown' style='float: right; margin-left: 8px;'><a class='btn btn-default btn-sm' href='logout.php'>Logout</a></div>"
-	;
+	 <div class='dropdown' style='float: right; margin-left: 8px;'><a class='btn btn-default btn-sm' href='logout.php'>Logout</a></div>";
+	if ($loggedInUser->checkPermission(array(3))){
+                //echo "I'm chef";
+                echo
+                "<div class='dropdown' style='float: right; margin-left: 8px;'><a class='btn btn-default btn-sm' href='add_class.php'>Add a class</a></div>";
+        }
 	//Links for permission level 2 (default admin)
 	if ($loggedInUser->checkPermission(array(2))){
-	echo "
+	echo "<ul>
 	<li><a href='admin_configuration.php'>Admin Configuration</a></li>
 	<li><a href='admin_users.php'>Admin Users</a></li>
 	<li><a href='admin_permissions.php'>Admin Permissions</a></li>
-	<li><a href='admin_pages.php'>Admin Pages</a></li>"
-	;
-	}
+	<li><a href='admin_pages.php'>Admin Pages</a></li></ul>";
+	} 
 } 
 //Links for users not logged in
 else {

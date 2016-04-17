@@ -6,6 +6,30 @@ http://usercake.com
 
 require_once("models/config.php");
 if (!securePage($_SERVER['PHP_SELF'])){die();}
+
+$mysqli_piq = new mysqli($db_host_piq, $db_user_piq, $db_pass_piq, $db_name_piq);
+
+if(mysqli_connect_errno()) {
+	echo "Connection Failed: " . mysqli_connect_errno();
+	exit();
+}
+
+if (!($stmt = $mysqli_piq->prepare("INSERT INTO class (name, image, description, intersection, address, price, user_id) VALUES (?, ?, ?, ?, ?, ?, ?)"))) {
+	echo "Prepare failed: (" . $mysqli_piq->errno . ") " . $mysqli_piq->error;
+}
+
+if (!$stmt->bind_param("sssssdi", $name, $image, $description, $intersection, $address, $price, $user_id)) {
+    echo "Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error;
+}
+
+if (!$stmt->execute()) {
+    echo "Execute failed: (" . $stmt->errno . ") " . $stmt->error;
+}
+$stmt->close();
+
+
+$classes = 
+
 require_once("models/header.php");
 
 ?>

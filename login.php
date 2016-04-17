@@ -72,7 +72,14 @@ if(!empty($_POST))
 					$_SESSION["userCakeUser"] = $loggedInUser;
 					
 					//Redirect to user account page
-					header("Location: account.php");
+					foreach (fetchUserPermissions($loggedInUser->user_id) as $row) {
+						if ($row['permission_id'] == 3) {
+							$role = 'chef';
+							header("Location: dashboard.php");
+							die();
+						}
+					}
+					header("Location: dashboard.php");
 					die();
 				}
 			}

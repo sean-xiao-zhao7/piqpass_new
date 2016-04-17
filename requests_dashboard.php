@@ -1,29 +1,17 @@
 <?php
-/*
-UserCake Version: 2.0.2
-http://usercake.com
-*/
 
 require_once("models/config.php");
 if (!securePage($_SERVER['PHP_SELF'])){die();}
-require_once("models/header.php");
-require_once("db/connect.php");
-/*
-if (!($stmt = $mysqli_piq->prepare("INSERT INTO class (name, image, description, intersection, address, price, user_id) VALUES (?, ?, ?, ?, ?, ?, ?)"))) {
-	echo "Prepare failed: (" . $mysqli_piq->errno . ") " . $mysqli_piq->error;
+
+//Prevent the user visiting the logged in page if he/she is already logged in
+if(!isUserLoggedIn()) { header("Location: login.php"); die(); }
+
+if (!$loggedInUser->checkPermission(array(3)))
+{
+        header("Location: index.php");
 }
 
-if (!$stmt->bind_param("sssssdi", $name, $image, $description, $intersection, $address, $price, $user_id)) {
-    echo "Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error;
-}
-
-if (!$stmt->execute()) {
-    echo "Execute failed: (" . $stmt->errno . ") " . $stmt->error;
-}
-$stmt->close();
-*/
 ?>
-
 <!doctype html>
 <html class="no-js" lang="">
     <head>
@@ -60,22 +48,52 @@ $stmt->close();
             <div class='col-md-12'>
                 <div class='col-md-2' style='margin-left: -15px;'><img src='img/piqlanding1.jpg' /></div>
                 <div class='col-md-10' style='margin-top: 15px; margin-left: -15px;'>
-			<?= include("piqpass_nav.php"); ?>
+                  <p align='right'>
+                  <a href="#" class="btn btn-default btn-sm" role="button">Dashboard</a>
+                  <a href="#" class="btn btn-default btn-sm" role="button">Browse</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  <a href="#" class="btn btn-default btn-sm" role="button">Account</a>
+                  <a href="#" class="btn btn-default btn-sm" role="button">Logout</a>
+                </p>
                 </div>
             </div>
             <!--end header-->
             <!--body-->
             <div class='col-md-12' style='margin-top: 40px;'>
-                <div class='col-md-6' style='margin-left: -15px; margin-bottom: 20px; margin-top: 10px;'>
-                    <div class='col-md-12' style='height: 300px; background-color: #999;'>&nbsp;</div>
-                    <div class='col-md-12 header header-large' style='margin-top: 20px;'>Samosa Making 101</div>
+                <a href='#' class='btn btn-default disabled'>Requests</a>&nbsp;
+                <a href='#' class='btn btn-default'>Classes</a>&nbsp;
+                <a href='#' class='btn btn-default'>Sessions</a>
+            </div>
+            <div class='col-md-12' style='margin-top: 20px; margin-left: -15px;'>
+                <div class='col-md-4' style='margin-left: -15px; margin-bottom: 20px; margin-top: 10px;'>
+                    <div class='col-md-12 header header-large' style='margin-top: 20px;'>John Kelly</div>
+                    <div class='col-md-12' style='margin-top: 10px;'><p><strong>Class:</strong> Samosa Making 101</p></div>
                     <div class='col-md-12' style='margin-top: 10px;'><p><strong>Time:</strong> 7:00PM on Thursday, April 23, 2016</p></div>
                     <div class='col-md-12'><p><strong>Address:</strong> 3453 Rinie Rd, Toronto, Ontario, Canada M3K 2K3</p></div>
-                    <div class='col-md-12' style='margin-top: 10px;'><a href='#' class='btn btn-danger'>Cancel Class</a></div>
+                    <div class='col-md-12' style='margin-top: 10px;'>
+                        <a href='#' class='btn btn-default btn-sm'>View Profile</a>
+                        <a href='#' class='btn btn-default btn-sm disabled'>Confirmed</a>
+                    </div>
                 </div>
-                <div class='col-md-6' style='margin-left: -15px; margin-bottom: 20px; margin-top: 10px;'>
-                    <div class='col-md-12' style='height: 300px; border: 4px dashed #f6edc1;'>
-                        <div class='col-md-12'style='margin-top: 120px;'><span ><center><a href='./browse.php' class='btn btn-default'>Browse Classes</a></center></span></div>
+                <div class='col-md-4' style='margin-left: -15px; margin-bottom: 20px; margin-top: 10px;'>
+                    <div class='col-md-12 header header-large' style='margin-top: 20px;'>John Kelly</div>
+                    <div class='col-md-12' style='margin-top: 10px;'><p><strong>Class:</strong> Samosa Making 101</p></div>
+                    <div class='col-md-12' style='margin-top: 10px;'><p><strong>Time:</strong> 7:00PM on Thursday, April 23, 2016</p></div>
+                    <div class='col-md-12'><p><strong>Address:</strong> 3453 Rinie Rd, Toronto, Ontario, Canada M3K 2K3</p></div>
+                    <div class='col-md-12' style='margin-top: 10px;'>
+                        <a href='#' class='btn btn-default btn-sm'>View Profile</a>
+                        <a href='#' class='btn btn-success btn-sm '>Accept</a>
+                        <a href='#' class='btn btn-danger btn-sm '>Decline</a>
+                    </div>
+                </div>
+                <div class='col-md-4' style='margin-left: -15px; margin-bottom: 20px; margin-top: 10px;'>
+                    <div class='col-md-12 header header-large' style='margin-top: 20px;'>John Kelly</div>
+                    <div class='col-md-12' style='margin-top: 10px;'><p><strong>Class:</strong> Samosa Making 101</p></div>
+                    <div class='col-md-12' style='margin-top: 10px;'><p><strong>Time:</strong> 7:00PM on Thursday, April 23, 2016</p></div>
+                    <div class='col-md-12'><p><strong>Address:</strong> 3453 Rinie Rd, Toronto, Ontario, Canada M3K 2K3</p></div>
+                    <div class='col-md-12' style='margin-top: 10px;'>
+                        <a href='#' class='btn btn-default btn-sm'>View Profile</a>
+                        <a href='#' class='btn btn-success btn-sm '>Accept</a>
+                        <a href='#' class='btn btn-danger btn-sm '>Decline</a>
                     </div>
                 </div>
             </div>

@@ -1,29 +1,30 @@
 <?php
-/*
-UserCake Version: 2.0.2
-http://usercake.com
-*/
 
 require_once("models/config.php");
 if (!securePage($_SERVER['PHP_SELF'])){die();}
-require_once("models/header.php");
+
+//Prevent the user visiting the logged in page if he/she is already logged in
+if(!isUserLoggedIn()) { header("Location: login.php"); die(); }
+
+if (!$loggedInUser->checkPermission(array(3)))
+{
+        header("Location: index.php");
+}
+
 require_once("db/connect.php");
-/*
-if (!($stmt = $mysqli_piq->prepare("INSERT INTO class (name, image, description, intersection, address, price, user_id) VALUES (?, ?, ?, ?, ?, ?, ?)"))) {
-	echo "Prepare failed: (" . $mysqli_piq->errno . ") " . $mysqli_piq->error;
+
+if (!($result = $mysqli_piq->query("select * from class"))) {
+        echo "Prepare failed: (" . $mysqli_piq->errno . ") " . $mysqli_piq->error;
+} else {
+	$classes = [];
+	while ($row = $result->fetch_array(MYSQLI_ASSOC)) {
+		$classes[] = $row;
+	}    
 }
 
-if (!$stmt->bind_param("sssssdi", $name, $image, $description, $intersection, $address, $price, $user_id)) {
-    echo "Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error;
-}
+$result->close();
 
-if (!$stmt->execute()) {
-    echo "Execute failed: (" . $stmt->errno . ") " . $stmt->error;
-}
-$stmt->close();
-*/
 ?>
-
 <!doctype html>
 <html class="no-js" lang="">
     <head>
@@ -60,25 +61,37 @@ $stmt->close();
             <div class='col-md-12'>
                 <div class='col-md-2' style='margin-left: -15px;'><img src='img/piqlanding1.jpg' /></div>
                 <div class='col-md-10' style='margin-top: 15px; margin-left: -15px;'>
-			<?= include("piqpass_nav.php"); ?>
+                  <p align='right'>
+                  <a href="#" class="btn btn-default btn-sm" role="button">Dashboard</a>
+                  <a href="#" class="btn btn-default btn-sm" role="button">Browse</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  <a href="#" class="btn btn-default btn-sm" role="button">Account</a>
+                  <a href="#" class="btn btn-default btn-sm" role="button">Logout</a>
+                </p>
                 </div>
             </div>
             <!--end header-->
             <!--body-->
             <div class='col-md-12' style='margin-top: 40px;'>
-                <div class='col-md-6' style='margin-left: -15px; margin-bottom: 20px; margin-top: 10px;'>
-                    <div class='col-md-12' style='height: 300px; background-color: #999;'>&nbsp;</div>
-                    <div class='col-md-12 header header-large' style='margin-top: 20px;'>Samosa Making 101</div>
-                    <div class='col-md-12' style='margin-top: 10px;'><p><strong>Time:</strong> 7:00PM on Thursday, April 23, 2016</p></div>
-                    <div class='col-md-12'><p><strong>Address:</strong> 3453 Rinie Rd, Toronto, Ontario, Canada M3K 2K3</p></div>
-                    <div class='col-md-12' style='margin-top: 10px;'><a href='#' class='btn btn-danger'>Cancel Class</a></div>
-                </div>
-                <div class='col-md-6' style='margin-left: -15px; margin-bottom: 20px; margin-top: 10px;'>
-                    <div class='col-md-12' style='height: 300px; border: 4px dashed #f6edc1;'>
-                        <div class='col-md-12'style='margin-top: 120px;'><span ><center><a href='./browse.php' class='btn btn-default'>Browse Classes</a></center></span></div>
-                    </div>
-                </div>
+                <a href='#' class='btn btn-default'>Requests</a>&nbsp;
+                <a href='#' class='btn btn-default disabled'>Classes</a>&nbsp;
+                <a href='#' class='btn btn-default'>Sessions</a>
             </div>
+            <!--Class List-->
+		<?php
+		foreach ($classes as $class) { 
+		?>
+		    <div class='col-md-12' style='margin-top: 20px;'>
+			<div class='col-md-3' style='background-color: #999; height: 220px; margin-bottom: 20px; margin-top: 10px;'>&nbsp;</div>
+			<div class='col-md-9'>
+			    <div class='col-md-12'><span class='header header-large'><?= $class['name']; ?></span></div>
+			    <div class='col-md-12' style='margin-top: 10px;'><p><?= $class['description']; ?>
+				<a href='#'>Read More</a>.</p></div>
+			    <div class='col-md-12' style='margin-top: 10px;'><a href='#' class='btn btn-default'>View Class</a> <a href='#' class='btn btn-default'>Edit Class</a> <a href='#' class='btn btn-default'>Manage Sessions</a></div>
+			</div>
+		    </div>
+		<?php
+		}
+		?>
         </div>
         <script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
         <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.12.0.min.js"><\/script>')</script>
