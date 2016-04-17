@@ -6,6 +6,41 @@ if (!securePage($_SERVER['PHP_SELF'])){die();}
 //Prevent the user visiting the logged in page if he/she is already logged in
 if(!isUserLoggedIn()) { header("Location: login.php"); die(); }
 
+//Forms posted
+if(!empty($_POST))
+{
+	//print_r($_POST); die();
+	$name = trim($_POST["name"]);
+	$image = $_POST["image"] ? trim($_POST["image"]) : "";
+	$description = trim($_POST["description"]);
+	$intersection = trim($_POST["intersection"]);
+	$address = trim($_POST["address"]);
+	$price = trim($_POST["price"]);
+	$uesr_id = trim($_POST["user_id"]);
+
+	$mysqli_piq = new mysqli($db_host_piq, $db_user_piq, $db_pass_piq, $db_name_piq);
+	//GLOBAL $mysqli_piq;
+
+	if(mysqli_connect_errno()) {
+		echo "Connection Failed: " . mysqli_connect_errno();
+		exit();
+	}
+		
+	if (!($stmt = $mysqli_piq->prepare("INSERT INTO class (name, image, description, intersection, address, price, user_id) VALUES (?, ?, ?, ?, ?, ?, ?)"))) {
+		echo "Prepare failed: (" . $mysqli_piq->errno . ") " . $mysqli_piq->error;
+	}
+
+	if (!$stmt->bind_param("sssssdi", $name, $image, $description, $intersection, $address, $price, $user_id)) {
+	    echo "Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error;
+	}
+
+	if (!$stmt->execute()) {
+	    echo "Execute failed: (" . $stmt->errno . ") " . $stmt->error;
+	}
+	$stmt->close();
+	
+}
+
 require_once("models/header.php");
 
 ?>
@@ -57,30 +92,31 @@ require_once("models/header.php");
                     <div class='col-md-12 header header-large' style='margin-top: 20px;'>Add A Class</div>
                     <div class='col-md-12' style='margin-top: 20px;'>
                       <form id='add_class_form' name='add_class_form' action='<?= $_SERVER['PHP_SELF'] ?>' method=post>
-                      <div class="form-group">
+				<div class="form-group">
                         <label for="exampleInputEmail1">Class Name</label>
-                        <input type="email" class="form-control" id="name" placeholder="Burger Making 101">
+                        <input name="name" class="form-control" id="name" placeholder="Burger Making 101">
                       </div>
                       <div class="form-group">
-                        <label for="exampleInputFile">File input</label>
-                        <input type="file" id="exampleInputFile">
+                        <label for="exampleInputFile">Logo</label>
+                        <input name='image' type="file" id="exampleInputFile">
                       </div>
                       <div class="form-group">
                         <label for="exampleInputEmail1">Description</label>
-                        <textarea class="form-control" rows="3"></textarea>
+                        <textarea name='description' class="form-control" rows="3"></textarea>
                       </div>
                       <div class="form-group">
                         <label for="exampleInputEmail1">Major Intersection (Displayed to Public)</label>
-                        <input type="email" class="form-control" id="name" placeholder="eg. Yonge and Eglinton">
+                        <input name="intersection" class="form-control" id="name" placeholder="eg. Yonge and Eglinton">
                       </div>
                       <div class="form-group">
                         <label for="exampleInputEmail1">Exact Address (Sent to Confirmed Students)</label>
-                        <input type="email" class="form-control" id="name" placeholder="eg. 12 Soudan Dr., Toronto, Ontario M3K 1K3">
+                        <input name="address" class="form-control" id="name" placeholder="eg. 12 Soudan Dr., Toronto, Ontario M3K 1K3">
                       </div>
                       <div class="form-group">
                         <label for="exampleInputEmail1">Class Fee (Number Only)</label>
-                        <input type="password" class="form-control" id="confirmpass" placeholder="25">
+                        <input name="price" class="form-control" id="confirmpass" placeholder="25">
                       </div>
+			<input name="user_id" type='hidden' value='<?= $loggedInUser->user_id; ?>'>
                       <button type="submit" class="btn btn-default">Add Class</button>
                       </form>
                     </div>

@@ -9,13 +9,22 @@ $db_host = "db.piqpass.com"; //Host address (most likely localhost)
 $db_name = "user_cake"; //Name of Database
 $db_user = "cake_user"; //Name of database user
 $db_pass = "BoxOfKittens2016"; //Password for database user
-//$db_table_prefix = "uc_";
+$db_table_prefix = "";
+
+$db_host_piq = "db.piqpass.com"; //Host address (most likely localhost)
+$db_name_piq = "piqpass_new"; //Name of Database
+$db_user_piq = "cake_user"; //Name of database user
+$db_pass_piq = "BoxOfKittens2016"; //Password for database user
 
 GLOBAL $errors;
 GLOBAL $successes;
+GLOBAL $errors_piq;
+GLOBAL $successes_piq;
 
 $errors = array();
+$errors_piq = array();
 $successes = array();
+$successes_piq = array();
 
 /* Create a new mysqli object with database connection parameters */
 $mysqli = new mysqli($db_host, $db_user, $db_pass, $db_name);
