@@ -9,9 +9,9 @@ if (!securePage($_SERVER['PHP_SELF'])){die();}
 //Links for logged in user
 if(isUserLoggedIn()) {
 	echo "
-	 <div class='dropdown' style='float: right; margin-left: 8px;'><a href='account.php'>Account Home</a></div>
-	 <div class='dropdown' style='float: right; margin-left: 8px;'><a href='user_settings.php'>User Settings</a></div>
-	 <div class='dropdown' style='float: right; margin-left: 8px;'><a href='logout.php'>Logout</a></div>"
+	 <div class='dropdown' style='float: right; margin-left: 8px;'><a class='btn btn-default btn-sm' href='dashboard.php'>Dashboard</a></div>
+	 <div class='dropdown' style='float: right; margin-left: 8px;'><a class='btn btn-default btn-sm' href='user_settings.php'>User Settings</a></div>
+	 <div class='dropdown' style='float: right; margin-left: 8px;'><a class='btn btn-default btn-sm' href='logout.php'>Logout</a></div>"
 	;
 	//Links for permission level 2 (default admin)
 	if ($loggedInUser->checkPermission(array(2))){
@@ -31,8 +31,7 @@ else {
 			<div class='dropdown' style='float: right; margin-left: 8px;'><a class='btn btn-default btn-sm' href='register.php'>Register</a></div>
 			
 			                    <!--Classes-->
-                    <div class='dropdown' style='float: right; margin-left: 8px;'><a class='btn btn-default btn-sm'>Browse</a></div>
+                    <div class='dropdown' style='float: right; margin-left: 8px;'><a class='btn btn-default btn-sm' href='browse.php'>Browse</a></div>
 	";
 }
-
 ?>

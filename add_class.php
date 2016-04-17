@@ -1,86 +1,13 @@
 <?php
-/*
-UserCake Version: 2.0.2
-http://usercake.com
-*/
 
 require_once("models/config.php");
 if (!securePage($_SERVER['PHP_SELF'])){die();}
 
 //Prevent the user visiting the logged in page if he/she is already logged in
-if(isUserLoggedIn()) { header("Location: account.php"); die(); }
-
-//Forms posted
-if(!empty($_POST))
-{
-        $errors = array();
-        $email = trim($_POST["email"]);
-        $username = trim($_POST["username"]);
-        $displayname = 'placeholder';
-        $password = trim($_POST["password"]);
-        $confirm_pass = trim($_POST["passwordc"]);
-        $captcha = md5($_POST["captcha"]);
-
-
-        if ($captcha != $_SESSION['captcha'])
-        {
-                $errors[] = lang("CAPTCHA_FAIL");
-        }
-        if(minMaxRange(5,25,$username))
-        {
-                $errors[] = lang("ACCOUNT_USER_CHAR_LIMIT",array(5,25));
-        }
-        if(!ctype_alnum($username)){
-                $errors[] = lang("ACCOUNT_USER_INVALID_CHARACTERS");
-        }
-        if(minMaxRange(5,25,$displayname))
-        {
-                $errors[] = lang("ACCOUNT_DISPLAY_CHAR_LIMIT",array(5,25));
-        }
-        if(!ctype_alnum($displayname)){
-               $errors[] = lang("ACCOUNT_DISPLAY_INVALID_CHARACTERS");
-        }
-        if(minMaxRange(8,50,$password) && minMaxRange(8,50,$confirm_pass))
-        {
-                $errors[] = lang("ACCOUNT_PASS_CHAR_LIMIT",array(8,50));
-        }
-        else if($password != $confirm_pass)
-        {
-                $errors[] = lang("ACCOUNT_PASS_MISMATCH");
-	}
-        if(!isValidEmail($email))
-        {
-                $errors[] = lang("ACCOUNT_INVALID_EMAIL");
-        }
-        //End data validation
-        if(count($errors) == 0)
-        {
-                //Construct a user object
-                $user = new User($username,$displayname,$password,$email);
-
-                //Checking this flag tells us whether there were any errors such as possible data duplication occured
-                if(!$user->status)
-                {
-                        if($user->username_taken) $errors[] = lang("ACCOUNT_USERNAME_IN_USE",array($username));
-                        if($user->displayname_taken) $errors[] = lang("ACCOUNT_DISPLAYNAME_IN_USE",array($displayname));
-                        if($user->email_taken)    $errors[] = lang("ACCOUNT_EMAIL_IN_USE",array($email));
-                }
-                else
-                {
-                        //Attempt to add the user to the database, carry out finishing  tasks like emailing the user (if required)
-                        if(!$user->userCakeAddUser())
-                        {
-                                if($user->mail_failure) $errors[] = lang("MAIL_ERROR");
-                                if($user->sql_failure)  $errors[] = lang("SQL_ERROR");
-                        }
-                }
-        }
-        if(count($errors) == 0) {
-                $successes[] = $user->success;
-        }
-}
+if(!isUserLoggedIn()) { header("Location: login.php"); die(); }
 
 require_once("models/header.php");
+
 ?>
 <!doctype html>
 <html class="no-js" lang="">
@@ -127,35 +54,34 @@ require_once("models/header.php");
             <!--body-->
             <div class='col-md-12' style='margin-top: 40px; margin-left: -15px;'>
                 <div class='col-md-6' style='margin-left: -15px; margin-bottom: 50px;'>
-                    <div class='col-md-12 header header-large' style='margin-top: 20px;'>Create Profile</div>
-                    <!-- <div class='col-md-12 bg-danger' style='margin-top: 15px; padding-top: 10px;'></div> -->
-		    <?= resultBlock($errors,$successes); ?>
+                    <div class='col-md-12 header header-large' style='margin-top: 20px;'>Add A Class</div>
                     <div class='col-md-12' style='margin-top: 20px;'>
-			<form name='newUser' action='<?= $_SERVER['PHP_SELF'] ?>' method='post'>
+                      <form id='add_class_form' name='add_class_form' action='<?= $_SERVER['PHP_SELF'] ?>' method=post>
                       <div class="form-group">
-                        <label for="exampleInputEmail1">Full Name</label>
-                        <input type="username" class="form-control" name='username' id="username" placeholder="Jackie Smith">
-                      </div>
-		      <div class="form-group">
-                        <label for="exampleInputEmail1">Email</label>
-                        <input type="email" class="form-control" id="email" name="email" placeholder="Jackie.Smith@Domain.com">
+                        <label for="exampleInputEmail1">Class Name</label>
+                        <input type="email" class="form-control" id="name" placeholder="Burger Making 101">
                       </div>
                       <div class="form-group">
-                        <label for="exampleInputEmail1">Password</label>
-                        <input type="password" class="form-control" id="pass" name="password" placeholder="Password">
+                        <label for="exampleInputFile">File input</label>
+                        <input type="file" id="exampleInputFile">
                       </div>
                       <div class="form-group">
-                        <label for="exampleInputEmail1">Confirm Password</label>
-                        <input type="password" class="form-control" id="confirmpass" name="passwordc" placeholder="Confirm Password">
+                        <label for="exampleInputEmail1">Description</label>
+                        <textarea class="form-control" rows="3"></textarea>
                       </div>
                       <div class="form-group">
-			<label>Security Code:</label>
-			<img src='models/captcha.php'>
-			<br/>
-			<label>Enter Security Code:</label>
-			<input name='captcha' type='text'>
+                        <label for="exampleInputEmail1">Major Intersection (Displayed to Public)</label>
+                        <input type="email" class="form-control" id="name" placeholder="eg. Yonge and Eglinton">
                       </div>
-                      <button type="submit" class="btn btn-default">Create Account</button>
+                      <div class="form-group">
+                        <label for="exampleInputEmail1">Exact Address (Sent to Confirmed Students)</label>
+                        <input type="email" class="form-control" id="name" placeholder="eg. 12 Soudan Dr., Toronto, Ontario M3K 1K3">
+                      </div>
+                      <div class="form-group">
+                        <label for="exampleInputEmail1">Class Fee (Number Only)</label>
+                        <input type="password" class="form-control" id="confirmpass" placeholder="25">
+                      </div>
+                      <button type="submit" class="btn btn-default">Add Class</button>
                       </form>
                     </div>
                 </div>

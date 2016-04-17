@@ -1,3 +1,15 @@
+<?php
+/*
+UserCake Version: 2.0.2
+http://usercake.com
+*/
+
+require_once("models/config.php");
+if (!securePage($_SERVER['PHP_SELF'])){die();}
+require_once("models/header.php");
+
+?>
+
 <!doctype html>
 <html class="no-js" lang="">
     <head>
@@ -35,10 +47,8 @@
                 <div class='col-md-2' style='margin-left: -15px;'><img src='img/piqlanding1.jpg' /></div>
                 <div class='col-md-10' style='margin-top: 15px; margin-left: -15px;'>
                   <p align='right'>
-                  <a href="#" class="btn btn-default btn-sm" role="button">Dashboard</a>
-                  <a href="#" class="btn btn-default btn-sm" role="button">Browse</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                  <a href="#" class="btn btn-default btn-sm" role="button">Account</a>
-                  <a href="#" class="btn btn-default btn-sm" role="button">Logout</a>
+		<div id='left-nav'>
+		 <?= include("piqpass_nav.php"); ?>
                 </p>
                 </div>
             </div>
