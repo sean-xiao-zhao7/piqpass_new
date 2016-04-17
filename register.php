@@ -13,132 +13,172 @@ if(isUserLoggedIn()) { header("Location: account.php"); die(); }
 //Forms posted
 if(!empty($_POST))
 {
-	$errors = array();
-	$email = trim($_POST["email"]);
-	$username = trim($_POST["username"]);
-	$displayname = trim($_POST["displayname"]);
-	$password = trim($_POST["password"]);
-	$confirm_pass = trim($_POST["passwordc"]);
-	$captcha = md5($_POST["captcha"]);
-	
-	
-	if ($captcha != $_SESSION['captcha'])
-	{
-		$errors[] = lang("CAPTCHA_FAIL");
+        $errors = array();
+        $email = trim($_POST["email"]);
+        $username = trim($_POST["username"]);
+        $displayname = 'placeholder';
+        $password = trim($_POST["password"]);
+        $confirm_pass = trim($_POST["passwordc"]);
+        $captcha = md5($_POST["captcha"]);
+
+
+        if ($captcha != $_SESSION['captcha'])
+        {
+                $errors[] = lang("CAPTCHA_FAIL");
+        }
+        if(minMaxRange(5,25,$username))
+        {
+                $errors[] = lang("ACCOUNT_USER_CHAR_LIMIT",array(5,25));
+        }
+        if(!ctype_alnum($username)){
+                $errors[] = lang("ACCOUNT_USER_INVALID_CHARACTERS");
+        }
+        if(minMaxRange(5,25,$displayname))
+        {
+                $errors[] = lang("ACCOUNT_DISPLAY_CHAR_LIMIT",array(5,25));
+        }
+        if(!ctype_alnum($displayname)){
+               $errors[] = lang("ACCOUNT_DISPLAY_INVALID_CHARACTERS");
+        }
+        if(minMaxRange(8,50,$password) && minMaxRange(8,50,$confirm_pass))
+        {
+                $errors[] = lang("ACCOUNT_PASS_CHAR_LIMIT",array(8,50));
+        }
+        else if($password != $confirm_pass)
+        {
+                $errors[] = lang("ACCOUNT_PASS_MISMATCH");
 	}
-	if(minMaxRange(5,25,$username))
-	{
-		$errors[] = lang("ACCOUNT_USER_CHAR_LIMIT",array(5,25));
-	}
-	if(!ctype_alnum($username)){
-		$errors[] = lang("ACCOUNT_USER_INVALID_CHARACTERS");
-	}
-	if(minMaxRange(5,25,$displayname))
-	{
-		$errors[] = lang("ACCOUNT_DISPLAY_CHAR_LIMIT",array(5,25));
-	}
-	if(!ctype_alnum($displayname)){
-		$errors[] = lang("ACCOUNT_DISPLAY_INVALID_CHARACTERS");
-	}
-	if(minMaxRange(8,50,$password) && minMaxRange(8,50,$confirm_pass))
-	{
-		$errors[] = lang("ACCOUNT_PASS_CHAR_LIMIT",array(8,50));
-	}
-	else if($password != $confirm_pass)
-	{
-		$errors[] = lang("ACCOUNT_PASS_MISMATCH");
-	}
-	if(!isValidEmail($email))
-	{
-		$errors[] = lang("ACCOUNT_INVALID_EMAIL");
-	}
-	//End data validation
-	if(count($errors) == 0)
-	{	
-		//Construct a user object
-		$user = new User($username,$displayname,$password,$email);
-		
-		//Checking this flag tells us whether there were any errors such as possible data duplication occured
-		if(!$user->status)
-		{
-			if($user->username_taken) $errors[] = lang("ACCOUNT_USERNAME_IN_USE",array($username));
-			if($user->displayname_taken) $errors[] = lang("ACCOUNT_DISPLAYNAME_IN_USE",array($displayname));
-			if($user->email_taken) 	  $errors[] = lang("ACCOUNT_EMAIL_IN_USE",array($email));		
-		}
-		else
-		{
-			//Attempt to add the user to the database, carry out finishing  tasks like emailing the user (if required)
-			if(!$user->userCakeAddUser())
-			{
-				if($user->mail_failure) $errors[] = lang("MAIL_ERROR");
-				if($user->sql_failure)  $errors[] = lang("SQL_ERROR");
-			}
-		}
-	}
-	if(count($errors) == 0) {
-		$successes[] = $user->success;
-	}
+        if(!isValidEmail($email))
+        {
+                $errors[] = lang("ACCOUNT_INVALID_EMAIL");
+        }
+        //End data validation
+        if(count($errors) == 0)
+        {
+                //Construct a user object
+                $user = new User($username,$displayname,$password,$email);
+
+                //Checking this flag tells us whether there were any errors such as possible data duplication occured
+                if(!$user->status)
+                {
+                        if($user->username_taken) $errors[] = lang("ACCOUNT_USERNAME_IN_USE",array($username));
+                        if($user->displayname_taken) $errors[] = lang("ACCOUNT_DISPLAYNAME_IN_USE",array($displayname));
+                        if($user->email_taken)    $errors[] = lang("ACCOUNT_EMAIL_IN_USE",array($email));
+                }
+                else
+                {
+                        //Attempt to add the user to the database, carry out finishing  tasks like emailing the user (if required)
+                        if(!$user->userCakeAddUser())
+                        {
+                                if($user->mail_failure) $errors[] = lang("MAIL_ERROR");
+                                if($user->sql_failure)  $errors[] = lang("SQL_ERROR");
+                        }
+                }
+        }
+        if(count($errors) == 0) {
+                $successes[] = $user->success;
+        }
 }
 
 require_once("models/header.php");
-echo "
-<body>
-<div id='wrapper'>
-<div id='top'><div id='logo'></div></div>
-<div id='content'>
-<h1>UserCake</h1>
-<h2>Register</h2>
-
-<div id='left-nav'>";
-include("left-nav.php");
-echo "
-</div>
-
-<div id='main'>";
-
-echo resultBlock($errors,$successes);
-
-echo "
-<div id='regbox'>
-<form name='newUser' action='".$_SERVER['PHP_SELF']."' method='post'>
-
-<p>
-<label>User Name:</label>
-<input type='text' name='username' />
-</p>
-<p>
-<label>Display Name:</label>
-<input type='text' name='displayname' />
-</p>
-<p>
-<label>Password:</label>
-<input type='password' name='password' />
-</p>
-<p>
-<label>Confirm:</label>
-<input type='password' name='passwordc' />
-</p>
-<p>
-<label>Email:</label>
-<input type='text' name='email' />
-</p>
-<p>
-<label>Security Code:</label>
-<img src='models/captcha.php'>
-</p>
-<label>Enter Security Code:</label>
-<input name='captcha' type='text'>
-</p>
-<label>&nbsp;<br>
-<input type='submit' value='Register'/>
-</p>
-
-</form>
-</div>
-
-</div>
-<div id='bottom'></div>
-</div>
-</body>
-</html>";
 ?>
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="apple-touch-icon" href="apple-touch-icon.png">
+        <!-- Place favicon.ico in the root directory -->
+
+        <link rel="stylesheet" href="css/normalize.css">
+        <link rel="stylesheet" href="css/main.css">
+        <script src="js/vendor/modernizr-2.8.3.min.js"></script>
+        <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300' rel='stylesheet' type='text/css'>
+        <style>
+        .header {font-family: 'Open Sans', sans-serif; font-weight: 300;}
+        .price {font-family: 'Open Sans', sans-serif; font-weight: 300; font-size: 25px;}
+        .header-large {font-size: 25px;}
+        p {line-height: 1.7em; font-size: 15px; color: #333; }
+        .request {background-color: #fc6472; padding-top: 8px; padding-bottom: 8px; font-size: 18px; color: #fff;font-family: 'Open Sans', sans-serif; font-weight: 300;}
+        .small {font-size: 12px !important;}
+        </style>
+    </head>
+    <body style='margin-top: 40px;'>
+        <!--[if lt IE 8]>
+            <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+
+        <!-- Add your site or application content here -->
+        <div class='row' style='width: 80%; margin: 0 auto;'>
+            <!--header-->
+            <div class='col-md-12'>
+                <div class='col-md-2' style='margin-left: -15px;'><img src='img/piqlanding1.jpg' /></div>
+                <div class='col-md-10' style='margin-top: 15px; margin-left: -15px;'>
+                  <p align='right'>
+                  <a href="#" class="btn btn-default btn-sm" role="button">Dashboard</a>
+                  <a href="#" class="btn btn-default btn-sm" role="button">Browse</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  <a href="#" class="btn btn-default btn-sm" role="button">Account</a>
+                  <a href="#" class="btn btn-default btn-sm" role="button">Logout</a>
+                </p>
+                </div>
+            </div>
+            <!--end header-->
+            <!--body-->
+            <div class='col-md-12' style='margin-top: 40px; margin-left: -15px;'>
+                <div class='col-md-6' style='margin-left: -15px; margin-bottom: 50px;'>
+                    <div class='col-md-12 header header-large' style='margin-top: 20px;'>Create Profile</div>
+                    <!-- <div class='col-md-12 bg-danger' style='margin-top: 15px; padding-top: 10px;'></div> -->
+		    <?= resultBlock($errors,$successes); ?>
+                    <div class='col-md-12' style='margin-top: 20px;'>
+			<form name='newUser' action='<?= $_SERVER['PHP_SELF'] ?>' method='post'>
+                      <div class="form-group">
+                        <label for="exampleInputEmail1">Full Name</label>
+                        <input type="username" class="form-control" name='username' id="username" placeholder="Jackie Smith">
+                      </div>
+		      <div class="form-group">
+                        <label for="exampleInputEmail1">Email</label>
+                        <input type="email" class="form-control" id="email" name="email" placeholder="Jackie.Smith@Domain.com">
+                      </div>
+                      <div class="form-group">
+                        <label for="exampleInputEmail1">Password</label>
+                        <input type="password" class="form-control" id="pass" name="password" placeholder="Password">
+                      </div>
+                      <div class="form-group">
+                        <label for="exampleInputEmail1">Confirm Password</label>
+                        <input type="password" class="form-control" id="confirmpass" name="passwordc" placeholder="Confirm Password">
+                      </div>
+                      <div class="form-group">
+			<label>Security Code:</label>
+			<img src='models/captcha.php'>
+			<br/>
+			<label>Enter Security Code:</label>
+			<input name='captcha' type='text'>
+                      </div>
+                      <button type="submit" class="btn btn-default">Create Account</button>
+                      </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
+        <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.12.0.min.js"><\/script>')</script>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+        <script src="js/plugins.js"></script>
+        <script src="js/main.js"></script>
+
+        <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
+        <script>
+            (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
+            function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
+            e=o.createElement(i);r=o.getElementsByTagName(i)[0];
+            e.src='https://www.google-analytics.com/analytics.js';
+            r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
+            ga('create','UA-XXXXX-X','auto');ga('send','pageview');
+        </script>
+    </body>
+</html>
