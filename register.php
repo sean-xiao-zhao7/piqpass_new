@@ -30,16 +30,20 @@ if(!empty($_POST))
         {
                 $errors[] = lang("ACCOUNT_USER_CHAR_LIMIT",array(5,25));
         }
+	/*
         if(!ctype_alnum($username)){
                 $errors[] = lang("ACCOUNT_USER_INVALID_CHARACTERS");
         }
+	*/
         if(minMaxRange(5,25,$displayname))
         {
                 $errors[] = lang("ACCOUNT_DISPLAY_CHAR_LIMIT",array(5,25));
         }
-//        if(!ctype_alnum($displayname)){
-  //             $errors[] = lang("ACCOUNT_DISPLAY_INVALID_CHARACTERS");
-   //     }
+	/*
+        if(!ctype_alnum($displayname)){
+               $errors[] = lang("ACCOUNT_DISPLAY_INVALID_CHARACTERS");
+        }
+	*/
         if(minMaxRange(8,50,$password) && minMaxRange(8,50,$confirm_pass))
         {
                 $errors[] = lang("ACCOUNT_PASS_CHAR_LIMIT",array(8,50));

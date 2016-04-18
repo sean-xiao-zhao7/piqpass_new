@@ -128,10 +128,8 @@ require_once("models/header.php");
                 <div class='col-md-2' style='margin-left: -15px;'><img src='img/piqlanding1.jpg' /></div>
                 <div class='col-md-10' style='margin-top: 15px; margin-left: -15px;'>
                   <p align='right'>
-                  <a href="#" class="btn btn-default btn-sm" role="button">Dashboard</a>
-                  <a href="#" class="btn btn-default btn-sm" role="button">Browse</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                  <a href="#" class="btn btn-default btn-sm" role="button">Account</a>
-                  <a href="#" class="btn btn-default btn-sm" role="button">Logout</a>
+                  <a href="register.php" class="btn btn-default btn-sm" role="button">Register</a>
+                  <a href="browse.php" class="btn btn-default btn-sm" role="button">Browse</a>
                 </p>
                 </div>
             </div>

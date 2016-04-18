@@ -35,10 +35,12 @@ class User
 		{
 			$this->username_taken = true;
 		}
+		/*
 		else if(displayNameExists($this->displayname))
 		{
 			$this->displayname_taken = true;
 		}
+		*/
 		else if(emailExists($this->clean_email))
 		{
 			$this->email_taken = true;
