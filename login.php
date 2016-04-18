@@ -75,7 +75,7 @@ if(!empty($_POST))
 					foreach (fetchUserPermissions($loggedInUser->user_id) as $row) {
 						if ($row['permission_id'] == 3) {
 							$role = 'chef';
-							header("Location: dashboard.php");
+							header("Location: class_dashboard.php");
 							die();
 						}
 					}
