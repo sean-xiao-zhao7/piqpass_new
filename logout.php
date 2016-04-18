@@ -13,6 +13,12 @@ if(isUserLoggedIn())
 	$loggedInUser->userLogOut();
 }
 
+header("Location: https://piqpass.com/site/login.php");
+
+die();
+
+/*
+
 if(!empty($websiteUrl)) 
 {
 	$add_http = "";
@@ -33,3 +39,4 @@ else
 
 ?>
 
+*/

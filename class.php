@@ -16,15 +16,16 @@ require_once("db/connect.php");
 if (!($result = $mysqli_piq->query("select * from class"))) {
         echo "Prepare failed: (" . $mysqli_piq->errno . ") " . $mysqli_piq->error;
 } else {
-	$classes = [];
-	while ($row = $result->fetch_array(MYSQLI_ASSOC)) {
-		$classes[] = $row;
-	}    
+        $classes = [];
+        while ($row = $result->fetch_array(MYSQLI_ASSOC)) {
+                $classes[] = $row;
+        }
 }
 
 $result->close();
 
 ?>
+
 <!doctype html>
 <html class="no-js" lang="">
     <head>
@@ -72,27 +73,34 @@ $result->close();
             <!--end header-->
             <!--body-->
             <div class='col-md-12' style='margin-top: 40px;'>
-                <a href='#' class='btn btn-default'>Requests</a>&nbsp;
-                <a href='#' class='btn btn-default disabled'>Classes</a>&nbsp;
-                <a href='#' class='btn btn-default'>Sessions</a>
+                  <div class='col-md-9' style='margin-left: -15px;'>
+
+                      <!--maps-->
+                      <div class='col-md-12' style='margin-left: -15px; margin-top: 20px;'><span class='header header-large'>Map</span></div>
+                      <div class='col-md-12' style='margin-left: -15px; margin-top: 10px;'><p class='bg-warning' align='center' style='padding-top: 15px; padding-bottom: 15px;'><span class="glyphicon glyphicon-asterisk" aria-hidden="true"></span> The exact address of the class will be emailed to you once your request is accepted by Colin.</p></span></div>
+
+                      <div class='col-md-12' style='margin-left: -15px; margin-top: 10px;'><iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2885.2783807043675!2d-79.30235888518642!3d43.683975658459296!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89d4cc1a1f985ddf%3A0x6be02d40c4bdd655!2sUpper+Beaches%2C+Toronto%2C+ON!5e0!3m2!1sen!2sca!4v1460762987826" width='100%' height="250" frameborder="0" style="border:0" allowfullscreen></iframe></span></div>
+
+                </div>
+                <div class='col-md-3' style='margin-left: -15px;'>
+                  <div class='col-md-12' style='margin-left: -15px; margin-top: 43px; margin-bottom: 20px;'>
+                    <center><span class='price'>$0 / Person</span></center>
+                  </div>
+                  <div class='col-md-12 bg-warning' style='margin-left: -15px; margin-top: 10px; margin-bottom: 20px;'>
+                    <p><center><span class='small'>This class fee is $0, but the instructors requires $10 for ingredients.</span></center></p>
+                  </div>
+                  <div class='col-md-12' style='margin-left: -15px;'>
+                    <select class="form-control">
+                      <option>Select Time</option>
+                      <option>(2 Slots) 7:00PM - Thursday, April 14, 2016</option>
+                    </select>
+                  </div>
+                  <div class='col-md-12' style='margin-left: -15px; margin-top: 10px;'>
+                    <center><a href='#' class='btn btn-success' style='width: 100%;'>Request Now</a></center>
+                  </div>
+                </div>
             </div>
-            <!--Class List-->
-		<?php
-		foreach ($classes as $class) { 
-		?>
-		    <div class='col-md-12' style='margin-top: 20px;'>
-			<div class='col-md-3' style='background-color: #999; height: 220px; margin-bottom: 20px; margin-top: 10px;'>&nbsp;</div>
-			<div class='col-md-9'>
-			    <div class='col-md-12'><span class='header header-large'><?= $class['name']; ?></span></div>
-			    <div class='col-md-12' style='margin-top: 10px;'><p><?= $class['description']; ?>
-				<a href='#'>Read More</a>.</p></div>
-			    <div class='col-md-12' style='margin-top: 10px;'><a href='class.php?id=<?= $class['id'] ?>' class='btn btn-default'>View Class</a> <a href='#' class='btn btn-default'>Edit Class</a> <a href='#' class='btn btn-default'>Manage Sessions</a></div>
-			</div>
-		    </div>
-		<?php
-		}
-		?>
-        </div>
+
         <script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
         <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.12.0.min.js"><\/script>')</script>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">

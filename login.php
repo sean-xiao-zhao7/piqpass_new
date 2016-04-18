@@ -138,17 +138,12 @@ require_once("models/header.php");
             <!--end header-->
             <!--body-->
 
-<div id='left-nav'>
-
-<?= include("left-nav.php"); ?>
-
-</div>
 <div id='main'>
 
 <?= resultBlock($errors,$successes); ?>
 
 <div id='regbox'>
-<form name='login' action='".$_SERVER['PHP_SELF']."' method='post'>
+<form name='login' action='<?= $_SERVER['PHP_SELF'] ?>' method='post'>
 <p>
 <label>Username:</label>
 <input type='text' name='username' />

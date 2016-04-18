@@ -15,8 +15,8 @@ if(!empty($_POST))
 {
         $errors = array();
         $email = trim($_POST["email"]);
-        $username = trim($_POST["username"]);
-        $displayname = 'placeholder';
+        $username = trim($_POST["email"]); //trim($_POST["username"]);
+        $displayname = trim($_POST["displayname"]);
         $password = trim($_POST["password"]);
         $confirm_pass = trim($_POST["passwordc"]);
         $captcha = md5($_POST["captcha"]);
@@ -37,9 +37,9 @@ if(!empty($_POST))
         {
                 $errors[] = lang("ACCOUNT_DISPLAY_CHAR_LIMIT",array(5,25));
         }
-        if(!ctype_alnum($displayname)){
-               $errors[] = lang("ACCOUNT_DISPLAY_INVALID_CHARACTERS");
-        }
+//        if(!ctype_alnum($displayname)){
+  //             $errors[] = lang("ACCOUNT_DISPLAY_INVALID_CHARACTERS");
+   //     }
         if(minMaxRange(8,50,$password) && minMaxRange(8,50,$confirm_pass))
         {
                 $errors[] = lang("ACCOUNT_PASS_CHAR_LIMIT",array(8,50));
@@ -134,7 +134,7 @@ require_once("models/header.php");
 			<form name='newUser' action='<?= $_SERVER['PHP_SELF'] ?>' method='post'>
                       <div class="form-group">
                         <label for="exampleInputEmail1">Full Name</label>
-                        <input type="username" class="form-control" name='username' id="username" placeholder="Jackie Smith">
+                        <input type="text" class="form-control" name='displayname' id="username" placeholder="Jackie Smith">
                       </div>
 		      <div class="form-group">
                         <label for="exampleInputEmail1">Email</label>
