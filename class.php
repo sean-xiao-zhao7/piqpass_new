@@ -6,23 +6,26 @@ if (!securePage($_SERVER['PHP_SELF'])){die();}
 //Prevent the user visiting the logged in page if he/she is already logged in
 if(!isUserLoggedIn()) { header("Location: login.php"); die(); }
 
-if (!$loggedInUser->checkPermission(array(3)))
-{
-        header("Location: index.php");
-}
-
 require_once("db/connect.php");
 
-if (!($result = $mysqli_piq->query("select * from class"))) {
-        echo "Prepare failed: (" . $mysqli_piq->errno . ") " . $mysqli_piq->error;
-} else {
-        $classes = [];
-        while ($row = $result->fetch_array(MYSQLI_ASSOC)) {
-                $classes[] = $row;
-        }
+if (!($stmt = $mysqli_piq->prepare("
+select * from class where id = ?
+"))) {
+	echo "Prepare failed: (" . $mysqli_piq->errno . ") " . $mysqli_piq->error;
 }
 
-$result->close();
+if (!$stmt->bind_param("i", $_GET['id'])) {
+    echo "Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error;
+}
+
+if (!$stmt->execute()) {
+    echo "Execute failed: (" . $stmt->errno . ") " . $stmt->error;
+}
+
+$stmt->bind_result($name, $description, $image, $price, $user_id, $address, $intersection, $user_id);
+$stmt->fetch();
+
+$stmt->close();
 
 ?>
 
@@ -71,7 +74,16 @@ $result->close();
             <!--body-->
             <div class='col-md-12' style='margin-top: 40px;'>
                   <div class='col-md-9' style='margin-left: -15px;'>
-
+			<div class='col-md-12' style='margin-left: -15px; margin-top: 10px;'>
+			<h1>
+				<?= $name ?>
+			</h1>
+			</div>
+			<div class='col-md-12' style='margin-left: -15px; margin-top: 10px;'>
+			<p>
+				<?= $description ?>
+			</p>
+			</div>
                       <!--maps-->
                       <div class='col-md-12' style='margin-left: -15px; margin-top: 20px;'><span class='header header-large'>Map</span></div>
                       <div class='col-md-12' style='margin-left: -15px; margin-top: 10px;'><p class='bg-warning' align='center' style='padding-top: 15px; padding-bottom: 15px;'><span class="glyphicon glyphicon-asterisk" aria-hidden="true"></span> The exact address of the class will be emailed to you once your request is accepted by Colin.</p></span></div>

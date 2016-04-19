@@ -1,6 +1,7 @@
 <?php
 
 require_once("models/config.php");
+require_once("utils/utils.php");
 if (!securePage($_SERVER['PHP_SELF'])){die();}
 
 //Prevent the user visiting the logged in page if he/she is already logged in
@@ -16,28 +17,70 @@ if(!empty($_POST))
 	$intersection = trim($_POST["intersection"]);
 	$address = trim($_POST["address"]);
 	$price = trim($_POST["price"]);
-	$uesr_id = trim($_POST["user_id"]);
+	$user_id = trim($_POST["user_id"]);
 
-	$mysqli_piq = new mysqli($db_host_piq, $db_user_piq, $db_pass_piq, $db_name_piq);
-	//GLOBAL $mysqli_piq;
+	$target_dir = "class_logos/";
+	$imageFileType = pathinfo($_FILES["image"]["name"],PATHINFO_EXTENSION);
+	$target_file = random_string(15) . "." . $imageFileType; 
+	$uploadOk = 1;
+	// Check if image file is a actual image or fake image
+	if(isset($_POST["submit"])) {
+	    $check = getimagesize($_FILES["image"]["tmp_name"]);
+	    if($check !== false) {
+		echo "File is an image - " . $check["mime"] . ".";
+		$uploadOk = 1;
+	    } else {
+		echo "File is not an image.";
+		$uploadOk = 0;
+	    }
+	}	
+	
+	// Check file size
+	if ($_FILES["image"]["size"] > 500000) {
+	    echo "Sorry, your file is too large.";
+	    $uploadOk = 0;
+	}
 
-	if(mysqli_connect_errno()) {
-		echo "Connection Failed: " . mysqli_connect_errno();
-		exit();
-	}
-		
-	if (!($stmt = $mysqli_piq->prepare("INSERT INTO class (name, image, description, intersection, address, price, user_id) VALUES (?, ?, ?, ?, ?, ?, ?)"))) {
-		echo "Prepare failed: (" . $mysqli_piq->errno . ") " . $mysqli_piq->error;
+	// Allow certain file formats
+	if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg"
+	&& $imageFileType != "gif" ) {
+	    echo "Sorry, only JPG, JPEG, PNG & GIF files are allowed.";
+	    $uploadOk = 0;
 	}
 
-	if (!$stmt->bind_param("sssssdi", $name, $image, $description, $intersection, $address, $price, $user_id)) {
-	    echo "Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error;
-	}
+	// Check if $uploadOk is set to 0 by an error
+	if ($uploadOk == 0) {		
+	    echo "Sorry, your file was not uploaded.";
+	// if everything is ok, try to upload file
+	} else {
+	    if (!move_uploaded_file($_FILES["image"]["tmp_name"], $target_dir . $target_file)) {
+		echo "Sorry, there was an error uploading your file.";
+	    } else {
+		// echo "The file ". basename( $_FILES["image"]["name"]). " has been uploaded.";
+		$image = $target_file;
 
-	if (!$stmt->execute()) {
-	    echo "Execute failed: (" . $stmt->errno . ") " . $stmt->error;
+		$mysqli_piq = new mysqli($db_host_piq, $db_user_piq, $db_pass_piq, $db_name_piq);
+		//GLOBAL $mysqli_piq;
+
+		if(mysqli_connect_errno()) {
+			echo "Connection Failed: " . mysqli_connect_errno();
+			exit();
+		}
+			
+		if (!($stmt = $mysqli_piq->prepare("INSERT INTO class (name, image, description, intersection, address, price, user_id) VALUES (?, ?, ?, ?, ?, ?, ?)"))) {
+			echo "Prepare failed: (" . $mysqli_piq->errno . ") " . $mysqli_piq->error;
+		}
+
+		if (!$stmt->bind_param("sssssdi", $name, $image, $description, $intersection, $address, $price, $user_id)) {
+		    echo "Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error;
+		}
+
+		if (!$stmt->execute()) {
+		    echo "Execute failed: (" . $stmt->errno . ") " . $stmt->error;
+		}
+		$stmt->close();
+	    }
 	}
-	$stmt->close();
 	
 }
 
@@ -91,14 +134,14 @@ require_once("models/header.php");
                 <div class='col-md-6' style='margin-left: -15px; margin-bottom: 50px;'>
                     <div class='col-md-12 header header-large' style='margin-top: 20px;'>Add A Class</div>
                     <div class='col-md-12' style='margin-top: 20px;'>
-                      <form id='add_class_form' name='add_class_form' action='<?= $_SERVER['PHP_SELF'] ?>' method=post>
+                      <form id='add_class_form' name='add_class_form' action='<?= $_SERVER['PHP_SELF'] ?>' method='post' enctype="multipart/form-data">
 				<div class="form-group">
                         <label for="exampleInputEmail1">Class Name</label>
                         <input name="name" class="form-control" id="name" placeholder="Burger Making 101">
                       </div>
                       <div class="form-group">
-                        <label for="exampleInputFile">Logo</label>
-                        <input name='image' type="file" id="exampleInputFile">
+                        <label for="exampleInputFile">Logo image</label>
+                        <input name='image' type="file" id="image">
                       </div>
                       <div class="form-group">
                         <label for="exampleInputEmail1">Description</label>

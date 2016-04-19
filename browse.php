@@ -7,28 +7,16 @@ http://usercake.com
 require_once("models/config.php");
 if (!securePage($_SERVER['PHP_SELF'])){die();}
 
-$mysqli_piq = new mysqli($db_host_piq, $db_user_piq, $db_pass_piq, $db_name_piq);
+require_once("db/connect.php");
 
-if(mysqli_connect_errno()) {
-	echo "Connection Failed: " . mysqli_connect_errno();
-	exit();
+if (!($result = $mysqli_piq->query("select * from class"))) {
+        echo "Prepare failed: (" . $mysqli_piq->errno . ") " . $mysqli_piq->error;
+} else {
+        $classes = [];
+        while ($row = $result->fetch_array(MYSQLI_ASSOC)) {
+                $classes[] = $row;
+        }
 }
-
-if (!($stmt = $mysqli_piq->prepare("INSERT INTO class (name, image, description, intersection, address, price, user_id) VALUES (?, ?, ?, ?, ?, ?, ?)"))) {
-	echo "Prepare failed: (" . $mysqli_piq->errno . ") " . $mysqli_piq->error;
-}
-
-if (!$stmt->bind_param("sssssdi", $name, $image, $description, $intersection, $address, $price, $user_id)) {
-    echo "Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error;
-}
-
-if (!$stmt->execute()) {
-    echo "Execute failed: (" . $stmt->errno . ") " . $stmt->error;
-}
-$stmt->close();
-
-
-$classes = 
 
 require_once("models/header.php");
 
@@ -79,54 +67,20 @@ require_once("models/header.php");
             <!--end header-->
             <!--body-->
             <div class='col-md-12' style='margin-top: 40px;'>
+		<?php
+		foreach ($classes as $class) {
+		?>
                 <div class='col-md-6' style='margin-left: -15px; margin-bottom: 20px; margin-top: 10px;'>
                     <div class='col-md-12' style='height: 300px; background-color: #999;'>&nbsp;</div>
-                    <div class='col-md-12 header header-large' style='margin-top: 20px;'>Samosa Making 101</div>
-                    <div class='col-md-12' style='margin-top: 10px;'><p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sun...<a href='#'>Read More</a></p></div>
-                    <div class='col-md-12' style='margin-top: 10px;'><a href='#' class='btn btn-default'>View Class</a></div>
+                    <div class='col-md-12 header header-large' style='margin-top: 20px;'><?= $class['name']; ?></div>
+                    <div class='col-md-12' style='margin-top: 10px;'><p>
+			<?= $class['description']; ?>
+	<a href='class.php?id=<?= $class['id'] ?>'>Read More</a></p></div>
+                    <div class='col-md-12' style='margin-top: 10px;'><a href='class.php?id=<?= $class['id'] ?>' class='btn btn-default'>View Class</a></div>
                 </div>
-                <div class='col-md-6' style='margin-left: -15px; margin-bottom: 20px; margin-top: 10px;'>
-                    <div class='col-md-12' style='height: 300px; background-color: #999;'>&nbsp;</div>
-                    <div class='col-md-12 header header-large' style='margin-top: 20px;'>Samosa Making 101</div>
-                    <div class='col-md-12' style='margin-top: 10px;'><p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sun...<a href='#'>Read More</a></p></div>
-                    <div class='col-md-12' style='margin-top: 10px;'><a href='#' class='btn btn-default'>View Class</a></div>
-                </div>
-                <div class='col-md-6' style='margin-left: -15px; margin-bottom: 20px; margin-top: 10px;'>
-                    <div class='col-md-12' style='height: 300px; background-color: #999;'>&nbsp;</div>
-                    <div class='col-md-12 header header-large' style='margin-top: 20px;'>Samosa Making 101</div>
-                    <div class='col-md-12' style='margin-top: 10px;'><p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sun...<a href='#'>Read More</a></p></div>
-                    <div class='col-md-12' style='margin-top: 10px;'><a href='#' class='btn btn-default'>View Class</a></div>
-                </div>
-                <div class='col-md-6' style='margin-left: -15px; margin-bottom: 20px; margin-top: 10px;'>
-                    <div class='col-md-12' style='height: 300px; background-color: #999;'>&nbsp;</div>
-                    <div class='col-md-12 header header-large' style='margin-top: 20px;'>Samosa Making 101</div>
-                    <div class='col-md-12' style='margin-top: 10px;'><p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sun...<a href='#'>Read More</a></p></div>
-                    <div class='col-md-12' style='margin-top: 10px;'><a href='#' class='btn btn-default'>View Class</a></div>
-                </div>
-                <div class='col-md-6' style='margin-left: -15px; margin-bottom: 20px; margin-top: 10px;'>
-                    <div class='col-md-12' style='height: 300px; background-color: #999;'>&nbsp;</div>
-                    <div class='col-md-12 header header-large' style='margin-top: 20px;'>Samosa Making 101</div>
-                    <div class='col-md-12' style='margin-top: 10px;'><p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sun...<a href='#'>Read More</a></p></div>
-                    <div class='col-md-12' style='margin-top: 10px;'><a href='#' class='btn btn-default'>View Class</a></div>
-                </div>
-                <div class='col-md-6' style='margin-left: -15px; margin-bottom: 20px; margin-top: 10px;'>
-                    <div class='col-md-12' style='height: 300px; background-color: #999;'>&nbsp;</div>
-                    <div class='col-md-12 header header-large' style='margin-top: 20px;'>Samosa Making 101</div>
-                    <div class='col-md-12' style='margin-top: 10px;'><p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sun...<a href='#'>Read More</a></p></div>
-                    <div class='col-md-12' style='margin-top: 10px;'><a href='#' class='btn btn-default'>View Class</a></div>
-                </div>
-                <div class='col-md-6' style='margin-left: -15px; margin-bottom: 20px; margin-top: 10px;'>
-                    <div class='col-md-12' style='height: 300px; background-color: #999;'>&nbsp;</div>
-                    <div class='col-md-12 header header-large' style='margin-top: 20px;'>Samosa Making 101</div>
-                    <div class='col-md-12' style='margin-top: 10px;'><p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sun...<a href='#'>Read More</a></p></div>
-                    <div class='col-md-12' style='margin-top: 10px;'><a href='#' class='btn btn-default'>View Class</a></div>
-                </div>
-                <div class='col-md-6' style='margin-left: -15px; margin-bottom: 20px; margin-top: 10px;'>
-                    <div class='col-md-12' style='height: 300px; background-color: #999;'>&nbsp;</div>
-                    <div class='col-md-12 header header-large' style='margin-top: 20px;'>Samosa Making 101</div>
-                    <div class='col-md-12' style='margin-top: 10px;'><p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sun...<a href='#'>Read More</a></p></div>
-                    <div class='col-md-12' style='margin-top: 10px;'><a href='#' class='btn btn-default'>View Class</a></div>
-                </div>
+		<?php
+		}
+		?>
             </div>
         </div>
         <script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>

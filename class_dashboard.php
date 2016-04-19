@@ -78,11 +78,11 @@ $result->close();
 		foreach ($classes as $class) { 
 		?>
 		    <div class='col-md-12' style='margin-top: 20px;'>
-			<div class='col-md-3' style='background-color: #999; height: 220px; margin-bottom: 20px; margin-top: 10px;'>&nbsp;</div>
+			<div class='col-md-3' style='background-color: #999; height: 220px; margin-bottom: 20px; margin-top: 10px;'><img src='class_logos/<?= $class['image'] ?>' alt='class logo'/></div>
 			<div class='col-md-9'>
 			    <div class='col-md-12'><span class='header header-large'><?= $class['name']; ?></span></div>
 			    <div class='col-md-12' style='margin-top: 10px;'><p><?= $class['description']; ?>
-				<a href='#'>Read More</a>.</p></div>
+				<a href='class.php?id=<?= $class['id'] ?>'>Read More</a>.</p></div>
 			    <div class='col-md-12' style='margin-top: 10px;'><a href='class.php?id=<?= $class['id'] ?>' class='btn btn-default'>View Class</a> <a href='#' class='btn btn-default'>Edit Class</a> <a href='#' class='btn btn-default'>Manage Sessions</a></div>
 			</div>
 		    </div>
