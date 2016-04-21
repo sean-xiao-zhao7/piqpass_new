@@ -8,6 +8,17 @@ if(!isUserLoggedIn()) { header("Location: login.php"); die(); }
 
 require_once("db/connect.php");
 
+if (!empty($_POST)) {
+        if(!($newRequestState = $mysqli_piq->query("
+                insert into request (status, chef_id, user_id, session_id, class_id, username, class_name) values('pending', " . $_POST['chef_id'] . ", " . $loggedInUser->user_id . ", " . $_POST['session'] . ", " . $_POST['class_id'] . ", '" . $loggedInUser->displayname . "', '" . $_POST['class_name'] . "')"))) {
+                echo "Could not insert into request <br/>" . $newRequestState->error;
+        } else {
+                header('Location: dashboard.php');
+        }
+        $newRequestState->close();
+}
+
+
 if (!($stmt = $mysqli_piq->prepare("
 select * from class where id = ?
 "))) {
@@ -22,8 +33,31 @@ if (!$stmt->execute()) {
     echo "Execute failed: (" . $stmt->errno . ") " . $stmt->error;
 }
 
-$stmt->bind_result($name, $description, $image, $price, $user_id, $address, $intersection, $user_id);
+$stmt->bind_result($name, $description, $image, $price, $user_id, $address, $intersection, $class_id);
 $stmt->fetch();
+
+$stmt->close();
+
+if (!($stmt = $mysqli_piq->prepare("
+	select seats, `date`, `repeat`, id from `session` where `class_id` = ?
+"))) {
+	echo "Prepare failed: (" . $mysqli_piq->errno . ") " . $mysqli_piq->error;
+}
+
+if (!$stmt->bind_param("i", $_GET['id'])) {
+    echo "Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error;
+}
+
+if (!$stmt->execute()) {
+    echo "Execute failed: (" . $stmt->errno . ") " . $stmt->error;
+}
+
+$stmt->bind_result($seats, $date, $repeat, $id);
+
+$sessions = [];
+while($stmt->fetch()) {
+	$sessions[] = array('seats' => $seats, 'date' => $date, 'repeat' => $repeat, 'id' => $id);	
+}
 
 $stmt->close();
 
@@ -98,15 +132,40 @@ $stmt->close();
                   <div class='col-md-12 bg-warning' style='margin-left: -15px; margin-top: 10px; margin-bottom: 20px;'>
                     <p><center><span class='small'>This class fee is $0, but the instructors requires $10 for ingredients.</span></center></p>
                   </div>
+		<form method='post' name='select_session' action='<?= $_SERVER['PHP_SELF'] ?>' id='select_session'>
+			<input type='hidden' name='class_id' value='<?= $class_id ?>'>
+			<input type='hidden' name='chef_id' value='<?= $user_id ?>'>			
+			<input type='hidden' name='class_name' value='<?= $name ?>'>			
                   <div class='col-md-12' style='margin-left: -15px;'>
-                    <select class="form-control">
+                    <select name='session' class="form-control">
                       <option>Select Time</option>
-                      <option>(2 Slots) 7:00PM - Thursday, April 14, 2016</option>
+			<?php 
+				foreach ($sessions as $session) {
+				$session_time = strtotime($session['date']);
+                                $day = '';
+                                switch ($session['repeat']) {
+                                        case 'onetime':
+                                                $day = date('l, F jS', $session_time);
+                                                break;
+                                        case 'weekly':
+                                                $day = "Repeats " . date('l', $session_time) . " of every week.";
+                                                break;
+                                        case 'monthly':
+                                                $day = "Repeats " . date('jS', $session_time) . " of every month.";
+                                                break;
+                                        default:
+                                                echo "repeat unknown";
+                                                break;
+                                }
+			?>
+                      <option value='<?= $session['id'] ?>'>(<?= $session['seats'] . " Slots) " . date('G:iA', $session_time) . " - " . $day; ?></option>
+			<?php } ?>
                     </select>
                   </div>
                   <div class='col-md-12' style='margin-left: -15px; margin-top: 10px;'>
-                    <center><a href='#' class='btn btn-success' style='width: 100%;'>Request Now</a></center>
+                    <center><button type='submit' form='select_session' class='btn btn-success' style='width: 100%;'>Request Now</button></center>
                   </div>
+		</form>
                 </div>
             </div>
 
