@@ -19,7 +19,6 @@ if(!empty($_POST)) {
 		echo "Prepare failed: (" . $mysqli_piq->errno . ") " . $mysqli_piq->error;
 	}
 	
-	$repeat = "daily";
 	$dummy = 0;
 	//echo $_POST['time'] . ' ' . strtotime($_POST['time']) . ", " . $_POST['date'] . ", " . date('Y-m-d H:i:s', strtotime($_POST['date'] . ' ' . $_POST['time']));	
 	//die();
@@ -28,7 +27,7 @@ if(!empty($_POST)) {
 	} else {
 		 $time = str_replace($time, "pm", '');
 	}
-	if (!$stmt->bind_param("isis", $_POST['slots'], date('Y-m-d H:i:s', strtotime($_POST['date'] . ' ' . $_POST['time'])), $_POST['class_id'], $repeat)) {
+	if (!$stmt->bind_param("isis", $_POST['slots'], date('Y-m-d H:i:s', strtotime($_POST['date'] . ' ' . $_POST['time'])), $_POST['class_id'], $_POST['repeat'])) {
 	    echo "Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error;
 	}
 
@@ -159,11 +158,8 @@ $result2->close();
                         <label for="repeat" style='font-weight: 300px; margin-left: 20px;'> Frequency:</label>
 			<select name='repeat'  class="form-control" style=' font-size: 12px;' id="repeat">
 			  <option value="onetime">One time</option>
-			  <option value="daily">Daily</option>
 			  <option value="weekly">Weekly</option>
-			  <option value="biweekly">Bi-weekly</option>
 			  <option value="monthly">Monthly</option>
-			  <option value="bimonthly">Bi-monthly</option>
 			</select>
                       </div>
                       <button type="submit" class="btn btn-default" form='add_session_form' value='Add Session'>Add Session</button>
@@ -174,22 +170,36 @@ $result2->close();
                             <tr style='background-color: #f1f1f1;'>
                                 <td class='grey_td' style='width: 20%;'><span class='header header-medium'>Time</span></td>
                                 <td class='grey_td' style='width: 60%;'><span class='header header-medium'>Day</span></td>
+                                <td class='grey_td' style='width: 60%;'><span class='header header-medium'>Seats</span></td>
                                 <td class='grey_td' style='width: 20%;'>&nbsp;</td>
                             </tr>
                     <!--Session-->
 			<?php	
 				if (!empty($sessions)) {
 				foreach ($sessions[$class['id']] as $session) {
-				$session_datetime = $session['date'];				
-				$day = date('l, F jS', strtotime($session_datetime));
-				if ($session['repeat'] != 'onetime') {
-					$day = 'Repeated ' . $session['repeat'] . '. Next session ' . $day;
-				}				
+				$session_time = strtotime($session['date']);	
+				$day = '';
+				switch ($session['repeat']) { 
+					case 'onetime':
+						$day = date('l, F jS', $session_time);
+						break;
+					case 'weekly':
+						$day = "Repeats " . date('l', $session_time) . " of every week."; 
+						break;
+					case 'monthly':
+						$day = "Repeats " . date('jS', $session_time) . " of every month."; 
+						break;
+					default:
+						echo "repeat unknown";
+						break;						
+				}
+							
 			?>
                             <!--Times-->
                             <tr>
-                                <td class='grey_td' style='width: 20%;'><span class='header header-medium'><?= date('G:iA', strtotime($session_datetime)) ?></span></td>
+                                <td class='grey_td' style='width: 20%;'><span class='header header-medium'><?= date('G:iA', $session_time) ?></span></td>
                                 <td class='grey_td' style='width: 60%;'><span class='header header-medium'><?= $day ?></span></td>
+                                <td class='grey_td' style='width: 60%;'><span class='header header-medium'><?= $session['seats'] ?></span></td>
                                 <td class='grey_td' style='width: 20%;'><a href='<?= $_SERVER['PHP_SELF'] . "?delete=" . $session['id'] ?>' class='btn btn-sm btn-danger'>Delete</a> </td>
                             </tr>
 			 <?php } } ?>
