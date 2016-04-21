@@ -8,20 +8,24 @@ require_once("models/config.php");
 if (!securePage($_SERVER['PHP_SELF'])){die();}
 require_once("models/header.php");
 require_once("db/connect.php");
-/*
-if (!($stmt = $mysqli_piq->prepare("INSERT INTO class (name, image, description, intersection, address, price, user_id) VALUES (?, ?, ?, ?, ?, ?, ?)"))) {
-	echo "Prepare failed: (" . $mysqli_piq->errno . ") " . $mysqli_piq->error;
+
+if (!($result = $mysqli_piq->query("select * from request where user_id = " . $loggedInUser->user_id))) {
+        echo "DB Query failed: (" . $mysqli_piq->errno . ") " . $mysqli_piq->error;
+} else {
+        $pending_reqs = [];
+        $approved_reqs = [];
+        while ($row = $result->fetch_array(MYSQLI_ASSOC)) {
+                if ($row['status'] == 'pending') {
+                        $pending_reqs[] = $row;
+                }
+                else if ($row['status'] == 'approved') {
+                        $approved_reqs[] = $row;
+                }
+        }
 }
 
-if (!$stmt->bind_param("sssssdi", $name, $image, $description, $intersection, $address, $price, $user_id)) {
-    echo "Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error;
-}
+$result->close();
 
-if (!$stmt->execute()) {
-    echo "Execute failed: (" . $stmt->errno . ") " . $stmt->error;
-}
-$stmt->close();
-*/
 ?>
 
 <!doctype html>
@@ -65,20 +69,47 @@ $stmt->close();
             </div>
             <!--end header-->
             <!--body-->
-            <div class='col-md-12' style='margin-top: 40px;'>
-                <div class='col-md-6' style='margin-left: -15px; margin-bottom: 20px; margin-top: 10px;'>
-                    <div class='col-md-12' style='height: 300px; background-color: #999;'>&nbsp;</div>
-                    <div class='col-md-12 header header-large' style='margin-top: 20px;'>Samosa Making 101</div>
-                    <div class='col-md-12' style='margin-top: 10px;'><p><strong>Time:</strong> 7:00PM on Thursday, April 23, 2016</p></div>
-                    <div class='col-md-12'><p><strong>Address:</strong> 3453 Rinie Rd, Toronto, Ontario, Canada M3K 2K3</p></div>
-                    <div class='col-md-12' style='margin-top: 10px;'><a href='#' class='btn btn-danger'>Cancel Class</a></div>
-                </div>
+            <div class='col-md-12' style='margin-top: 40px;'>		
                 <div class='col-md-6' style='margin-left: -15px; margin-bottom: 20px; margin-top: 10px;'>
                     <div class='col-md-12' style='height: 300px; border: 4px dashed #f6edc1;'>
                         <div class='col-md-12'style='margin-top: 120px;'><span ><center><a href='./browse.php' class='btn btn-default'>Browse Classes</a></center></span></div>
                     </div>
                 </div>
             </div>
+
+		<?php
+                        if (!empty($pending_reqs)) {
+                                echo "<h4 style='margin-top: 20px; float:left; margin-left: 15px;'>Pending requests</h4>";
+                        }
+                        foreach ($pending_reqs as $request) {
+                ?>
+            <div class='col-md-12' style='margin-left: -15px;'>
+                <div class='col-md-4' style='margin-left: -15px; margin-bottom: 20px; margin-top: 10px;'>
+                    <div class='col-md-12' style='margin-top: 10px;'><p><strong>Class:</strong> <?= $request['class_name'] ?></p></div>
+                    <div class='col-md-12' style='margin-top: 10px;'>
+                        <a href="class.php?id=<?= $request['class_id'] ?>" class='btn btn-default btn-sm'>View Class</a>
+                    </div>
+                </div>
+            </div>
+                <?php } ?>
+
+            <?php
+                        if (!empty($approved_reqs)) {
+                                echo "<h4 style='margin-top: 20px; float:left; margin-left: 15px;'>Approved requests</h4>";
+                        }
+                        foreach ($approved_reqs as $request) {
+                ?>
+            <div class='col-md-12' style='margin-left: -15px;'>
+                <div class='col-md-4' style='margin-left: -15px; margin-bottom: 20px; margin-top: 10px;'>
+                    <div class='col-md-12' style='margin-top: 10px;'><p><strong>Class:</strong> <?= $request['class_name'] ?></p></div>
+                    <div class='col-md-12' style='margin-top: 10px;'>
+                        <a href="class.php?id=<?= $request['class_id'] ?>" class='btn btn-default btn-sm'>View Class</a>
+                    </div>
+                </div>
+            </div>
+                <?php }
+                ?>
+
         </div>
         <script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
         <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.12.0.min.js"><\/script>')</script>

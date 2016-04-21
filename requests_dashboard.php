@@ -10,7 +10,41 @@ if (!$loggedInUser->checkPermission(array(3)))
 {
         header("Location: index.php");
 }
+require_once("db/connect.php");
 
+if (!empty($_POST)) {	
+	if (!($stmt = $mysqli_piq->prepare("update request set status=? where id=?"))) {
+		echo "Prepare failed: (" . $mysqli_piq->errno . ") " . $mysqli_piq->error;
+	}
+	if (!$stmt->bind_param("si", $status, $request_id)) {
+	    echo "Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error;
+	}
+	$status = $_POST['status'];
+	$request_id = $_POST['request_id'];
+	
+	if (!$stmt->execute()) {
+	    echo "Execute failed: (" . $stmt->errno . ") " . $stmt->error;
+	}
+
+	$stmt->close();	
+}
+
+if (!($result = $mysqli_piq->query("select * from request where chef_id = " . $loggedInUser->user_id))) {
+        echo "DB Query failed: (" . $mysqli_piq->errno . ") " . $mysqli_piq->error;
+} else {
+        $pending_reqs = [];
+        $approved_reqs = [];
+        while ($row = $result->fetch_array(MYSQLI_ASSOC)) {
+		if ($row['status'] == 'pending') {
+	                $pending_reqs[] = $row;
+		} 
+		else if ($row['status'] == 'approved') {
+			$approved_reqs[] = $row;
+		}
+        }
+}
+
+$result->close();
 ?>
 <!doctype html>
 <html class="no-js" lang="">
@@ -60,40 +94,53 @@ if (!$loggedInUser->checkPermission(array(3)))
                 <a href='#' class='btn btn-default'>Classes</a>&nbsp;
                 <a href='#' class='btn btn-default'>Sessions</a>
             </div>
-            <div class='col-md-12' style='margin-top: 20px; margin-left: -15px;'>
+
+		<?php
+			if (!empty($pending_reqs)) { 
+				echo "<h4 style='margin-top: 20px; float:left; margin-left: 15px;'>Pending requests</h4>";
+			}
+			foreach ($pending_reqs as $request) {
+		?>
+            <div class='col-md-12' style='margin-left: -15px;'>
                 <div class='col-md-4' style='margin-left: -15px; margin-bottom: 20px; margin-top: 10px;'>
-                    <div class='col-md-12 header header-large' style='margin-top: 20px;'>John Kelly</div>
-                    <div class='col-md-12' style='margin-top: 10px;'><p><strong>Class:</strong> Samosa Making 101</p></div>
-                    <div class='col-md-12' style='margin-top: 10px;'><p><strong>Time:</strong> 7:00PM on Thursday, April 23, 2016</p></div>
-                    <div class='col-md-12'><p><strong>Address:</strong> 3453 Rinie Rd, Toronto, Ontario, Canada M3K 2K3</p></div>
+                    <div class='col-md-12 header header-large' style='margin-top: 20px;'><?= $request['username'] ?></div>
+                    <div class='col-md-12' style='margin-top: 10px;'><p><strong>Class:</strong> <?= $request['class_name'] ?></p></div>
                     <div class='col-md-12' style='margin-top: 10px;'>
-                        <a href='#' class='btn btn-default btn-sm'>View Profile</a>
-                        <a href='#' class='btn btn-default btn-sm disabled'>Confirmed</a>
-                    </div>
-                </div>
-                <div class='col-md-4' style='margin-left: -15px; margin-bottom: 20px; margin-top: 10px;'>
-                    <div class='col-md-12 header header-large' style='margin-top: 20px;'>John Kelly</div>
-                    <div class='col-md-12' style='margin-top: 10px;'><p><strong>Class:</strong> Samosa Making 101</p></div>
-                    <div class='col-md-12' style='margin-top: 10px;'><p><strong>Time:</strong> 7:00PM on Thursday, April 23, 2016</p></div>
-                    <div class='col-md-12'><p><strong>Address:</strong> 3453 Rinie Rd, Toronto, Ontario, Canada M3K 2K3</p></div>
-                    <div class='col-md-12' style='margin-top: 10px;'>
-                        <a href='#' class='btn btn-default btn-sm'>View Profile</a>
-                        <a href='#' class='btn btn-success btn-sm '>Accept</a>
-                        <a href='#' class='btn btn-danger btn-sm '>Decline</a>
-                    </div>
-                </div>
-                <div class='col-md-4' style='margin-left: -15px; margin-bottom: 20px; margin-top: 10px;'>
-                    <div class='col-md-12 header header-large' style='margin-top: 20px;'>John Kelly</div>
-                    <div class='col-md-12' style='margin-top: 10px;'><p><strong>Class:</strong> Samosa Making 101</p></div>
-                    <div class='col-md-12' style='margin-top: 10px;'><p><strong>Time:</strong> 7:00PM on Thursday, April 23, 2016</p></div>
-                    <div class='col-md-12'><p><strong>Address:</strong> 3453 Rinie Rd, Toronto, Ontario, Canada M3K 2K3</p></div>
-                    <div class='col-md-12' style='margin-top: 10px;'>
-                        <a href='#' class='btn btn-default btn-sm'>View Profile</a>
-                        <a href='#' class='btn btn-success btn-sm '>Accept</a>
-                        <a href='#' class='btn btn-danger btn-sm '>Decline</a>
+                        <a href="class.php?id=<?= $request['class_id'] ?>" class='btn btn-default btn-sm'>View Class</a>
+			<form id='confirm' method='post' name='confirm' action="<?= $_SERVER['PHP_SELF'] ?>">
+				<input type='hidden' form='confirm' name='status' value='approved' />
+				<input type='hidden' form='confirm' name='session_id' value='<?= $request['session_id'] ?>' />
+				<input type='hidden' form='confirm' name='request_id' value="<?= $request['id'] ?>" />
+				<button type='submit' form='confirm' class='btn btn-default btn-sm'>Confirm</button>
+			</form>
+			<form id='deny' method='post' name='deny' action="<?= $_SERVER['PHP_SELF'] ?>">
+				<input type='hidden' form='deny' name='status' value='approved' />
+				<input type='hidden' form='deny' name='session_id' value='<?= $request['session_id'] ?>' />
+                                <input type='hidden' form='deny' name='request_id' value="<?= $request['id'] ?>" />
+                                <button type='submit' form='deny' class='btn btn-default btn-sm'>Deny</button>
+			</form>
                     </div>
                 </div>
             </div>
+		<?php } ?>
+
+	    <?php
+			if (!empty($approved_reqs)) {
+                                echo "<h4 style='margin-top: 20px; float:left; margin-left: 15px;'>Approved requests</h4>";
+                        }
+                        foreach ($approved_reqs as $request) {
+                ?>
+            <div class='col-md-12' style='margin-left: -15px;'>
+                <div class='col-md-4' style='margin-left: -15px; margin-bottom: 20px; margin-top: 10px;'>
+                    <div class='col-md-12 header header-large' style='margin-top: 20px;'><?= $request['username'] ?></div>
+                    <div class='col-md-12' style='margin-top: 10px;'><p><strong>Class:</strong> <?= $request['class_name'] ?></p></div>
+                    <div class='col-md-12' style='margin-top: 10px;'>
+                        <a href="class.php?id=<?= $request['class_id'] ?>" class='btn btn-default btn-sm'>View Class</a>
+                    </div>
+                </div>
+            </div>
+                <?php } 		
+		?>
         </div>
         <script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
         <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.12.0.min.js"><\/script>')</script>

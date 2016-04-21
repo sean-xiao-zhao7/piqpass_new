@@ -103,6 +103,7 @@ require_once("models/header.php");
         <link rel="stylesheet" href="css/main.css">
         <script src="js/vendor/modernizr-2.8.3.min.js"></script>
         <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300' rel='stylesheet' type='text/css'>
+	<link rel="stylesheet" href="js/vendor/trumbowyg/bower_components/trumbowyg/dist/ui/trumbowyg.min.css">
         <style>
         .header {font-family: 'Open Sans', sans-serif; font-weight: 300;}
         .price {font-family: 'Open Sans', sans-serif; font-weight: 300; font-size: 25px;}
@@ -145,7 +146,7 @@ require_once("models/header.php");
                       </div>
                       <div class="form-group">
                         <label for="exampleInputEmail1">Description</label>
-                        <textarea name='description' class="form-control" rows="3"></textarea>
+                        <textarea name='description' class="form-control" id='class_description' rows="3"></textarea>
                       </div>
                       <div class="form-group">
                         <label for="exampleInputEmail1">Major Intersection (Displayed to Public)</label>
@@ -172,6 +173,9 @@ require_once("models/header.php");
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
         <script src="js/plugins.js"></script>
         <script src="js/main.js"></script>
+	<script>window.jQuery || document.write('<script src="js/vendor/jquery-1.11.3.min.js"><\/script>')</script>
+	<script src="js/vendor/trumbowyg/bower_components/trumbowyg/dist/trumbowyg.min.js"></script>
+	
 
         <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
         <script>
@@ -181,6 +185,7 @@ require_once("models/header.php");
             e.src='https://www.google-analytics.com/analytics.js';
             r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
             ga('create','UA-XXXXX-X','auto');ga('send','pageview');
+		$('#class_description').trumbowyg();
         </script>
     </body>
 </html>
