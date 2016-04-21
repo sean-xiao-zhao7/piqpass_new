@@ -16,6 +16,8 @@ while ($stmt->fetch()){
 }
 $stmt->close();
 
+date_default_timezone_set('America/Toronto');
+
 //Set Settings
 $emailActivation = $settings['activation']['value'];
 $mail_templates_dir = "models/mail-templates/";
