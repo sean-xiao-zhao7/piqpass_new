@@ -9,7 +9,7 @@ if (!securePage($_SERVER['PHP_SELF'])){die();}
 if(!isUserLoggedIn()) { header("Location: login.php"); die(); }
 
 require_once("db/connect.php");
-
+/*
 if (!empty($_POST)) {
 	
 	Stripe::setApiKey("sk_test_e0ZOwmIiZzNMMeUI2tkUpcy0");
@@ -40,7 +40,7 @@ if (!empty($_POST)) {
 		echo $error;
 	}
 }
-
+*/
 
 if (!($stmt = $mysqli_piq->prepare("
 select * from class where id = ?
@@ -56,7 +56,7 @@ if (!$stmt->execute()) {
     echo "Execute failed: (" . $stmt->errno . ") " . $stmt->error;
 }
 $stmt->store_result();
-$stmt->bind_result($name, $description, $image, $price, $user_id, $address, $intersection, $class_id);
+$stmt->bind_result($name, $description, $image, $price, $user_id, $address, $intersection, $class_id, $request_form);
 $stmt->fetch();
 
 $stmt->close();
