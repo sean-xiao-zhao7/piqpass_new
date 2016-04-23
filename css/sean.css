@@ -1,19 +1,43 @@
 .class_logo {
 	width:100%;
+	height:100%;
 }
 
-.class_logo_container {
+.col-md-12.class_logo_container {
 	overflow:hidden;	
 }
-.class_logo_container:hover {
+.col-md-12.class_logo_container:hover {
 	background:#ddd;
 }
-.class_details_container {
+.col-md-6.class_details_container {
 	height: 500px;
 	overflow: hidden;
 	margin-bottom: 2em;
 }
-.class_details_container:hover {
+.col-md-6.class_details_container:hover {
 	background:whitesmoke;
 }
 
+.col-md-12.class_details_container {
+	height: 300px;
+	background: rgba(245, 245, 245, 0.51);
+	border:solid 2px rgba(245, 245, 245, 0.51);
+	padding: 2em;
+	transition:all 1s;
+}
+.col-md-12.class_details_container:hover {
+	background: white;	
+}
+
+.col-md-9 ul.class_details_actions {
+	list-style:none;
+}
+
+.col-md-9 ul.class_details_actions li {
+	margin-bottom: 5px;
+}
+
+.col-md-9 ul.class_details_actions li a {
+	display:inline-block;
+	width: 145px;
+}

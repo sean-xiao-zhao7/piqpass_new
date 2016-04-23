@@ -38,6 +38,7 @@ $result->close();
         <!-- Place favicon.ico in the root directory -->
 
         <link rel="stylesheet" href="css/normalize.css">
+        <link rel="stylesheet" href="css/sean.css">
         <link rel="stylesheet" href="css/main.css">
         <script src="js/vendor/modernizr-2.8.3.min.js"></script>
         <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300' rel='stylesheet' type='text/css'>
@@ -77,13 +78,18 @@ $result->close();
 		<?php
 		foreach ($classes as $class) { 
 		?>
-		    <div class='col-md-12' style='margin-top: 20px;'>
-			<div class='col-md-3' style='background-color: #999; height: 220px; margin-bottom: 20px; margin-top: 10px;'><img src='class_logos/<?= $class['image'] ?>' alt='class logo'/></div>
+		    <div class='col-md-12 class_details_container' style='margin-top: 20px;'>
+			<div class='col-md-3 class_logo_container' style='background-color: whitesmoke; height: 220px; margin-bottom: 20px; margin-top: 10px;'><img class='class_logo' src='<?= IMAGE_PATH . $class['image'] ?>' alt='class logo'/></div>
 			<div class='col-md-9'>
-			    <div class='col-md-12'><span class='header header-large'><?= $class['name']; ?></span></div>
-			    <div class='col-md-12' style='margin-top: 10px;'><p><?= $class['description']; ?>
-				<a href='class.php?id=<?= $class['id'] ?>'>Read More</a>.</p></div>
-			    <div class='col-md-12' style='margin-top: 10px;'><a href='class.php?id=<?= $class['id'] ?>' class='btn btn-default'>View Class</a> <a href='#' class='btn btn-default'>Edit Class</a> <a href='#' class='btn btn-default'>Manage Sessions</a></div>
+			    <div class='col-md-12'><span class='header header-large'><a href='class.php?id=<?= $class['id'] ?>'><?= $class['name']; ?></a></span></div>
+			    <div class='' style='float:left; margin-top: 10px;'><p><?= $class['description']; ?></p></div>
+			    <div class='' style='float:right; margin-top: 10px;'>
+				<ul class='class_details_actions'>
+				<li><a href='class.php?id=<?= $class['id'] ?>' class='btn btn-default'>View Class</a></li>
+				<li><a href='edit_class.php?class_id=<?= $class['id'] ?>' class='btn btn-default'>Edit Class</a></li>
+				<li><a href='#' class='btn btn-default'>Manage Sessions</a></li>
+				</ul>				
+			</div>
 			</div>
 		    </div>
 		<?php

@@ -7,13 +7,14 @@ if (!securePage($_SERVER['PHP_SELF'])){die();}
 //Prevent the user visiting the logged in page if he/she is already logged in
 if(!isUserLoggedIn()) { header("Location: login.php"); die(); }
 
-if(!empty($_GET)){
+if(!empty($_GET) || isset($_POST['class_id'])){
 	require_once("db/connect.php");
-	$stmt = $mysqli_piq->prepare("select * from class where id = ?");
-	$stmt->bind_param("i", $_GET['class_id']);
+	$stmt = $mysqli_piq->prepare("select * from class where id = ?");	
+	$class_id = ($_POST['class_id'] ? $_POST['class_id'] : $_GET['class_id']);
+	$stmt->bind_param("i", $class_id);
 	$stmt->execute();
 	$stmt->store_result();
-	$stmt->bind_result($class_name, $image, $description, $price, $user_id, $address, $intersection, $class_id, $request_form);
+	$stmt->bind_result($class_name, $description, $image, $price, $user_id, $address, $intersection, $class_id, $request_form);
 	$stmt->fetch();
 	$stmt->close();
 }
@@ -23,53 +24,63 @@ if(!empty($_POST))
 {
 	//print_r($_POST); die();
 	$class_name = trim($_POST["name"]);
+	$class_id = trim($_POST["class_id"]);
 	$image = $_POST["image"] ? trim($_POST["image"]) : "";
+	$old_image = $_POST["old_image"];
 	$description = trim($_POST["class_description"]);
 	$intersection = trim($_POST["intersection"]);
 	$address = trim($_POST["address"]);
 	$price = trim($_POST["price"]);
+	$request_form = trim($_POST["request_form"]);
 	$user_id = trim($_POST["user_id"]);
 
-	$target_dir = "class_logos/";
-	$imageFileType = pathinfo($_FILES["image"]["name"],PATHINFO_EXTENSION);
-	$target_file = random_string(15) . "." . $imageFileType; 
-	$uploadOk = 1;
-	// Check if image file is a actual image or fake image
-	if(isset($_POST["submit"])) {
-	    $check = getimagesize($_FILES["image"]["tmp_name"]);
-	    if($check !== false) {
-		echo "File is an image - " . $check["mime"] . ".";
-		$uploadOk = 1;
-	    } else {
-		echo "File is not an image.";
-		$uploadOk = 0;
-	    }
-	}	
-	
-	// Check file size
-	if ($_FILES["image"]["size"] > 500000) {
-	    echo "Sorry, your file is too large.";
-	    $uploadOk = 0;
-	}
+	$uploadOk = 1;	
+	if ($image != "") {
+		$imageFileType = pathinfo($_FILES["image"]["name"],PATHINFO_EXTENSION);
+		$target_file = random_string(15) . "." . $imageFileType; 
+		// Check if image file is a actual image or fake image
+		if(isset($_POST["submit"])) {
+		    $check = getimagesize($_FILES["image"]["tmp_name"]);
+		    if($check !== false) {
+			echo "File is an image - " . $check["mime"] . ".";
+			$uploadOk = 1;
+		    } else {
+			echo "File is not an image.";
+			$uploadOk = 0;
+		    }
+		}	
+		
+		// Check file size
+		if ($_FILES["image"]["size"] > 500000) {
+		    echo "Sorry, your file is too large.";
+		    $uploadOk = 0;
+		}
 
-	// Allow certain file formats
-	if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg"
-	&& $imageFileType != "gif" ) {
-	    echo "Sorry, only JPG, JPEG, PNG & GIF files are allowed.";
-	    $uploadOk = 0;
-	}
+		// Allow certain file formats
+		if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg"
+		&& $imageFileType != "gif" ) {
+		    echo "Sorry, only JPG, JPEG, PNG & GIF files are allowed.";
+		    $uploadOk = 0;
+		}
 
-	// Check if $uploadOk is set to 0 by an error
-	if ($uploadOk == 0) {		
-	    echo "Sorry, your file was not uploaded.";
-	// if everything is ok, try to upload file
+		// Check if $uploadOk is set to 0 by an error
+		if ($uploadOk == 0) {
+		    echo "Sorry, your file was not uploaded.";
+		// if everything is ok, try to upload file
+		} else {
+		    if (!move_uploaded_file($_FILES["image"]["tmp_name"], IMAGE_PATH . $target_file)) {
+			echo "Sorry, there was an error uploading your file.";
+		    } else {
+			// echo "The file ". basename( $_FILES["image"]["name"]). " has been uploaded.";
+			$image = $target_file;
+			unlink($_POST["old_image"]);
+		}
+		}
 	} else {
-	    if (!move_uploaded_file($_FILES["image"]["tmp_name"], $target_dir . $target_file)) {
-		echo "Sorry, there was an error uploading your file.";
-	    } else {
-		// echo "The file ". basename( $_FILES["image"]["name"]). " has been uploaded.";
-		$image = $target_file;
-		unlink($_POST["old_image"]);
+		$image = $old_image;
+	}
+
+	if ($uploadOk == 1) {
 
 		$mysqli_piq = new mysqli($db_host_piq, $db_user_piq, $db_pass_piq, $db_name_piq);
 		//GLOBAL $mysqli_piq;
@@ -79,11 +90,11 @@ if(!empty($_POST))
 			exit();
 		}
 			
-		if (!($stmt = $mysqli_piq->prepare("update class set (name, image, description, intersection, address, price, user_id) VALUES (?, ?, ?, ?, ?, ?, ?)"))) {
+		if (!($stmt = $mysqli_piq->prepare("update class set name=?, image=?, description=?, intersection=?, address=?, price=?, request_form=? where id=?"))) {
 			echo "Prepare failed: (" . $mysqli_piq->errno . ") " . $mysqli_piq->error;
 		}
 
-		if (!$stmt->bind_param("sssssdi", $class_name, $image, $description, $intersection, $address, $price, $user_id)) {
+		if (!$stmt->bind_param("sssssdsi", $class_name, $image, $description, $intersection, $address, $price, $request_form, $class_id)) {
 		    echo "Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error;
 		}
 
@@ -91,9 +102,7 @@ if(!empty($_POST))
 		    echo "Execute failed: (" . $stmt->errno . ") " . $stmt->error;
 		}
 		$stmt->close();
-	    }
 	}
-	
 }
 
 require_once("models/header.php");
@@ -145,21 +154,24 @@ require_once("models/header.php");
             <!--body-->
             <div class='col-md-12' style='margin-top: 40px; margin-left: -15px;'>
                 <div class='col-md-6' style='margin-left: -15px; margin-bottom: 50px;'>
-                    <div class='col-md-12 header header-large' style='margin-top: 20px;'>Add A Class</div>
+                    <div class='col-md-12 header header-large' style='margin-top: 20px;'>Edit class <?= $class_name ?></div>
                     <div class='col-md-12' style='margin-top: 20px;'>
                       <form id='add_class_form' name='add_class_form' action='<?= $_SERVER['PHP_SELF'] ?>' method='post' enctype="multipart/form-data">
-			<input type='hidden' name='old_image' value='<?= $class['image'] ?>'>
+			<input type='hidden' name='old_image' value='<?= $image ?>'>
 				<div class="form-group">
                         <label for="exampleInputEmail1">Class Name</label>
-                        <input name="name" class="form-control" id="name" placeholder="Burger Making 101" value=<?= $class_name ?>>
+                        <input name="name" class="form-control" id="name" placeholder="Burger Making 101" value="<?= $class_name ?>">
                       </div>
                       <div class="form-group">
                         <label for="exampleInputFile">Logo image</label>
+			<?php if (isset($image)) { ?>
+				<img class='class_logo' src='<?= IMAGE_PATH . $image ?>' />	
+			<?php } ?>
                         <input name='image' type="file" id="image">
                       </div>
                       <div class="form-group">
                         <label for="exampleInputEmail1">Description</label>
-                        <textarea name='class_description' class="form-control" id='class_description' rows="3"  value="<?= $description ?>"></textarea>
+                        <textarea name='class_description' class="form-control" id='class_description' rows="3"><?= $description ?></textarea>
                       </div>
                       <div class="form-group">
                         <label for="exampleInputEmail1">Major Intersection (Displayed to Public)</label>
@@ -171,11 +183,15 @@ require_once("models/header.php");
                       </div>
                       <div class="form-group">
                         <label for="exampleInputEmail1">Class Fee (Number Only)</label>
-                        <input name="price" class="form-control" id="confirmpass" placeholder="25"  value="<?= $price ?>">
+                        <input name="price" class="form-control" id="price" placeholder="25"  value="<?= $price ?>">
+                      </div>
+		 <div class="form-group">
+                        <label for="exampleInputEmail1">Request Form (Admin only)</label>
+                        <input type='text' name="request_form" class="form-control" id="request_form" value="<?= $request_form ?>">
                       </div>
 			<input name="user_id" type='hidden' value='<?= $loggedInUser->user_id; ?>'>
 			<input name="class_id" type='hidden' value='<?= $class_id; ?>'>
-                      <button type="submit" class="btn btn-default">Add Class</button>
+                      <button type="submit" class="btn btn-default">Save class information</button>
                       </form>
                     </div>
                 </div>
