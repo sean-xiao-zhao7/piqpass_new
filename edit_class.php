@@ -51,7 +51,7 @@ if(!empty($_POST))
 		}	
 		
 		// Check file size
-		if ($_FILES["image"]["size"] > 500000) {
+		if ($_FILES["image"]["size"] > 1000000) {
 		    echo "Sorry, your file is too large.";
 		    $uploadOk = 0;
 		}
