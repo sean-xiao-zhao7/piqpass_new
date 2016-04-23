@@ -52,7 +52,7 @@ class User
 		}
 	}
 	
-	public function userCakeAddUser()
+	public function userCakeAddUser($role = 'user')
 	{
 		global $mysqli,$emailActivation,$websiteUrl,$db_table_prefix;
 		
@@ -143,7 +143,13 @@ class User
 				$stmt->execute();
 				$inserted_id = $mysqli->insert_id;
 				$stmt->close();
-				
+				if ($role === 'user') {
+					$role_id = 1;
+				} else if (role === 'chef') {
+					$role_id = 3;	
+				} else {
+					$role_id = 1;
+				}
 				//Insert default permission into matches table
 				$stmt = $mysqli->prepare("INSERT INTO ".$db_table_prefix."user_permission_matches  (
 					user_id,
@@ -151,9 +157,9 @@ class User
 					)
 					VALUES (
 					?,
-					'1'
+					'?'
 					)");
-				$stmt->bind_param("s", $inserted_id);
+				$stmt->bind_param("si", $inserted_id, $role_id);
 				$stmt->execute();
 				$stmt->close();
 			}

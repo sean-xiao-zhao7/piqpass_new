@@ -42,6 +42,7 @@ $result->close();
 
         <link rel="stylesheet" href="css/normalize.css">
         <link rel="stylesheet" href="css/main.css">
+        <link rel="stylesheet" href="css/style.css">
         <script src="js/vendor/modernizr-2.8.3.min.js"></script>
         <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300' rel='stylesheet' type='text/css'>
         <style>
@@ -59,18 +60,16 @@ $result->close();
         <![endif]-->
 
         <!-- Add your site or application content here -->
-        <div class='row' style='width: 80%; margin: 0 auto;'>
+        <div class='row center-row'>
             <!--header-->
             <div class='col-md-12'>
-                <div class='col-md-2' style='margin-left: -15px;'><img src='img/piqlanding1.jpg' /></div>
-                <div class='col-md-10' style='margin-top: 15px; margin-left: -15px;'>
-			<?= include("piqpass_nav.php"); ?>
-                </div>
+                <div class='col-md-2'><img src='img/piqlanding1.jpg' /></div>
+			          <?= include("piqpass_nav.php"); ?>
             </div>
             <!--end header-->
             <!--body-->
-            <div class='col-md-12' style='margin-top: 40px;'>		
-                <div class='col-md-6' style='margin-left: -15px; margin-bottom: 20px; margin-top: 10px;'>
+            <div class='col-md-12' style='margin-top: 40px;'>
+                <div class='col-md-6' style='margin-bottom: 20px; margin-top: 10px;'>
                     <div class='col-md-12' style='height: 300px; border: 4px dashed #f6edc1;'>
                         <div class='col-md-12'style='margin-top: 120px;'><span ><center><a href='./browse.php' class='btn btn-default'>Browse Classes</a></center></span></div>
                     </div>
@@ -83,8 +82,8 @@ $result->close();
                         }
                         foreach ($pending_reqs as $request) {
                 ?>
-            <div class='col-md-12' style='margin-left: -15px;'>
-                <div class='col-md-4' style='margin-left: -15px; margin-bottom: 20px; margin-top: 10px;'>
+            <div class='col-md-12'>
+                <div class='col-md-4' style='margin-bottom: 20px; margin-top: 10px;'>
                     <div class='col-md-12' style='margin-top: 10px;'><p><strong>Class:</strong> <?= $request['class_name'] ?></p></div>
                     <div class='col-md-12' style='margin-top: 10px;'>
                         <a href="class.php?id=<?= $request['class_id'] ?>" class='btn btn-default btn-sm'>View Class</a>
@@ -99,8 +98,8 @@ $result->close();
                         }
                         foreach ($approved_reqs as $request) {
                 ?>
-            <div class='col-md-12' style='margin-left: -15px;'>
-                <div class='col-md-4' style='margin-left: -15px; margin-bottom: 20px; margin-top: 10px;'>
+            <div class='col-md-12'>
+                <div class='col-md-4' style='margin-bottom: 20px; margin-top: 10px;'>
                     <div class='col-md-12' style='margin-top: 10px;'><p><strong>Class:</strong> <?= $request['class_name'] ?></p></div>
                     <div class='col-md-12' style='margin-top: 10px;'>
                         <a href="class.php?id=<?= $request['class_id'] ?>" class='btn btn-default btn-sm'>View Class</a>

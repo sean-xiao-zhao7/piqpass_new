@@ -36,6 +36,7 @@ require_once("models/header.php");
 
         <link rel="stylesheet" href="css/normalize.css">
         <link rel="stylesheet" href="css/main.css">
+        <link rel="stylesheet" href="css/style.css">
         <script src="js/vendor/modernizr-2.8.3.min.js"></script>
         <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300' rel='stylesheet' type='text/css'>
         <style>
@@ -53,16 +54,11 @@ require_once("models/header.php");
         <![endif]-->
 
         <!-- Add your site or application content here -->
-        <div class='row' style='width: 80%; margin: 0 auto;'>
+        <div class='row center-row'>
             <!--header-->
             <div class='col-md-12'>
-                <div class='col-md-2' style='margin-left: -15px;'><img src='img/piqlanding1.jpg' /></div>
-                <div class='col-md-10' style='margin-top: 15px; margin-left: -15px;'>
-                  <p align='right'>
-		<div id='left-nav'>
-		 <?= include("piqpass_nav.php"); ?>
-                </p>
-                </div>
+                <div class='col-md-2'><img src='img/piqlanding1.jpg' /></div>
+		            <?= include("piqpass_nav.php"); ?>
             </div>
             <!--end header-->
             <!--body-->
@@ -70,13 +66,13 @@ require_once("models/header.php");
 		<?php
 		foreach ($classes as $class) {
 		?>
-                <div class='col-md-6' style='margin-left: -15px; margin-bottom: 20px; margin-top: 10px;'>
+                <div class='col-md-6' style='margin-bottom: 20px; margin-top: 10px;'>
                     <div class='col-md-12' style='height: 300px; background-color: #999;'>&nbsp;</div>
-                    <div class='col-md-12 header header-large' style='margin-top: 20px;'><?= $class['name']; ?></div>
-                    <div class='col-md-12' style='margin-top: 10px;'><p>
-			<?= $class['description']; ?>
-	<a href='class.php?id=<?= $class['id'] ?>'>Read More</a></p></div>
-                    <div class='col-md-12' style='margin-top: 10px;'><a href='class.php?id=<?= $class['id'] ?>' class='btn btn-default'>View Class</a></div>
+                    <div class='col-md-12 header header-large neg-15' style='margin-top: 20px;'><?= $class['name']; ?></div>
+                    <div class='col-md-12 neg-15' style='margin-top: 10px;'>
+                        <p><?= $class['description']; ?>...<a href='class.php?id=<?= $class['id'] ?>'>Read More</a></p>
+                    </div>
+                    <div class='col-md-12 neg-15' style='margin-top: 10px;'><a href='class.php?id=<?= $class['id'] ?>' class='btn btn-default'>View Class</a></div>
                 </div>
 		<?php
 		}

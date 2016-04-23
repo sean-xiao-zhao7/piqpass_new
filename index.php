@@ -24,20 +24,9 @@ require_once("models/header.php");
 
         <link rel="stylesheet" href="css/normalize.css">
         <link rel="stylesheet" href="css/main.css">
+        <link rel="stylesheet" href="css/style.css">
         <script src="js/vendor/modernizr-2.8.3.min.js"></script>
         <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,800' rel='stylesheet' type='text/css'>
-        <style>
-        .header {font-family: 'Open Sans', sans-serif; font-weight: 300;}
-        .price {font-family: 'Open Sans', sans-serif; font-weight: 300; font-size: 25px;}
-        .header-large {font-size: 25px;}
-        p {line-height: 1.7em; font-size: 15px; color: #333; }
-        .request {background-color: #fc6472; padding-top: 8px; padding-bottom: 8px; font-size: 18px; color: #fff;font-family: 'Open Sans', sans-serif; font-weight: 300;}
-        .small {font-size: 12px !important;}
-        .intro-heading {font-family: 'Open Sans', sans-serif; font-weight: 800; font-size: 3vw; color: #fff;}
-        .sub-heading {font-family: 'Open Sans', sans-serif; font-weight: 800; font-size: 1.3vw; color: #fff;}
-        .browse-class {background-color: #5cb85c; border: 1px solid #4cae4c; width: 230px; padding-top: 8px; padding-bottom: 8px; margin-top: 10px; margin-left: 15px;}
-        .browse-class:hover {background-color: #4cae4c; cursor: pointer;}
-        </style>
     </head>
     <body style='margin-top: 40px;'>
       <div id="fb-root"></div>
@@ -53,47 +42,84 @@ require_once("models/header.php");
         <![endif]-->
 
         <!-- Add your site or application content here -->
-        <div class='row' style='width: 80%; margin: 0 auto;'>
+        <div class='row center-row'>
             <!--header-->
             <div class='col-md-12'>
-                <div class='col-md-2' style='margin-left: -15px;'><img src='img/piqlanding1.jpg' /></div>
-                <div class='col-md-10' style='margin-top: 15px; margin-left: -15px;'>
-                  <p align='right'>
-			<div id='left-nav'>
-			<?= include("piqpass_nav.php"); ?>
-                </p>
-                </div>
+                <div class='col-md-2'><img src='img/piqlanding1.jpg' /></div>
+                <?= include("piqpass_nav.php"); ?>
             </div>
             <!--end header-->
             <!--body-->
             <div class='col-md-12' style='margin-top: 40px; margin-bottom: 50px;'>
-                <div class='col-md-12' style='margin-left: -15px;'>
+                <div class='col-md-12'>
                     <!--Big Screen-->
-                    <div class='col-md-12' style='height: 450px; background-image: url("img/bg.jpg"); background-position: center; background-size: cover;'>
-                        <div class='col-md-12' style='margin-left: 20px; padding-top: 120px;'><span class='intro-heading' style='background-color:rgba(0, 0, 0, 0.5); padding-left: 15px; padding-right: 15px;'>COOKING CLASSES BY NEIGHBOURS.</span></div>
-                        <div class='col-md-12' style='margin-top: 10px; margin-left: 20px;'><span class='sub-heading' style='background-color:rgba(0, 0, 0, 0.5); padding-left: 15px; padding-right: 15px; padding-top: 5px; padding-bottom: 5px;'>CUISINES INCLUDE FRENCH, CHINESE, GREEK, ITALIAN, INDIAN, AND SO MUCH MORE.</span></div>
-                        <div class='col-md-12' style='margin-top: 10px; margin-left: 5px;'>
-                          <div class='browse-class'><center><span class='sub-heading'>BROWSE CLASSES</span></center></div>
+                    <div class='col-md-12 pic-bg'>
+                        <div class='col-md-12 dark-header'><span class='intro-heading intro-dark'>TAKE COOKING CLASSES</span></div>
+                        <div class='col-md-12 dark-header-2nd'><span class='intro-heading-2nd intro-dark'>HOSTED BY YOUR TORONTO NEIGHBOURS.</span></div>
+                        <!--<div class='col-md-12 dark-sub-header'><span class='sub-heading sub-intro-dark'>CUISINES INCLUDE FRENCH, CHINESE, GREEK, ITALIAN, INDIAN, AND SO MUCH MORE.</span></div>
+                        --><div class='col-md-12 header-button'>
+                          <a href='browse.php'><div class='browse-class'><center><span class='sub-heading'>BROWSE CLASSES</span></center></div></a>
                         </div>
                     </div>
+                    <div class='col-md-12 neg-15'>
+                        <div class='col-md-12' align='center' style='margin-top: 30px; margin-bottom: 20px;'>
+                          <span class='header header-large'><strong>How It Works</strong></span>
+                        </div>
+                        <div class='col-md-4' align='center'style='margin-top: 20px;'>
+                            <span class="glyphicon glyphicon-map-marker" aria-hidden="true" style='font-size: 10vw; color: #999;'></span><br /><br />
+                            <p><span class='header header-large'>1. Browse</span><br />
+                              Discover curated culinary experiences.</p>
+                        </div>
+                        <div class='col-md-4' align='center'style='margin-top: 20px;'>
+                            <span class="glyphicon glyphicon-check" aria-hidden="true" style='font-size: 10vw; color: #999;'></span><br /><br />
+                            <p><span class='header header-large'>2. Book</span><br />
+                              Pay to register for the class.</p>
+                        </div>
+                        <div class='col-md-4' align='center'style='margin-top: 20px;'>
+                            <span class="glyphicon glyphicon-heart" aria-hidden="true" style='font-size: 10vw; color: #999;'></span><br /><br />
+                            <p><span class='header header-large'>3. Enjoy</span><br />
+                              Arrive and experience the culinary joy.</p>
+                        </div>
+                    </div>
+                    <div class='col-md-12 neg-15' style='margin-top: 10px;'><hr /></div>
                     <!--3 Footer Notes-->
-                    <div class='col-md-8' style='margin-left: -15px;'>
-                        <div class='col-md-12' style='margin-left: -15px; margin-top: 40px;'>
-                          <span class='header header-large'>The Vision</span>
+                    <div class='col-md-12 neg-15'>
+                        <div class='col-md-6 neg-15 pad-right'>
+                          <div class='col-md-12 neg-15' style='margin-top: 40px;'>
+                            <span class='header header-large'>The Story</span>
+                          </div>
+                          <div class='col-md-12 neg-15' style='margin-top: 15px;'>
+                            <p>Some of us might be professional chefs, while others may have other occupations. Regardless, we all come from different walks of life...and these paths have influenced the dishes we make. Wouldn't you like to experience the lives of others in your city?</p>
+                            <p>Piq is a social marketplace to take cooking classes from your neighbours. Experience where people in your city comes from, how they lived their lives, and the type of people they are through the dishes they pass onto you.</p>
+                          </div>
                         </div>
-                        <div class='col-md-12' style='margin-left: -15px; margin-top: 15px;'>
-                          <p>Some of us might be professional chefs, while others may have other occupations. Regardless, we all come from different walks of life...and these paths have influenced the dishes we make. Wouldn't you like to experience the lives of others in your city?</p>
-                          <p>Piq is a social marketplace to take cooking classes from your neighbours. Experience where people in your city comes from, how they lived their lives, and the type of people they are through the dishes they pass onto you.</p>
-                          <p><i>Discover your city.</i></p>
+
+                        <div class='col-md-6 neg-15'>
+                          <div class='col-md-12 neg-15' style='margin-top: 40px;'>
+                            <span class='header header-large'>Who Are The Chefs?</span>
+                          </div>
+                          <div class='col-md-12 neg-15' style='margin-top: 15px;'>
+                            <p>The chefs on piq are any individuals who are confident in their cooking. They can either be professional who have over 20+ years of experience, or an hobbyist who knows their way around the kitchen.</p>
+                            <p>The classes, like tutoring classes, take place in the home of the chefs. At times, classes will also be held in professional kitchens at the discretion of the chefs.</p>
+                            <p></p>
+                          </div>
                         </div>
                     </div>
-                    <div class='col-md-4' style='margin-left: -15px;'>
-                        <div class='col-md-12' style='margin-left: -15px; margin-top: 40px;'>
-                          <span class='header header-large'>Do You Believe In piq?</span>
-                        </div>
-                        <div class='col-md-12' style='margin-left: -15px; margin-top: 15px;'>
-                            <div class="fb-page" data-href="https://www.facebook.com/PIQpass/" data-tabs="timeline" data-height="300" data-small-header="true" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true"><div class="fb-xfbml-parse-ignore"><blockquote cite="https://www.facebook.com/PIQpass/"><a href="https://www.facebook.com/PIQpass/">PIQ Pass</a></blockquote></div></div>
-                        </div>
+                    <div class='col-md-12 neg-15' style='margin-top: 10px;'><hr /></div>
+                    <!--Social Media-->
+                    <div class='col-md-12 neg-15' align='center' style='margin-top: 20px; margin-bottom: 20px;'>
+                      <span class='header header-large'>Support Us on Social Media</span>
+                    </div>
+                    <div class='col-md-12 neg-15' align='center'>
+                      <ul class="soc">
+                        <li><a class="soc-facebook" href="http://www.facebook.com/trypiq"></a></li>
+                        <li><a class="soc-instagram" href="http://www.instagram.com/trypiq"></a></li>
+                        <li><a class="soc-twitter " href="http://www.twitter.com/trypiq"></a></li>
+                        <li><a class="soc-email2 soc-icon-last" href="hi@trypiq.com"></a></li>
+                      </ul>
+                    </div>
+                    <div class='col-md-12' align='center' style='margin-top: 50px;'>
+                      <p>&copy; 2016 All Right Reserved. PIQ</p>
                     </div>
                 </div>
 

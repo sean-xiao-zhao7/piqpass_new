@@ -7,6 +7,17 @@ if (!securePage($_SERVER['PHP_SELF'])){die();}
 //Prevent the user visiting the logged in page if he/she is already logged in
 if(!isUserLoggedIn()) { header("Location: login.php"); die(); }
 
+if(!empty($_GET)){
+	require_once("db/connect.php");
+	$stmt = $mysqli_piq->prepare("select * from class where id = ?");
+	$stmt->bind_param("i", $_GET['class_id']);
+	$stmt->execute();
+	$stmt->store_result();
+	$stmt->bind_result($class_name, $image, $description, $intersection, $address, $price, $user_id);
+	$stmt->fetch();
+	$stmt->close();
+}
+
 //Forms posted
 if(!empty($_POST))
 {

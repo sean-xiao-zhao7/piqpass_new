@@ -1,6 +1,8 @@
 <?php
 
 require_once("models/config.php");
+require_once("stripe/init.php");
+
 if (!securePage($_SERVER['PHP_SELF'])){die();}
 
 //Prevent the user visiting the logged in page if he/she is already logged in
@@ -9,13 +11,34 @@ if(!isUserLoggedIn()) { header("Location: login.php"); die(); }
 require_once("db/connect.php");
 
 if (!empty($_POST)) {
-        if(!($newRequestState = $mysqli_piq->query("
-                insert into request (status, chef_id, user_id, session_id, class_id, username, class_name) values('pending', " . $_POST['chef_id'] . ", " . $loggedInUser->user_id . ", " . $_POST['session'] . ", " . $_POST['class_id'] . ", '" . $loggedInUser->displayname . "', '" . $_POST['class_name'] . "')"))) {
-                echo "Could not insert into request <br/>" . $newRequestState->error;
-        } else {
-                header('Location: dashboard.php');
-        }
-        $newRequestState->close();
+	
+	Stripe::setApiKey("sk_test_e0ZOwmIiZzNMMeUI2tkUpcy0");
+	$error = '';
+	$success = '';
+	try {
+		if (!isset($_POST['stripeToken'])) {
+			throw new Exception("The Stripe Token was not generated correctly");
+		}
+
+		Stripe_Charge::create(array("amount" => 1000,
+					"currency" => "usd",
+					"card" => $_POST['stripeToken']));
+		$success = 'Your payment was successful.';
+
+		if(!($newRequestState = $mysqli_piq->query("
+			insert into request (status, chef_id, user_id, session_id, class_id, username, class_name) values('pending', " . $_POST['chef_id'] . ", " . $loggedInUser->user_id . ", " . $_POST['session'] . ", " . $_POST['class_id'] . ", '" . $loggedInUser->displayname . "', '" . $_POST['class_name'] . "')"))) {
+			echo "Could not insert into request <br/>" . $newRequestState->error;
+		} else {
+			header('Location: dashboard.php');
+		}
+		$newRequestState->close();
+		echo $success;
+
+	}
+	catch (Exception $e) {
+		$error = $e->getMessage();
+		echo $error;
+	}
 }
 
 
@@ -32,7 +55,7 @@ if (!$stmt->bind_param("i", $_GET['id'])) {
 if (!$stmt->execute()) {
     echo "Execute failed: (" . $stmt->errno . ") " . $stmt->error;
 }
-
+$stmt->store_result();
 $stmt->bind_result($name, $description, $image, $price, $user_id, $address, $intersection, $class_id);
 $stmt->fetch();
 
@@ -136,6 +159,24 @@ $stmt->close();
 			<input type='hidden' name='class_id' value='<?= $class_id ?>'>
 			<input type='hidden' name='chef_id' value='<?= $user_id ?>'>			
 			<input type='hidden' name='class_name' value='<?= $name ?>'>			
+		<!--
+		<div class='col-md-12' style='margin-left: -15px;'>
+			<div class="form-row">
+                		<label>Card Number</label>
+				<input type="text" size="20" autocomplete="off" class="card-number" />
+			</div>
+			<div class="form-row">
+				<label>CVC</label>
+				<input type="text" size="4" autocomplete="off" class="card-cvc" />
+			</div>
+			<div class="form-row">
+				<label>Expiration (MM/YYYY)</label>
+				<input type="text" size="2" class="card-expiry-month"/>
+				<span> / </span>
+				<input type="text" size="4" class="card-expiry-year"/>
+			</div>
+		</div>
+		-->
                   <div class='col-md-12' style='margin-left: -15px;'>
                     <select name='session' class="form-control">
                       <option>Select Time</option>
@@ -178,12 +219,38 @@ $stmt->close();
 
         <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
         <script>
-            (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
-            function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
-            e=o.createElement(i);r=o.getElementsByTagName(i)[0];
-            e.src='https://www.google-analytics.com/analytics.js';
-            r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
-            ga('create','UA-XXXXX-X','auto');ga('send','pageview');
-        </script>
+	// this identifies your website in the createToken call below
+            Stripe.setPublishableKey('pk_test_5Ir0zjoUeZUgOHIWP4WRYVid');
+            function stripeResponseHandler(status, response) {
+                if (response.error) {
+                    // re-enable the submit button
+                    $('.submit-button').removeAttr("disabled");
+                    // show the errors on the form
+                    $(".payment-errors").html(response.error.message);
+                } else {
+                    var form$ = $("#payment-form");
+                    // token contains id, last4, and card type
+                    var token = response['id'];
+                    // insert the token into the form so it gets submitted to the server
+                    form$.append("<input type='hidden' name='stripeToken' value='" + token + "' />");
+                    // and submit
+                    form$.get(0).submit();
+                }
+            }
+            $(document).ready(function() {
+                $("#select_session").submit(function(event) {
+                    // disable the submit button to prevent repeated clicks
+                    $('.submit-button').attr("disabled", "disabled");
+                    // createToken returns immediately - the supplied callback submits the form if there are no errors
+                    Stripe.createToken({
+                        number: $('.card-number').val(),
+                        cvc: $('.card-cvc').val(),
+                        exp_month: $('.card-expiry-month').val(),
+                        exp_year: $('.card-expiry-year').val()
+                    }, stripeResponseHandler);
+                    return false; // submit from callback
+                });
+            });
+	
     </body>
 </html>
