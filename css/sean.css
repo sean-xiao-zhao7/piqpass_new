@@ -22,7 +22,7 @@
 	height: 300px;
 	background: rgba(245, 245, 245, 0.51);
 	border:solid 2px rgba(245, 245, 245, 0.51);
-	padding: 2em;
+	padding: 1em;
 	transition:all 1s;
 }
 .col-md-12.class_details_container:hover {

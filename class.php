@@ -11,7 +11,7 @@ if(!isUserLoggedIn()) { header("Location: login.php"); die(); }
 require_once("db/connect.php");
 /*
 if (!empty($_POST)) {
-	
+
 	Stripe::setApiKey("sk_test_e0ZOwmIiZzNMMeUI2tkUpcy0");
 	$error = '';
 	$success = '';
@@ -79,7 +79,7 @@ $stmt->bind_result($seats, $date, $repeat, $id);
 
 $sessions = [];
 while($stmt->fetch()) {
-	$sessions[] = array('seats' => $seats, 'date' => $date, 'repeat' => $repeat, 'id' => $id);	
+	$sessions[] = array('seats' => $seats, 'date' => $date, 'repeat' => $repeat, 'id' => $id);
 }
 
 $stmt->close();
@@ -111,6 +111,8 @@ $stmt->close();
         .request {background-color: #fc6472; padding-top: 8px; padding-bottom: 8px; font-size: 18px; color: #fff;font-family: 'Open Sans', sans-serif; font-weight: 300;}
         .small {font-size: 12px !important;}
         </style>
+				<script>(function(){var qs,js,q,s,d=document,gi=d.getElementById,ce=d.createElement,gt=d.getElementsByTagName,id='typef_orm',b='https://s3-eu-west-1.amazonaws.com/share.typeform.com/';if(!gi.call(d,id)){js=ce.call(d,'script');js.id=id;js.src=b+'share.js';q=gt.call(d,'script')[0];q.parentNode.insertBefore(js,q)}id=id+'_';if(!gi.call(d,id)){qs=ce.call(d,'link');qs.rel='stylesheet';qs.id=id;qs.href=b+'share-button.css';s=gt.call(d,'head')[0];s.appendChild(qs,s)}})()</script>
+
     </head>
     <body style='margin-top: 40px;'>
         <!--[if lt IE 8]>
@@ -158,8 +160,8 @@ $stmt->close();
                   </div>
 		<form method='post' name='select_session' action='<?= $_SERVER['PHP_SELF'] ?>' id='select_session'>
 			<input type='hidden' name='class_id' value='<?= $class_id ?>'>
-			<input type='hidden' name='chef_id' value='<?= $user_id ?>'>			
-			<input type='hidden' name='class_name' value='<?= $name ?>'>			
+			<input type='hidden' name='chef_id' value='<?= $user_id ?>'>
+			<input type='hidden' name='class_name' value='<?= $name ?>'>
 		<!--
 		<div class='col-md-12' style='margin-left: -15px;'>
 			<div class="form-row">
@@ -177,11 +179,10 @@ $stmt->close();
 				<input type="text" size="4" class="card-expiry-year"/>
 			</div>
 		</div>
-		-->
                   <div class='col-md-12' style='margin-left: -15px;'>
                     <select name='session' class="form-control">
                       <option>Select Time</option>
-			<?php 
+			<?php
 				foreach ($sessions as $session) {
 				$session_time = strtotime($session['date']);
                                 $day = '';
@@ -204,8 +205,9 @@ $stmt->close();
 			<?php } ?>
                     </select>
                   </div>
+		-->
                   <div class='col-md-12' style='margin-left: -15px; margin-top: 10px;'>
-                    <center><button type='submit' form='select_session' class='btn btn-success' style='width: 100%;'>Request Now</button></center>
+                    <center><button type='submit' form='select_session' class='btn btn-success' style='width: 100%;'><a href='<?= $request_form ?>'>Request Now</a></button></center>
                   </div>
 		</form>
                 </div>
@@ -252,6 +254,6 @@ $stmt->close();
                     return false; // submit from callback
                 });
             });
-	
+
     </body>
 </html>

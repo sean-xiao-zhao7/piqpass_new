@@ -16,7 +16,7 @@ if(!empty($_POST))
 	$errors = array();
 	$username = sanitize(trim($_POST["username"]));
 	$password = trim($_POST["password"]);
-	
+
 	//Perform some validation
 	//Feel free to edit / change as required
 	if($username == "")
@@ -47,7 +47,7 @@ if(!empty($_POST))
 			{
 				//Hash the password and use the salt from the database to compare the password.
 				$entered_pass = generateHash($password,$userdetails["password"]);
-				
+
 				if($entered_pass != $userdetails["password"])
 				{
 					//Again, we know the password is at fault here, but lets not give away the combination incase of someone bruteforcing
@@ -56,7 +56,7 @@ if(!empty($_POST))
 				else
 				{
 					//Passwords match! we're good to go'
-					
+
 					//Construct a new logged in user object
 					//Transfer some db data to the session object
 					$loggedInUser = new loggedInUser();
@@ -66,11 +66,11 @@ if(!empty($_POST))
 					$loggedInUser->title = $userdetails["title"];
 					$loggedInUser->displayname = $userdetails["display_name"];
 					$loggedInUser->username = $userdetails["user_name"];
-					
+
 					//Update last sign in
 					$loggedInUser->updateLastSignIn();
 					$_SESSION["userCakeUser"] = $loggedInUser;
-					
+
 					//Redirect to user account page
 					foreach (fetchUserPermissions($loggedInUser->user_id) as $row) {
 						if ($row['permission_id'] == 3) {
@@ -105,6 +105,7 @@ require_once("models/header.php");
 
         <link rel="stylesheet" href="css/normalize.css">
         <link rel="stylesheet" href="css/main.css">
+        <link rel="stylesheet" href="css/style.css">
         <script src="js/vendor/modernizr-2.8.3.min.js"></script>
         <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300' rel='stylesheet' type='text/css'>
         <style>
@@ -122,41 +123,33 @@ require_once("models/header.php");
         <![endif]-->
 
         <!-- Add your site or application content here -->
-        <div class='row' style='width: 80%; margin: 0 auto;'>
+        <div class='row center-row'>
             <!--header-->
             <div class='col-md-12'>
                 <div class='col-md-2' style='margin-left: -15px;'><img src='img/piqlanding1.jpg' /></div>
-                <div class='col-md-10' style='margin-top: 15px; margin-left: -15px;'>
-                  <p align='right'>
-                  <a href="register.php" class="btn btn-default btn-sm" role="button">Register</a>
-                  <a href="browse.php" class="btn btn-default btn-sm" role="button">Browse</a>
-                </p>
-                </div>
+                <?= include("piqpass_nav.php"); ?>
             </div>
             <!--end header-->
             <!--body-->
-
-<div id='main'>
-
-<?= resultBlock($errors,$successes); ?>
-
-<div id='regbox'>
-<form name='login' action='<?= $_SERVER['PHP_SELF'] ?>' method='post'>
-<p>
-<label>Username:</label>
-<input type='text' name='username' />
-</p>
-<p>
-<label>Password:</label>
-<input type='password' name='password' />
-</p>
-<p>
-<label>&nbsp;</label>
-<input type='submit' value='Login' class='submit' />
-</p>
-</form>
-</div>
-</div>
+						<div class='col-md-12 neg-15' style='margin-top: 40px;' id='main'>
+								<?= resultBlock($errors,$successes); ?>
+                <div class='col-md-6 neg-15' style='margin-bottom: 50px;'>
+                    <div class='col-md-12 header header-large' style='margin-top: 20px;'>Login</div>
+                    <div class='col-md-12' style='margin-top: 20px;' id='regbox'>
+                      <form name='login' action='<?= $_SERVER['PHP_SELF'] ?>' method='post'>
+                      <div class="form-group">
+                        <label for="exampleInputEmail1">Email</label>
+                        <input type="email" class="form-control" name='username' id="username" placeholder="Jackie.Smith@Domain.com">
+                      </div>
+                      <div class="form-group">
+                        <label for="exampleInputEmail1">Password</label>
+                        <input type="password" name='password' class="form-control" id="pass" placeholder="Password">
+                      </div>
+                      <button type="submit" class="btn btn-default">Login</button>
+                      </form>
+                    </div>
+                </div>
+            </div>
 
 </div>
         <script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
@@ -177,5 +170,3 @@ require_once("models/header.php");
         </script>
     </body>
 </html>
-
-

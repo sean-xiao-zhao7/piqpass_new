@@ -18,6 +18,7 @@ if(!empty($_POST))
 	$address = trim($_POST["address"]);
 	$price = trim($_POST["price"]);
 	$user_id = trim($_POST["user_id"]);
+	$request_form = trim($_POST["request_form"]);
 
 	$target_dir = "img/";
 	$imageFileType = pathinfo($_FILES["image"]["name"],PATHINFO_EXTENSION);
@@ -67,11 +68,11 @@ if(!empty($_POST))
 			exit();
 		}
 			
-		if (!($stmt = $mysqli_piq->prepare("INSERT INTO class (name, image, description, intersection, address, price, user_id) VALUES (?, ?, ?, ?, ?, ?, ?)"))) {
+		if (!($stmt = $mysqli_piq->prepare("INSERT INTO class (name, image, description, intersection, address, price, request_form, user_id) VALUES (?, ?, ?, ?, ?, ?, ?)"))) {
 			echo "Prepare failed: (" . $mysqli_piq->errno . ") " . $mysqli_piq->error;
 		}
 
-		if (!$stmt->bind_param("sssssdi", $class_name, $image, $description, $intersection, $address, $price, $user_id)) {
+		if (!$stmt->bind_param("sssssdi", $class_name, $image, $description, $intersection, $address, $price, $request_form, $user_id)) {
 		    echo "Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error;
 		}
 
@@ -159,6 +160,10 @@ require_once("models/header.php");
                       <div class="form-group">
                         <label for="exampleInputEmail1">Class Fee (Number Only)</label>
                         <input name="price" class="form-control" id="confirmpass" placeholder="25"  value="<?= $price ?>">
+                      </div>
+			<div class="form-group">
+                        <label for="exampleInputEmail1">Request Form (Admin only)</label>
+                        <input type='text' name="request_form" class="form-control" id="request_form" value="<?= $request_form ?>">
                       </div>
 			<input name="user_id" type='hidden' value='<?= $loggedInUser->user_id; ?>'>
                       <button type="submit" class="btn btn-default">Add Class</button>

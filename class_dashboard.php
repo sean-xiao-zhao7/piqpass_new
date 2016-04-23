@@ -79,7 +79,7 @@ $result->close();
 		foreach ($classes as $class) { 
 		?>
 		    <div class='col-md-12 class_details_container' style='margin-top: 20px;'>
-			<div class='col-md-3 class_logo_container' style='background-color: whitesmoke; height: 220px; margin-bottom: 20px; margin-top: 10px;'><img class='class_logo' src='<?= IMAGE_PATH . $class['image'] ?>' alt='class logo'/></div>
+			<div class='col-md-3 class_logo_container' style='height: 100%; background-image: url("<?= IMAGE_PATH . $class['image'] ?>"); background-position: center; background-size: cover;'>&nbsp;</div>
 			<div class='col-md-9'>
 			    <div class='col-md-12'><span class='header header-large'><a href='class.php?id=<?= $class['id'] ?>'><?= $class['name']; ?></a></span></div>
 			    <div class='' style='float:left; margin-top: 10px;'><p><?= $class['description']; ?></p></div>

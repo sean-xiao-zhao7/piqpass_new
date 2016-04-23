@@ -66,7 +66,7 @@ if (!($result = $mysqli_piq->query("select * from class"))) {
 		foreach ($classes as $class) {
 		?>
                 <div class='col-md-6 class_details_container'>
-                    <a href='class.php?id=<?= $class['id'] ?>'><div class='col-md-12 class_logo_container' style='height: 300px; background-color: whitesmoke;'>&nbsp;<img class='class_logo' src='<?= IMAGE_PATH . $class['image'] ?>' /></div></a>
+                    <a href='class.php?id=<?= $class['id'] ?>'><div class='col-md-12 class_logo_container' style='height: 300px; background-image: url("<?= IMAGE_PATH . $class['image'] ?>"); background-position: center; background-size: cover;'>&nbsp;</div></a>
                     <div class='col-md-12 header header-large neg-15' style='margin-top: 20px;'><a href='class.php?id=<?= $class['id'] ?>'><?= $class['name']; ?></a></div>
                     <div class='col-md-12 neg-15' style='margin-top: 10px; overflow:hidden;'>
                         <p><?= $class['description']; ?></p>

@@ -9,9 +9,12 @@ if (!securePage($_SERVER['PHP_SELF'])){die();}
 //Links for logged in user
 if(isUserLoggedIn()) {
 	if ($loggedInUser->checkPermission(array(3))){
-                //echo "I'm chef";
-                echo
-                "Chef Links";
+		echo "<div class='dropdown' style='float: right; margin-left: 8px;'><a class='btn btn-default btn-sm' href='add_class.php'>Add a class</a></div>
+                <div class='dropdown' style='float: right; margin-left: 8px;'><a class='btn btn-default btn-sm' href='class_dashboard.php'>Class Dashboard</a></div>
+                <div class='dropdown' style='float: right; margin-left: 8px;'><a class='btn btn-default btn-sm' href='sessions_dashboard.php'>Session Dashboard</a></div>
+                <div class='dropdown' style='float: right; margin-left: 8px;'><a class='btn btn-default btn-sm' href='requests_dashboard.php'>Request Dashboard</a></div>
+		<div class='dropdown' style='float: right; margin-left: 8px;'><a class='btn btn-default btn-sm' href='user_settings.php'>User Settings</a></div>
+	        <div class='dropdown' style='float: right; margin-left: 8px;'><a class='btn btn-default btn-sm' href='logout.php'>Logout</a></div>";
         } else {
 		echo "
 		<div class='col-md-10 desktop' style='margin-top: 15px;'>
