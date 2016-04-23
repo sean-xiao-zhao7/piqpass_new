@@ -19,7 +19,7 @@ if(!empty($_POST))
 	$price = trim($_POST["price"]);
 	$user_id = trim($_POST["user_id"]);
 
-	$target_dir = "class_logos/";
+	$target_dir = "img/";
 	$imageFileType = pathinfo($_FILES["image"]["name"],PATHINFO_EXTENSION);
 	$target_file = random_string(15) . "." . $imageFileType; 
 	$uploadOk = 1;

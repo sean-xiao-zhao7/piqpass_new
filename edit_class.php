@@ -13,7 +13,7 @@ if(!empty($_GET)){
 	$stmt->bind_param("i", $_GET['class_id']);
 	$stmt->execute();
 	$stmt->store_result();
-	$stmt->bind_result($class_name, $image, $description, $intersection, $address, $price, $user_id);
+	$stmt->bind_result($class_name, $image, $description, $price, $user_id, $address, $intersection, $class_id, $request_form);
 	$stmt->fetch();
 	$stmt->close();
 }
@@ -69,6 +69,7 @@ if(!empty($_POST))
 	    } else {
 		// echo "The file ". basename( $_FILES["image"]["name"]). " has been uploaded.";
 		$image = $target_file;
+		unlink($_POST["old_image"]);
 
 		$mysqli_piq = new mysqli($db_host_piq, $db_user_piq, $db_pass_piq, $db_name_piq);
 		//GLOBAL $mysqli_piq;
@@ -78,7 +79,7 @@ if(!empty($_POST))
 			exit();
 		}
 			
-		if (!($stmt = $mysqli_piq->prepare("INSERT INTO class (name, image, description, intersection, address, price, user_id) VALUES (?, ?, ?, ?, ?, ?, ?)"))) {
+		if (!($stmt = $mysqli_piq->prepare("update class set (name, image, description, intersection, address, price, user_id) VALUES (?, ?, ?, ?, ?, ?, ?)"))) {
 			echo "Prepare failed: (" . $mysqli_piq->errno . ") " . $mysqli_piq->error;
 		}
 
@@ -147,6 +148,7 @@ require_once("models/header.php");
                     <div class='col-md-12 header header-large' style='margin-top: 20px;'>Add A Class</div>
                     <div class='col-md-12' style='margin-top: 20px;'>
                       <form id='add_class_form' name='add_class_form' action='<?= $_SERVER['PHP_SELF'] ?>' method='post' enctype="multipart/form-data">
+			<input type='hidden' name='old_image' value='<?= $class['image'] ?>'>
 				<div class="form-group">
                         <label for="exampleInputEmail1">Class Name</label>
                         <input name="name" class="form-control" id="name" placeholder="Burger Making 101" value=<?= $class_name ?>>
@@ -172,6 +174,7 @@ require_once("models/header.php");
                         <input name="price" class="form-control" id="confirmpass" placeholder="25"  value="<?= $price ?>">
                       </div>
 			<input name="user_id" type='hidden' value='<?= $loggedInUser->user_id; ?>'>
+			<input name="class_id" type='hidden' value='<?= $class_id; ?>'>
                       <button type="submit" class="btn btn-default">Add Class</button>
                       </form>
                     </div>

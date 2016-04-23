@@ -13,5 +13,4 @@ echo "
 <script src='models/funcs.js' type='text/javascript'>
 </script>
 </head>";
-
 ?>

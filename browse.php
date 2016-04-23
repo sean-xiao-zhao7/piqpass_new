@@ -18,8 +18,6 @@ if (!($result = $mysqli_piq->query("select * from class"))) {
         }
 }
 
-require_once("models/header.php");
-
 ?>
 
 <!doctype html>
@@ -37,6 +35,7 @@ require_once("models/header.php");
         <link rel="stylesheet" href="css/normalize.css">
         <link rel="stylesheet" href="css/main.css">
         <link rel="stylesheet" href="css/style.css">
+        <link rel="stylesheet" href="css/sean.css">
         <script src="js/vendor/modernizr-2.8.3.min.js"></script>
         <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300' rel='stylesheet' type='text/css'>
         <style>
@@ -52,11 +51,11 @@ require_once("models/header.php");
         <!--[if lt IE 8]>
             <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
-
         <!-- Add your site or application content here -->
+
         <div class='row center-row'>
             <!--header-->
-            <div class='col-md-12'>
+            <div class='col-md-12 header'>
                 <div class='col-md-2'><img src='img/piqlanding1.jpg' /></div>
 		            <?= include("piqpass_nav.php"); ?>
             </div>
@@ -66,13 +65,12 @@ require_once("models/header.php");
 		<?php
 		foreach ($classes as $class) {
 		?>
-                <div class='col-md-6' style='margin-bottom: 20px; margin-top: 10px;'>
-                    <div class='col-md-12' style='height: 300px; background-color: #999;'>&nbsp;</div>
-                    <div class='col-md-12 header header-large neg-15' style='margin-top: 20px;'><?= $class['name']; ?></div>
-                    <div class='col-md-12 neg-15' style='margin-top: 10px;'>
-                        <p><?= $class['description']; ?>...<a href='class.php?id=<?= $class['id'] ?>'>Read More</a></p>
+                <div class='col-md-6 class_details_container'>
+                    <a href='class.php?id=<?= $class['id'] ?>'><div class='col-md-12 class_logo_container' style='height: 300px; background-color: whitesmoke;'>&nbsp;<img class='class_logo' src='<?= IMAGE_PATH . $class['image'] ?>' /></div></a>
+                    <div class='col-md-12 header header-large neg-15' style='margin-top: 20px;'><a href='class.php?id=<?= $class['id'] ?>'><?= $class['name']; ?></a></div>
+                    <div class='col-md-12 neg-15' style='margin-top: 10px; overflow:hidden;'>
+                        <p><?= $class['description']; ?></p>
                     </div>
-                    <div class='col-md-12 neg-15' style='margin-top: 10px;'><a href='class.php?id=<?= $class['id'] ?>' class='btn btn-default'>View Class</a></div>
                 </div>
 		<?php
 		}

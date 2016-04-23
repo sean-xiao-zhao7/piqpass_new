@@ -1,0 +1,19 @@
+.class_logo {
+	width:100%;
+}
+
+.class_logo_container {
+	overflow:hidden;	
+}
+.class_logo_container:hover {
+	background:#ddd;
+}
+.class_details_container {
+	height: 500px;
+	overflow: hidden;
+	margin-bottom: 2em;
+}
+.class_details_container:hover {
+	background:whitesmoke;
+}
+
