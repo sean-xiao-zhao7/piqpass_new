@@ -153,10 +153,10 @@ $stmt->close();
                 </div>
                 <div class='col-md-3' style='margin-left: -15px;'>
                   <div class='col-md-12' style='margin-left: -15px; margin-top: 43px; margin-bottom: 20px;'>
-                    <center><span class='price'>$0 / Person</span></center>
+                    <center><span class='price'>$<?= $price ?> / Person</span></center>
                   </div>
                   <div class='col-md-12 bg-warning' style='margin-left: -15px; margin-top: 10px; margin-bottom: 20px;'>
-                    <p><center><span class='small'>This class fee is $0, but the instructors requires $10 for ingredients.</span></center></p>
+                    <p><center><span class='small'>This class fee is $<?= $price ?>, but the instructors requires $10 for ingredients.</span></center></p>
                   </div>
 		<form method='post' name='select_session' action='<?= $_SERVER['PHP_SELF'] ?>' id='select_session'>
 			<input type='hidden' name='class_id' value='<?= $class_id ?>'>
