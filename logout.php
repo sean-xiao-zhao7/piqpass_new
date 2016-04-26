@@ -5,7 +5,7 @@ http://usercake.com
 */
 
 require_once("models/config.php");
-if (!securePage($_SERVER['PHP_SELF'])){die();}
+//if (!securePage($_SERVER['PHP_SELF'])){die();}
 
 //Log the user out
 if(isUserLoggedIn())
@@ -13,30 +13,6 @@ if(isUserLoggedIn())
 	$loggedInUser->userLogOut();
 }
 
-header("Location: https://piqpass.com/site/login.php");
+header("Location: https://piqpass.com/site/index.php");
 
 die();
-
-/*
-
-if(!empty($websiteUrl)) 
-{
-	$add_http = "";
-	
-	if(strpos($websiteUrl,"http://") === false)
-	{
-		$add_http = "http://";
-	}
-	
-	header("Location: ".$add_http.$websiteUrl);
-	die();
-}
-else
-{
-	header("Location: http://".$_SERVER['HTTP_HOST']);
-	die();
-}	
-
-?>
-
-*/
