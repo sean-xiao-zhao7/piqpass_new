@@ -143,13 +143,14 @@ class User
 				$stmt->execute();
 				$inserted_id = $mysqli->insert_id;
 				$stmt->close();
-				if ($role === 'user') {
+				if ($role == 'user') {
 					$role_id = 1;
-				} else if (role === 'chef') {
+				} else if ($role == 'chef') {
 					$role_id = 3;	
 				} else {
 					$role_id = 1;
 				}
+				error_log("the role is $role and the role id is $role_id");
 				//Insert default permission into matches table
 				$stmt = $mysqli->prepare("INSERT INTO ".$db_table_prefix."user_permission_matches  (
 					user_id,
@@ -157,9 +158,9 @@ class User
 					)
 					VALUES (
 					?,
-					'?'
+					?
 					)");
-				$stmt->bind_param("si", $inserted_id, $role_id);
+				$stmt->bind_param("ii", $inserted_id, $role_id);
 				$stmt->execute();
 				$stmt->close();
 			}
