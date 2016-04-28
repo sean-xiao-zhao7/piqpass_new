@@ -108,14 +108,6 @@ require_once("models/header.php");
         <link rel="stylesheet" href="css/style.css">
         <script src="js/vendor/modernizr-2.8.3.min.js"></script>
         <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300' rel='stylesheet' type='text/css'>
-        <style>
-        .header {font-family: 'Open Sans', sans-serif; font-weight: 300;}
-        .price {font-family: 'Open Sans', sans-serif; font-weight: 300; font-size: 25px;}
-        .header-large {font-size: 25px;}
-        p {line-height: 1.7em; font-size: 15px; color: #333; }
-        .request {background-color: #fc6472; padding-top: 8px; padding-bottom: 8px; font-size: 18px; color: #fff;font-family: 'Open Sans', sans-serif; font-weight: 300;}
-        .small {font-size: 12px !important;}
-        </style>
     </head>
     <body style='margin-top: 40px;'>
         <!--[if lt IE 8]>
@@ -126,12 +118,12 @@ require_once("models/header.php");
         <div class='row center-row'>
             <!--header-->
             <div class='col-md-12'>
-                <div class='col-md-2' style='margin-left: -15px;'><img src='img/piqlanding1.jpg' /></div>
+                <div class='col-md-2'><img src='img/piqlanding1.jpg' /></div>
                 <?= include("piqpass_nav.php"); ?>
             </div>
             <!--end header-->
             <!--body-->
-						<div class='col-md-12 neg-15' style='margin-top: 40px;' id='main'>
+						<div class='col-md-12' style='margin-top: 40px;' id='main'>
 								<?= resultBlock($errors,$successes); ?>
                 <div class='col-md-6 neg-15' style='margin-bottom: 50px;'>
                     <div class='col-md-12 header header-large' style='margin-top: 20px;'>Login</div>

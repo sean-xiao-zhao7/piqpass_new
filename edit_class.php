@@ -9,7 +9,7 @@ if(!isUserLoggedIn()) { header("Location: login.php"); die(); }
 
 if(!empty($_GET) || isset($_POST['class_id'])){
 	require_once("db/connect.php");
-	$stmt = $mysqli_piq->prepare("select * from class where id = ?");	
+	$stmt = $mysqli_piq->prepare("select * from class where id = ?");
 	$class_id = ($_POST['class_id'] ? $_POST['class_id'] : $_GET['class_id']);
 	$stmt->bind_param("i", $class_id);
 	$stmt->execute();
@@ -17,6 +17,9 @@ if(!empty($_GET) || isset($_POST['class_id'])){
 	$stmt->bind_result($class_name, $description, $image, $price, $user_id, $address, $intersection, $class_id, $request_form);
 	$stmt->fetch();
 	$stmt->close();
+	if ($user_id != $loggedInUser->user_id) {
+		header("Location: class_dashboard.php");
+	}
 }
 
 //Forms posted
@@ -34,10 +37,10 @@ if(!empty($_POST))
 	$request_form = trim($_POST["request_form"]);
 	$user_id = trim($_POST["user_id"]);
 
-	$uploadOk = 1;	
+	$uploadOk = 1;
 	if ($image != "") {
 		$imageFileType = pathinfo($_FILES["image"]["name"],PATHINFO_EXTENSION);
-		$target_file = random_string(15) . "." . $imageFileType; 
+		$target_file = random_string(15) . "." . $imageFileType;
 		// Check if image file is a actual image or fake image
 		if(isset($_POST["submit"])) {
 		    $check = getimagesize($_FILES["image"]["tmp_name"]);
@@ -48,8 +51,8 @@ if(!empty($_POST))
 			echo "File is not an image.";
 			$uploadOk = 0;
 		    }
-		}	
-		
+		}
+
 		// Check file size
 		if ($_FILES["image"]["size"] > 1000000) {
 		    echo "Sorry, your file is too large.";
@@ -89,7 +92,7 @@ if(!empty($_POST))
 			echo "Connection Failed: " . mysqli_connect_errno();
 			exit();
 		}
-			
+
 		if (!($stmt = $mysqli_piq->prepare("update class set name=?, image=?, description=?, intersection=?, address=?, price=?, request_form=? where id=?"))) {
 			echo "Prepare failed: (" . $mysqli_piq->errno . ") " . $mysqli_piq->error;
 		}
@@ -102,6 +105,8 @@ if(!empty($_POST))
 		    echo "Execute failed: (" . $stmt->errno . ") " . $stmt->error;
 		}
 		$stmt->close();
+
+		header('Location: class_dashboard.php');
 	}
 }
 
@@ -122,16 +127,19 @@ require_once("models/header.php");
 
         <link rel="stylesheet" href="css/normalize.css">
         <link rel="stylesheet" href="css/main.css">
+        <link rel="stylesheet" href="css/style.css">
         <script src="js/vendor/modernizr-2.8.3.min.js"></script>
         <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300' rel='stylesheet' type='text/css'>
 	<link rel="stylesheet" href="js/vendor/trumbowyg/bower_components/trumbowyg/dist/ui/trumbowyg.min.css">
         <style>
+				/*
         .header {font-family: 'Open Sans', sans-serif; font-weight: 300;}
         .price {font-family: 'Open Sans', sans-serif; font-weight: 300; font-size: 25px;}
         .header-large {font-size: 25px;}
         p {line-height: 1.7em; font-size: 15px; color: #333; }
         .request {background-color: #fc6472; padding-top: 8px; padding-bottom: 8px; font-size: 18px; color: #fff;font-family: 'Open Sans', sans-serif; font-weight: 300;}
         .small {font-size: 12px !important;}
+				*/
         </style>
     </head>
     <body style='margin-top: 40px;'>
@@ -140,21 +148,17 @@ require_once("models/header.php");
         <![endif]-->
 
         <!-- Add your site or application content here -->
-        <div class='row' style='width: 80%; margin: 0 auto;'>
+        <div class='row center-row'>
             <!--header-->
             <div class='col-md-12'>
-                <div class='col-md-2' style='margin-left: -15px;'><img src='img/piqlanding1.jpg' /></div>
-                <div class='col-md-10' style='margin-top: 15px; margin-left: -15px;'>
-                  <p align='right'>
-			<?= include("piqpass_nav.php"); ?>
-                </p>
-                </div>
+                <div class='col-md-2'><img src='img/piqlanding1.jpg' /></div>
+								<?= include("piqpass_nav.php"); ?>
             </div>
             <!--end header-->
             <!--body-->
-            <div class='col-md-12' style='margin-top: 40px; margin-left: -15px;'>
-                <div class='col-md-6' style='margin-left: -15px; margin-bottom: 50px;'>
-                    <div class='col-md-12 header header-large' style='margin-top: 20px;'>Edit class <?= $class_name ?></div>
+            <div class='col-md-12 neg-15' style='margin-top: 40px;'>
+                <div class='col-md-8' style='margin-bottom: 50px;'>
+                    <div class='col-md-12 header header-large' style='margin-top: 20px;'>Edit Class: <?= $class_name ?></div>
                     <div class='col-md-12' style='margin-top: 20px;'>
                       <form id='add_class_form' name='add_class_form' action='<?= $_SERVER['PHP_SELF'] ?>' method='post' enctype="multipart/form-data">
 			<input type='hidden' name='old_image' value='<?= $image ?>'>
@@ -165,7 +169,7 @@ require_once("models/header.php");
                       <div class="form-group">
                         <label for="exampleInputFile">Logo image</label>
 			<?php if (isset($image)) { ?>
-				<img class='class_logo' src='<?= IMAGE_PATH . $image ?>' />	
+				<img class='class_logo' src='<?= IMAGE_PATH . $image ?>' />
 			<?php } ?>
                         <input name='image' type="file" id="image">
                       </div>
@@ -186,7 +190,7 @@ require_once("models/header.php");
                         <input name="price" class="form-control" id="price" placeholder="25"  value="<?= $price ?>">
                       </div>
 		 <div class="form-group">
-                        <label for="exampleInputEmail1">Request Form (Admin only)</label>
+                        <label for="exampleInputEmail1">Request Form (Request from Admin)</label>
                         <input type='text' name="request_form" class="form-control" id="request_form" value="<?= $request_form ?>">
                       </div>
 			<input name="user_id" type='hidden' value='<?= $loggedInUser->user_id; ?>'>
@@ -206,7 +210,7 @@ require_once("models/header.php");
 	<script>window.jQuery || document.write('<script src="js/vendor/jquery-1.11.3.min.js"><\/script>')</script>
 	<script src="js/vendor/trumbowyg/bower_components/trumbowyg/dist/trumbowyg.min.js"></script>
 	<script src="//cdn.ckeditor.com/4.5.8/standard/ckeditor.js"></script>
-	
+
 
         <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
         <script>

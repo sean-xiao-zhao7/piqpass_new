@@ -50,7 +50,7 @@
     .header-button {margin-top: 20px; margin-left: 0px;}
     .dark-header-2nd { margin-top: 15px;}
     .sub-intro-dark {background-color:rgba(0, 0, 0, 0.5); padding-left: 0px; padding-right: 0px; padding-top: 5px; padding-bottom: 5px;}
-
+    .mobile-neg-15 {padding: 0px !important; margin-top:20px;}
     /*Buttons*/
     .browse-class {background-color: #5cb85c; border: 1px solid #4cae4c; width: 150px; padding-top: 8px; padding-bottom: 8px; margin-top: 20px; margin-left: 0px;}
     .browse-class:hover {background-color: #4cae4c; cursor: pointer;}

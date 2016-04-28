@@ -54,7 +54,7 @@ if (isset($_GET['delete'])) {
 }
 
 if (!($result = $mysqli_piq->query("select id, name from class where user_id = " . $loggedInUser->user_id))) {
-        echo "Prepare failed: (" . $mysqli_piq->errno . ") " . $mysqli_piq->error;
+        echo "Select Prepare failed: (" . $mysqli_piq->errno . ") " . $mysqli_piq->error;
 } else {
         $classes = [];
 	$class_ids = [];
@@ -62,19 +62,20 @@ if (!($result = $mysqli_piq->query("select id, name from class where user_id = "
                 $classes[] = $row;
 		$class_ids[] = $row['id'];
         }
+	$result->close();
 }
 
-if (!($result2 = $mysqli_piq->query("select * from session where class_id in (" . implode(",", $class_ids) . ")"))) {
-        echo "Prepare failed: (" . $mysqli_piq->errno . ") " . $mysqli_piq->error;
-} else {
-        $sessions = [];
-        while ($row = $result2->fetch_array(MYSQLI_ASSOC)) {
-                $sessions[$row['class_id']][] = $row;
-        }
+if (!empty($class_ids)) {
+	if (!($result2 = $mysqli_piq->query("select * from session where class_id in (" . implode(",", $class_ids) . ")"))) {
+		echo "Prepare failed: (" . $mysqli_piq->errno . ") " . $mysqli_piq->error;
+	} else {
+		$sessions = [];
+		while ($row = $result2->fetch_array(MYSQLI_ASSOC)) {
+			$sessions[$row['class_id']][] = $row;
+		}
+		$result2->close();
+	}
 }
-
-$result->close();
-$result2->close();
 
 ?>
 
@@ -133,6 +134,9 @@ $result2->close();
             </div>
             <!--Class List-->
 		<?php
+			if (empty($classes)) {
+				echo "<p>No classes</p>";
+			} else {
 			foreach ($classes as $class) {
 		?>
             <div class='col-md-12' style='margin-top: 20px;'>
@@ -207,7 +211,7 @@ $result2->close();
                     </div>
                 </div>
             </div>
-		<?php } ?>
+		<?php }} ?>
         </div>
         <script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
         <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.12.0.min.js"><\/script>')</script>

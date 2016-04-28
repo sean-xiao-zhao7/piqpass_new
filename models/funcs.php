@@ -1171,12 +1171,14 @@ function securePage($uri){
 		if ($loggedInUser->checkPermission($pagePermissions)){ 
 			return true;
 		}
+/*
 		//Grant access if master user
 		elseif ($loggedInUser->user_id == $master_account){
 			return true;
 		}
+*/
 		else {
-			header("Location: account.php");
+			header("Location: index.php");
 			return false;	
 		}
 	}

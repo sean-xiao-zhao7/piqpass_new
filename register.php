@@ -100,16 +100,9 @@ require_once("models/header.php");
 
         <link rel="stylesheet" href="css/normalize.css">
         <link rel="stylesheet" href="css/main.css">
+        <link rel="stylesheet" href="css/style.css">
         <script src="js/vendor/modernizr-2.8.3.min.js"></script>
         <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300' rel='stylesheet' type='text/css'>
-        <style>
-        .header {font-family: 'Open Sans', sans-serif; font-weight: 300;}
-        .price {font-family: 'Open Sans', sans-serif; font-weight: 300; font-size: 25px;}
-        .header-large {font-size: 25px;}
-        p {line-height: 1.7em; font-size: 15px; color: #333; }
-        .request {background-color: #fc6472; padding-top: 8px; padding-bottom: 8px; font-size: 18px; color: #fff;font-family: 'Open Sans', sans-serif; font-weight: 300;}
-        .small {font-size: 12px !important;}
-        </style>
     </head>
     <body style='margin-top: 40px;'>
         <!--[if lt IE 8]>
@@ -117,21 +110,17 @@ require_once("models/header.php");
         <![endif]-->
 
         <!-- Add your site or application content here -->
-        <div class='row' style='width: 80%; margin: 0 auto;'>
+        <div class='row center-row'>
             <!--header-->
             <div class='col-md-12'>
-                <div class='col-md-2' style='margin-left: -15px;'><img src='img/piqlanding1.jpg' /></div>
-                <div class='col-md-10' style='margin-top: 15px; margin-left: -15px;'>
-                  <p align='right'>
-			<?= include("piqpass_nav.php"); ?>
-                </p>
-                </div>
+                <div class='col-md-2'><img src='img/piqlanding1.jpg' /></div>
+			          <?= include("piqpass_nav.php"); ?>
             </div>
             <!--end header-->
             <!--body-->
-            <div class='col-md-12' style='margin-top: 40px; margin-left: -15px;'>
-                <div class='col-md-6' style='margin-left: -15px; margin-bottom: 50px;'>
-                    <div class='col-md-12 header header-large' style='margin-top: 20px;'>Create Profile</div>
+            <div class='col-md-12 neg-15' style='margin-top: 40px;'>
+                <div class='col-md-6' style='margin-bottom: 50px;'>
+                    <div class='col-md-12 header header-large' style='margin-top: 20px;'>Create Student Profile</div>
                     <!-- <div class='col-md-12 bg-danger' style='margin-top: 15px; padding-top: 10px;'></div> -->
 		    <?= resultBlock($errors,$successes); ?>
                     <div class='col-md-12' style='margin-top: 20px;'>

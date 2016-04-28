@@ -12,7 +12,7 @@ if (!$loggedInUser->checkPermission(array(3)))
 }
 require_once("db/connect.php");
 
-if (!empty($_POST)) {	
+if (!empty($_POST)) {
 	if (!($stmt = $mysqli_piq->prepare("update request set status=? where id=?"))) {
 		echo "Prepare failed: (" . $mysqli_piq->errno . ") " . $mysqli_piq->error;
 	}
@@ -21,12 +21,12 @@ if (!empty($_POST)) {
 	}
 	$status = $_POST['status'];
 	$request_id = $_POST['request_id'];
-	
+
 	if (!$stmt->execute()) {
 	    echo "Execute failed: (" . $stmt->errno . ") " . $stmt->error;
 	}
 
-	$stmt->close();	
+	$stmt->close();
 }
 
 if (!($result = $mysqli_piq->query("select * from request where chef_id = " . $loggedInUser->user_id))) {
@@ -37,7 +37,7 @@ if (!($result = $mysqli_piq->query("select * from request where chef_id = " . $l
         while ($row = $result->fetch_array(MYSQLI_ASSOC)) {
 		if ($row['status'] == 'pending') {
 	                $pending_reqs[] = $row;
-		} 
+		}
 		else if ($row['status'] == 'approved') {
 			$approved_reqs[] = $row;
 		}
@@ -60,16 +60,17 @@ $result->close();
 
         <link rel="stylesheet" href="css/normalize.css">
         <link rel="stylesheet" href="css/main.css">
+        <link rel="stylesheet" href="css/style.css">
         <script src="js/vendor/modernizr-2.8.3.min.js"></script>
         <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300' rel='stylesheet' type='text/css'>
         <style>
-        .header {font-family: 'Open Sans', sans-serif; font-weight: 300;}
+        /*.header {font-family: 'Open Sans', sans-serif; font-weight: 300;}
         .price {font-family: 'Open Sans', sans-serif; font-weight: 300; font-size: 25px;}
         .header-large {font-size: 25px;}
         p {line-height: 1.7em; font-size: 15px; color: #333; }
         .request {background-color: #fc6472; padding-top: 8px; padding-bottom: 8px; font-size: 18px; color: #fff;font-family: 'Open Sans', sans-serif; font-weight: 300;}
         .small {font-size: 12px !important;}
-        </style>
+        */</style>
     </head>
     <body style='margin-top: 40px;'>
         <!--[if lt IE 8]>
@@ -77,27 +78,18 @@ $result->close();
         <![endif]-->
 
         <!-- Add your site or application content here -->
-        <div class='row' style='width: 80%; margin: 0 auto;'>
+        <div class='row center-row'>
             <!--header-->
-            <div class='col-md-12'>
-                <div class='col-md-2' style='margin-left: -15px;'><img src='img/piqlanding1.jpg' /></div>
-                <div class='col-md-10' style='margin-top: 15px; margin-left: -15px;'>
-                  <p align='right'>
-			<?= include_once('piqpass_nav.php'); ?>
-                </p>
-                </div>
+            <div class='col-md-12 header neg-15'>
+                <div class='col-md-2'><img src='img/piqlanding1.jpg' /></div>
+		            <?= include("piqpass_nav.php"); ?>
             </div>
             <!--end header-->
-            <!--body-->
-            <div class='col-md-12' style='margin-top: 40px;'>
-                <a href='#' class='btn btn-default disabled'>Requests</a>&nbsp;
-                <a href='#' class='btn btn-default'>Classes</a>&nbsp;
-                <a href='#' class='btn btn-default'>Sessions</a>
-            </div>
+
 
 		<?php
-			if (!empty($pending_reqs)) { 
-				echo "<h4 style='margin-top: 20px; float:left; margin-left: 15px;'>Pending requests</h4>";
+			if (!empty($pending_reqs)) {
+				echo "<div class='col-md-12 header header-large' style='margin-top: 50px; margin-bottom: 30px'>Class Requests<div>";
 			}
 			foreach ($pending_reqs as $request) {
 		?>
@@ -139,7 +131,7 @@ $result->close();
                     </div>
                 </div>
             </div>
-                <?php } 		
+                <?php }
 		?>
         </div>
         <script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>

@@ -99,13 +99,17 @@ class loggedInUser {
 		{
 			return true;
 		}
+/*
 		if ($this->user_id == $master_account){
 			return true;	
 		}
 		else
 		{
+*/
 			return false;	
+/*
 		}
+*/
 		$stmt->close();
 	}
 	

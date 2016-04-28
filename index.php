@@ -44,7 +44,7 @@ require_once("models/header.php");
         <!-- Add your site or application content here -->
         <div class='row center-row'>
             <!--header-->
-            <div class='col-md-12'>
+            <div class='col-md-12 header'>
                 <div class='col-md-2'><img src='img/piqlanding1.jpg' /></div>
                 <?= include("piqpass_nav.php"); ?>
             </div>

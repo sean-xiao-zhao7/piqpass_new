@@ -101,16 +101,9 @@ $stmt->close();
         <link rel="stylesheet" href="css/normalize.css">
         <link rel="stylesheet" href="css/sean.css">
         <link rel="stylesheet" href="css/main.css">
+        <link rel="stylesheet" href="css/style.css">
         <script src="js/vendor/modernizr-2.8.3.min.js"></script>
         <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300' rel='stylesheet' type='text/css'>
-        <style>
-        .header {font-family: 'Open Sans', sans-serif; font-weight: 300;}
-        .price {font-family: 'Open Sans', sans-serif; font-weight: 300; font-size: 25px;}
-        .header-large {font-size: 25px;}
-        p {line-height: 1.7em; font-size: 15px; color: #333; }
-        .request {background-color: #fc6472; padding-top: 8px; padding-bottom: 8px; font-size: 18px; color: #fff;font-family: 'Open Sans', sans-serif; font-weight: 300;}
-        .small {font-size: 12px !important;}
-        </style>
 				<script>(function(){var qs,js,q,s,d=document,gi=d.getElementById,ce=d.createElement,gt=d.getElementsByTagName,id='typef_orm',b='https://s3-eu-west-1.amazonaws.com/share.typeform.com/';if(!gi.call(d,id)){js=ce.call(d,'script');js.id=id;js.src=b+'share.js';q=gt.call(d,'script')[0];q.parentNode.insertBefore(js,q)}id=id+'_';if(!gi.call(d,id)){qs=ce.call(d,'link');qs.rel='stylesheet';qs.id=id;qs.href=b+'share-button.css';s=gt.call(d,'head')[0];s.appendChild(qs,s)}})()</script>
 
     </head>
@@ -120,30 +113,23 @@ $stmt->close();
         <![endif]-->
 
         <!-- Add your site or application content here -->
-        <div class='row' style='width: 80%; margin: 0 auto;'>
+        <div class='row center-row'>
             <!--header-->
             <div class='col-md-12'>
-                <div class='col-md-2' style='margin-left: -15px;'><img src='img/piqlanding1.jpg' /></div>
-                <div class='col-md-10' style='margin-top: 15px; margin-left: -15px;'>
-                  <p align='right'>
-			 <?= include_once('piqpass_nav.php'); ?>
-                </p>
-                </div>
+                <div class='col-md-2'><img src='img/piqlanding1.jpg' /></div>
+			 				  <?= include_once('piqpass_nav.php'); ?>
             </div>
             <!--end header-->
             <!--body-->
             <div class='col-md-12' style='margin-top: 40px;'>
-                  <div class='col-md-9' style='margin-left: -15px;'>
-			<div class='col-md-12' style='margin-left: -15px; margin-top: 10px;'>
-			<h1>
-				<?= $name ?>
-			</h1>
-			</div>
-			<div class='col-md-12' style='margin-left: -15px; margin-top: 10px;'>
-			<p>
-				<?= $description ?>
-			</p>
-			</div>
+                  <div class='col-md-9'>
+											<div class='col-md-11' style='margin-top: 10px; height: 400px; background-image: url("img/<?= $image ?>"); background-position: center; background-size: cover;'>&nbsp;</div>
+											<div class='col-md-12 header header-large' style='margin-left: -15px; margin-top: 20px;'><?= $name ?></div>
+											<div class='col-md-12' style='margin-left: -15px; margin-top: 10px;'>
+											<p>
+												<?= $description ?>
+											</p>
+											</div>
                       <!--maps-->
                       <div class='col-md-12' style='margin-left: -15px; margin-top: 20px;'><span class='header header-large'>Map</span></div>
                       <div class='col-md-12' style='margin-left: -15px; margin-top: 10px;'><p class='bg-warning' align='center' style='padding-top: 15px; padding-bottom: 15px;'><span class="glyphicon glyphicon-asterisk" aria-hidden="true"></span> The exact address of the class will be emailed to you once your request is accepted by Colin.</p></span></div>
@@ -156,7 +142,7 @@ $stmt->close();
                     <center><span class='price'>$<?= $price ?> / Person</span></center>
                   </div>
                   <div class='col-md-12 bg-warning' style='margin-left: -15px; margin-top: 10px; margin-bottom: 20px;'>
-                    <p><center><span class='small'>This class fee is $<?= $price ?>, but the instructors requires $10 for ingredients.</span></center></p>
+                    <p><center><span class='small'>This class fee of $<?= $price ?> include the cost of ingredients, materials provided by the instructor, clean-up fee, any refreshments provided, and the instructor's time spent acquiring the ingredients and teaching the class.</span></center></p>
                   </div>
 		<form method='post' name='select_session' action='<?= $_SERVER['PHP_SELF'] ?>' id='select_session'>
 			<input type='hidden' name='class_id' value='<?= $class_id ?>'>

@@ -39,12 +39,14 @@ if (!($result = $mysqli_piq->query("select * from class"))) {
         <script src="js/vendor/modernizr-2.8.3.min.js"></script>
         <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300' rel='stylesheet' type='text/css'>
         <style>
+        /*
         .header {font-family: 'Open Sans', sans-serif; font-weight: 300;}
         .price {font-family: 'Open Sans', sans-serif; font-weight: 300; font-size: 25px;}
         .header-large {font-size: 25px;}
         p {line-height: 1.7em; font-size: 15px; color: #333; }
         .request {background-color: #fc6472; padding-top: 8px; padding-bottom: 8px; font-size: 18px; color: #fff;font-family: 'Open Sans', sans-serif; font-weight: 300;}
         .small {font-size: 12px !important;}
+        */
         </style>
     </head>
     <body style='margin-top: 40px;'>
@@ -61,14 +63,15 @@ if (!($result = $mysqli_piq->query("select * from class"))) {
             </div>
             <!--end header-->
             <!--body-->
+            <div class='col-md-12 header header-large' style='margin-top: 40px; margin-left: 15px;'>Browse Classes</div>
             <div class='col-md-12' style='margin-top: 40px;'>
 		<?php
 		foreach ($classes as $class) {
 		?>
-                <div class='col-md-6 class_details_container'>
+                <div class='col-md-6' style='height: 510px;'>
                     <a href='class.php?id=<?= $class['id'] ?>'><div class='col-md-12 class_logo_container' style='height: 300px; background-image: url("<?= IMAGE_PATH . $class['image'] ?>"); background-position: center; background-size: cover;'>&nbsp;</div></a>
                     <div class='col-md-12 header header-large neg-15' style='margin-top: 20px;'><a href='class.php?id=<?= $class['id'] ?>'><?= $class['name']; ?></a></div>
-                    <div class='col-md-12 neg-15' style='margin-top: 10px; overflow:hidden;'>
+                    <div class='col-md-12 neg-15' style='margin-top: 10px;'>
                         <p><?= $class['description']; ?></p>
                     </div>
                 </div>

@@ -22,7 +22,7 @@ if(!empty($_POST))
 
 	$target_dir = "img/";
 	$imageFileType = pathinfo($_FILES["image"]["name"],PATHINFO_EXTENSION);
-	$target_file = random_string(15) . "." . $imageFileType; 
+	$target_file = random_string(15) . "." . $imageFileType;
 	$uploadOk = 1;
 	// Check if image file is a actual image or fake image
 	if(isset($_POST["submit"])) {
@@ -34,8 +34,8 @@ if(!empty($_POST))
 		echo "File is not an image.";
 		$uploadOk = 0;
 	    }
-	}	
-	
+	}
+
 	// Check file size
 	if ($_FILES["image"]["size"] > 1000000) {
 	    echo "Sorry, your file is too large.";
@@ -50,7 +50,7 @@ if(!empty($_POST))
 	}
 
 	// Check if $uploadOk is set to 0 by an error
-	if ($uploadOk == 0) {		
+	if ($uploadOk == 0) {
 	    echo "Sorry, your file was not uploaded.";
 	// if everything is ok, try to upload file
 	} else {
@@ -67,7 +67,7 @@ if(!empty($_POST))
 			echo "Connection Failed: " . mysqli_connect_errno();
 			exit();
 		}
-			
+
 		if (!($stmt = $mysqli_piq->prepare("INSERT INTO class (name, image, description, intersection, address, price, request_form, user_id) VALUES (?, ?, ?, ?, ?, ?, ?)"))) {
 			echo "Prepare failed: (" . $mysqli_piq->errno . ") " . $mysqli_piq->error;
 		}
@@ -82,7 +82,7 @@ if(!empty($_POST))
 		$stmt->close();
 	    }
 	}
-	
+
 }
 
 require_once("models/header.php");
@@ -102,16 +102,19 @@ require_once("models/header.php");
 
         <link rel="stylesheet" href="css/normalize.css">
         <link rel="stylesheet" href="css/main.css">
+        <link rel="stylesheet" href="css/style.css">
         <script src="js/vendor/modernizr-2.8.3.min.js"></script>
         <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300' rel='stylesheet' type='text/css'>
 	<link rel="stylesheet" href="js/vendor/trumbowyg/bower_components/trumbowyg/dist/ui/trumbowyg.min.css">
         <style>
+				/*
         .header {font-family: 'Open Sans', sans-serif; font-weight: 300;}
         .price {font-family: 'Open Sans', sans-serif; font-weight: 300; font-size: 25px;}
         .header-large {font-size: 25px;}
         p {line-height: 1.7em; font-size: 15px; color: #333; }
         .request {background-color: #fc6472; padding-top: 8px; padding-bottom: 8px; font-size: 18px; color: #fff;font-family: 'Open Sans', sans-serif; font-weight: 300;}
         .small {font-size: 12px !important;}
+				*/
         </style>
     </head>
     <body style='margin-top: 40px;'>
@@ -120,24 +123,20 @@ require_once("models/header.php");
         <![endif]-->
 
         <!-- Add your site or application content here -->
-        <div class='row' style='width: 80%; margin: 0 auto;'>
+        <div class='row center-row'>
             <!--header-->
-            <div class='col-md-12'>
-                <div class='col-md-2' style='margin-left: -15px;'><img src='img/piqlanding1.jpg' /></div>
-                <div class='col-md-10' style='margin-top: 15px; margin-left: -15px;'>
-                  <p align='right'>
-			<?= include("piqpass_nav.php"); ?>
-                </p>
-                </div>
+            <div class='col-md-12 header'>
+                <div class='col-md-2'><img src='img/piqlanding1.jpg' /></div>
+								<?= include("piqpass_nav.php"); ?>
             </div>
             <!--end header-->
             <!--body-->
-            <div class='col-md-12' style='margin-top: 40px; margin-left: -15px;'>
-                <div class='col-md-6' style='margin-left: -15px; margin-bottom: 50px;'>
+            <div class='col-md-12 neg-15' style='margin-top: 40px;'>
+                <div class='col-md-8' style='margin-bottom: 50px;'>
                     <div class='col-md-12 header header-large' style='margin-top: 20px;'>Add A Class</div>
                     <div class='col-md-12' style='margin-top: 20px;'>
                       <form id='add_class_form' name='add_class_form' action='<?= $_SERVER['PHP_SELF'] ?>' method='post' enctype="multipart/form-data">
-				<div class="form-group">
+											<div class="form-group">
                         <label for="exampleInputEmail1">Class Name</label>
                         <input name="name" class="form-control" id="name" placeholder="Burger Making 101" value=<?= $class_name ?>>
                       </div>
@@ -162,7 +161,7 @@ require_once("models/header.php");
                         <input name="price" class="form-control" id="confirmpass" placeholder="25"  value="<?= $price ?>">
                       </div>
 			<div class="form-group">
-                        <label for="exampleInputEmail1">Request Form (Admin only)</label>
+                        <label for="exampleInputEmail1">Request Form (Request from Admin)</label>
                         <input type='text' name="request_form" class="form-control" id="request_form" value="<?= $request_form ?>">
                       </div>
 			<input name="user_id" type='hidden' value='<?= $loggedInUser->user_id; ?>'>
@@ -181,7 +180,7 @@ require_once("models/header.php");
 	<script>window.jQuery || document.write('<script src="js/vendor/jquery-1.11.3.min.js"><\/script>')</script>
 	<script src="js/vendor/trumbowyg/bower_components/trumbowyg/dist/trumbowyg.min.js"></script>
 	<script src="//cdn.ckeditor.com/4.5.8/standard/ckeditor.js"></script>
-	
+
 
         <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
         <script>

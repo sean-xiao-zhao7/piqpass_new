@@ -19,7 +19,7 @@ if (!($result = $mysqli_piq->query("select * from class"))) {
 	$classes = [];
 	while ($row = $result->fetch_array(MYSQLI_ASSOC)) {
 		$classes[] = $row;
-	}    
+	}
 }
 
 $result->close();
@@ -40,15 +40,18 @@ $result->close();
         <link rel="stylesheet" href="css/normalize.css">
         <link rel="stylesheet" href="css/sean.css">
         <link rel="stylesheet" href="css/main.css">
+        <link rel="stylesheet" href="css/style.css">
         <script src="js/vendor/modernizr-2.8.3.min.js"></script>
         <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300' rel='stylesheet' type='text/css'>
         <style>
+        /*
         .header {font-family: 'Open Sans', sans-serif; font-weight: 300;}
         .price {font-family: 'Open Sans', sans-serif; font-weight: 300; font-size: 25px;}
         .header-large {font-size: 25px;}
         p {line-height: 1.7em; font-size: 15px; color: #333; }
         .request {background-color: #fc6472; padding-top: 8px; padding-bottom: 8px; font-size: 18px; color: #fff;font-family: 'Open Sans', sans-serif; font-weight: 300;}
         .small {font-size: 12px !important;}
+        */
         </style>
     </head>
     <body style='margin-top: 40px;'>
@@ -57,41 +60,30 @@ $result->close();
         <![endif]-->
 
         <!-- Add your site or application content here -->
-        <div class='row' style='width: 80%; margin: 0 auto;'>
+        <div class='row center-row'>
             <!--header-->
-            <div class='col-md-12'>
-                <div class='col-md-2' style='margin-left: -15px;'><img src='img/piqlanding1.jpg' /></div>
-                <div class='col-md-10' style='margin-top: 15px; margin-left: -15px;'>
-                  <p align='right'>
-			<?= include_once('piqpass_nav.php'); ?>
-                </p>
-                </div>
+            <div class='col-md-12 header neg-15'>
+                <div class='col-md-2'><img src='img/piqlanding1.jpg' /></div>
+		            <?= include("piqpass_nav.php"); ?>
             </div>
             <!--end header-->
-            <!--body-->
-            <div class='col-md-12' style='margin-top: 40px;'>
-                <a href='#' class='btn btn-default'>Requests</a>&nbsp;
-                <a href='#' class='btn btn-default disabled'>Classes</a>&nbsp;
-                <a href='#' class='btn btn-default'>Sessions</a>
-            </div>
             <!--Class List-->
+            <div class='col-md-12 header header-large' style='margin-top: 50px; margin-bottom: 30px'>Your Classes</div>
 		<?php
-		foreach ($classes as $class) { 
+		foreach ($classes as $class) {
 		?>
-		    <div class='col-md-12 class_details_container' style='margin-top: 20px;'>
-			<div class='col-md-3 class_logo_container' style='height: 100%; background-image: url("<?= IMAGE_PATH . $class['image'] ?>"); background-position: center; background-size: cover;'>&nbsp;</div>
-			<div class='col-md-9'>
-			    <div class='col-md-12'><span class='header header-large'><a href='class.php?id=<?= $class['id'] ?>'><?= $class['name']; ?></a></span></div>
-			    <div class='' style='float:left; margin-top: 10px;'><p><?= $class['description']; ?></p></div>
-			    <div class='' style='float:right; margin-top: 10px;'>
-				<ul class='class_details_actions'>
-				<li><a href='class.php?id=<?= $class['id'] ?>' class='btn btn-default'>View Class</a></li>
-				<li><a href='edit_class.php?class_id=<?= $class['id'] ?>' class='btn btn-default'>Edit Class</a></li>
-				<li><a href='#' class='btn btn-default'>Manage Sessions</a></li>
-				</ul>				
-			</div>
-			</div>
-		    </div>
+    		    <div class='col-md-12' style='margin-bottom: 70px;'>
+        			<div class='col-md-5' style='height: 300px; background-image: url("<?= IMAGE_PATH . $class['image'] ?>"); background-position: center; background-size: cover;'>&nbsp;</div>
+        			<div class='col-md-7 mobile-neg-15'>
+        			    <div class='col-md-12 mobile-neg-15'><span class='header header-large'><a href='class.php?id=<?= $class['id'] ?>'><?= $class['name']; ?></a></span></div>
+        			    <div class='col-md-12 mobile-neg-15' style='margin-top: 10px;'><p><?= $class['description']; ?></p></div>
+        			    <div class='col-md-12 mobile-neg-15' style='margin-top: 10px;'>
+              				<a href='class.php?id=<?= $class['id'] ?>' class='btn btn-sm btn-default'>View</a>
+              				<a href='edit_class.php?class_id=<?= $class['id'] ?>' class='btn btn-sm btn-default'>Edit</a>
+              				<a href='#' class='btn btn-sm btn-default'>Manage Sessions</a>
+              		</div>
+        			</div>
+    		    </div>
 		<?php
 		}
 		?>
