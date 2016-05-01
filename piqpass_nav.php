@@ -61,32 +61,22 @@ if(isUserLoggedIn()) {
 		<div class='col-md-10 desktop' style='margin-top: 15px;'>
 			<p align='right'>
 				<!--Account-->
-				<div class='dropdown' style='float: right; margin-left: 25px; margin-right: -15px;'>
+				<div class='dropdown' style='float: right; margin-left: 25px;'>
 					<button class='btn btn-default btn-sm dropdown-toggle' type='button' id='mode' data-toggle='dropdown' aria-haspopup='true' aria-expanded='true'>
 						Account
 						<span class='caret'></span>
 					</button>
 					<ul class='dropdown-menu' aria-labelledby='mode'>
-						<li><a href='account.php'>Update Profile</a></li>
-						<li><a href='update_password.php'>Change Password</a></li>
+						<li><a href='user_settings.php'>Update Profile</a></li>
 						<li role='separator' class='divider'></li>
 						<li><a href='logout.php'>Logout</a></li>
 					</ul>
-				</div>
-				<!--Classes-->
-				<div class='dropdown' style='float: right; margin-left: 8px;'><a class='btn btn-default btn-sm'>Browse</a></div>
-				<!--dashboard-->
-				<div class='dropdown' style='float: right; margin-left: 8px;'><a class='btn btn-default btn-sm'>Dashboard</a></div>
+				</div><!--dashboard-->
+				<div class='dropdown' style='float: right; margin-left: 8px;'><a href='dashboard.php' class='btn btn-default btn-sm'>Dashboard</a></div>
 				<!--Modes-->
-				<div class='dropdown' style='float: right;'>
-					<button class='btn btn-success btn-sm dropdown-toggle' type='button' id='mode' data-toggle='dropdown' aria-haspopup='true' aria-expanded='true'>
-						You Are In <strong>Chef Mode</strong>
-						<span class='caret'></span>
-					</button>
-					<ul class='dropdown-menu' aria-labelledby='mode'>
-						<li><a href='#'>Student Mode</a></li>
-					</ul>
-				</div>
+				<!--Classes-->
+				<div class='dropdown' style='float: right; margin-left: 8px;'><a href='browse.php' class='btn btn-success btn-sm'>Browse</a></div>
+
 		</p>
 		</div>
 		<div class='col-md-10 mobile' style='margin-top: 25px;'>
