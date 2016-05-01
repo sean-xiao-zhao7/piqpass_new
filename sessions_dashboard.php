@@ -121,7 +121,7 @@ if (!empty($class_ids)) {
                 <div class='col-md-2' style='margin-left: -15px;'><img src='img/piqlanding1.jpg' /></div>
                 <div class='col-md-10' style='margin-top: 15px; margin-left: -15px;'>
                   <p align='right'>
-			<?= include_once('piqpass_nav.php'); ?>
+			<?php include_once('piqpass_nav.php'); ?>
                 </p>
                 </div>
             </div>

@@ -152,7 +152,7 @@ require_once("models/header.php");
             <!--header-->
             <div class='col-md-12'>
                 <div class='col-md-2'><img src='img/piqlanding1.jpg' /></div>
-								<?= include("piqpass_nav.php"); ?>
+								<?php include("piqpass_nav.php"); ?>
             </div>
             <!--end header-->
             <!--body-->

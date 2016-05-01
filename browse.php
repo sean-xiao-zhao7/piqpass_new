@@ -59,7 +59,7 @@ if (!($result = $mysqli_piq->query("select * from class"))) {
             <!--header-->
             <div class='col-md-12 header'>
                 <div class='col-md-2'><img src='img/piqlanding1.jpg' /></div>
-		            <?= include("piqpass_nav.php"); ?>
+		            <?php include("piqpass_nav.php"); ?>
             </div>
             <!--end header-->
             <!--body-->

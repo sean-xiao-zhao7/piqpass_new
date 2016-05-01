@@ -117,7 +117,7 @@ $stmt->close();
             <!--header-->
             <div class='col-md-12'>
                 <div class='col-md-2'><img src='img/piqlanding1.jpg' /></div>
-			 				  <?= include_once('piqpass_nav.php'); ?>
+			 				  <?php include_once('piqpass_nav.php'); ?>
             </div>
             <!--end header-->
             <!--body-->
