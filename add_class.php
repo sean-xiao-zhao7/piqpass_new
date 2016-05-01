@@ -68,11 +68,11 @@ if(!empty($_POST))
 			exit();
 		}
 
-		if (!($stmt = $mysqli_piq->prepare("INSERT INTO class (name, image, description, intersection, address, price, request_form, user_id) VALUES (?, ?, ?, ?, ?, ?, ?)"))) {
+		if (!($stmt = $mysqli_piq->prepare("INSERT INTO class (name, image, description, intersection, address, price, request_form, user_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?)"))) {
 			echo "Prepare failed: (" . $mysqli_piq->errno . ") " . $mysqli_piq->error;
 		}
 
-		if (!$stmt->bind_param("sssssdi", $class_name, $image, $description, $intersection, $address, $price, $request_form, $user_id)) {
+		if (!$stmt->bind_param("sssssdsi", $class_name, $image, $description, $intersection, $address, $price, $request_form, $user_id)) {
 		    echo "Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error;
 		}
 
