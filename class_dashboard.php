@@ -18,6 +18,9 @@ if (!($result = $mysqli_piq->query("select * from class"))) {
 } else {
 	$classes = [];
 	while ($row = $result->fetch_array(MYSQLI_ASSOC)) {
+		if (count($row['description']) > 200) {
+                        $row['description'] = substr($row['description'], 0, 200) . "... <a href='class.php?id=" . $row['id'] . "'>Read more</a>";
+                }
 		$classes[] = $row;
 	}
 }
