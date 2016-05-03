@@ -17,7 +17,7 @@ if(!empty($_GET) || isset($_POST['class_id'])){
 	$stmt->bind_result($class_name, $description, $image, $price, $user_id, $address, $intersection, $class_id, $request_form);
 	$stmt->fetch();
 	$stmt->close();
-	if ($user_id != $loggedInUser->user_id) {
+	if (!$loggedInUser->checkPermission(array(2)) && $user_id != $loggedInUser->user_id) {
 		header("Location: class_dashboard.php");
 	}
 }
