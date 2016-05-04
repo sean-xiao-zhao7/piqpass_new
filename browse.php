@@ -15,7 +15,7 @@ if (!($result = $mysqli_piq->query("select * from class"))) {
         $classes = [];
         while ($row = $result->fetch_array(MYSQLI_ASSOC)) {
 		if (strlen($row['description']) > 200) {
-			$row['description'] = substr($row['description'], 0, 200) . "... <a href='class.php?id=" . $row['id'] . "'>Read more</a>";	
+			$row['description'] = htmlspecialchars(substr($row['description'], 0, 200) . "... <a href='class.php?id=" . $row['id'] . "'>Read more</a>");	
 		}
                 $classes[] = $row;
         }
@@ -54,7 +54,7 @@ if (!($result = $mysqli_piq->query("select * from class"))) {
     </head>
     <body style='margin-top: 40px;'>
         <!--[if lt IE 8]>
-            <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+            <p class="browserupgrade">You are using an outdated browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
         <!-- Add your site or application content here -->
 
