@@ -304,8 +304,8 @@ function fetchAllUsers()
 	return ($row);
 }
 
-//Retrieve complete user information by username, token or ID
-function fetchUserDetails($username=NULL,$token=NULL, $id=NULL)
+//Retrieve complete user information by username, token,ID or email
+function fetchUserDetails($username=NULL,$token=NULL, $id=NULL, $email=NULL)
 {
 	if($username!=NULL) {
 		$column = "user_name";
@@ -318,6 +318,10 @@ function fetchUserDetails($username=NULL,$token=NULL, $id=NULL)
 	elseif($id!=NULL) {
 		$column = "id";
 		$data = $id;
+	}
+	elseif($email!=NULL) {
+		$column = 'email';
+		$data = $email;
 	}
 	global $mysqli,$db_table_prefix; 
 	$stmt = $mysqli->prepare("SELECT 
