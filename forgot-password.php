@@ -215,7 +215,7 @@ require_once("models/header.php");
 				<label>Email</label>
 				<input type='text' class="form-control"  name='email' placeholder="Jackie.Smith@Domain.com" />
 			</div>
-			<button type="submit" class="btn btn-default" form='newLostPass'>Retrieve Password</button>
+			<button name='submit' type="submit" class="btn btn-default" form='newLostPass'>Retrieve Password</button>
 			</form>
 
 		</div>
