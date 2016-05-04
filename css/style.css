@@ -1,6 +1,6 @@
 .header {font-family: 'Open Sans', sans-serif; font-weight: 300;}
 .price {font-family: 'Open Sans', sans-serif; font-weight: 300; font-size: 25px;}
-.header-large {font-size: 25px;}
+
 .request {background-color: #fc6472; padding-top: 8px; padding-bottom: 8px; font-size: 18px; color: #fff;font-family: 'Open Sans', sans-serif; font-weight: 300;}
 .small {font-size: 12px !important;}
 
@@ -10,9 +10,9 @@
 
 
 @media (min-width: 768px) {
-    .center-row {width: 80%; margin: 0 auto !important;}
+    .center-row {width: 90%; margin: 0 auto !important;}
     .pic-bg {height: 450px; background-image: url("../img/bg.jpg"); background-position: center; background-size: cover;}
-
+.header-large {font-size: 25px;}
     .intro-heading {font-family: 'Open Sans', sans-serif; font-weight: 800; font-size: 3vw; color: #fff;}
 
     .intro-heading-2nd {font-family: 'Open Sans', sans-serif; font-weight: 800; font-size: 2vw; color: #fff;}
@@ -21,6 +21,7 @@
 
     .sub-heading {font-family: 'Open Sans', sans-serif; font-weight: 800; font-size: 1.3vw; color: #fff;}
     p {line-height: 1.7em; font-size: 15px; color: #333; }
+    .course-title {font-size: 2.4vw;}
     /* Dark Intro Background */
     .dark-header {margin-left: 20px; padding-top: 120px;}
     .dark-header-2nd {margin-left: 20px; padding-top: 5px;}
@@ -29,13 +30,15 @@
     .sub-intro-dark {background-color:rgba(0, 0, 0, 0.5); padding-left: 15px; padding-right: 15px; padding-top: 5px; padding-bottom: 5px;}
     .header-button {margin-top: 10px; margin-left: 5px;}
     .dark-sub-header {margin-top: 30px; margin-left: 20px;}
-
+    .desktop-padright {padding-right: 15px !important;}
     /*Buttons*/
     .browse-class {background-color: #5cb85c; border: 1px solid #4cae4c; width: 230px; padding-top: 8px; padding-bottom: 8px; margin-top: 10px; margin-left: 15px;}
     .browse-class:hover {background-color: #4cae4c; cursor: pointer;}
 }
 @media (min-width: 300px) and (max-width: 600px) {
     .desktop {display: none; margin-left: -15px;}
+    .course-title {font-size: 5.5vw;}
+    .header-large {font-size: 3.5vw;}
     .mobile {display: block; margin-left: -15px; margin-top: 30px;}
     .intro-heading {font-family: 'Open Sans', sans-serif; font-weight: 800; color: #fff; font-size: 8vw; line-height: 1.5em;}
     p {line-height: 1.7em; font-size: 13px; color: #333; }
@@ -50,9 +53,9 @@
     .header-button {margin-top: 20px; margin-left: 0px;}
     .dark-header-2nd { margin-top: 15px;}
     .sub-intro-dark {background-color:rgba(0, 0, 0, 0.5); padding-left: 0px; padding-right: 0px; padding-top: 5px; padding-bottom: 5px;}
-    .mobile-neg-15 {padding: 0px !important; margin-top:20px;}
+
     /*Buttons*/
-    .browse-class {background-color: #5cb85c; border: 1px solid #4cae4c; width: 150px; padding-top: 8px; padding-bottom: 8px; margin-top: 20px; margin-left: 0px;}
+    .browse-class {background-color: #5cb85c; border: 1px solid #4cae4c; width: 180px; padding-top: 8px; padding-bottom: 8px; margin-top: 20px; margin-left: 0px;}
     .browse-class:hover {background-color: #4cae4c; cursor: pointer;}
 }
 
