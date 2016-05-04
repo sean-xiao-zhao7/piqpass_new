@@ -80,6 +80,15 @@ if(!empty($_POST))
 		    echo "Execute failed: (" . $stmt->errno . ") " . $stmt->error;
 		}
 		$stmt->close();
+
+		// redirect to new class page
+		if (!($result = $mysqli_piq->query("select max(id) from class where user_id = " . $loggedInUser->user_id))) {
+			echo "Select query failed: (" . $mysqli_piq->errno . ") " . $mysqli_piq->error;
+		} else {
+			$row = $result->fetch_array(MYSQLI_ASSOC);
+			header('Location: class.php?id=' . $row['id']);
+			$result->close();			
+		}
 	    }
 	}
 
