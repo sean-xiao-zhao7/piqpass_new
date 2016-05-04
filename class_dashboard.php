@@ -19,7 +19,8 @@ if (!($result = $mysqli_piq->query("select * from class"))) {
 	$classes = [];
 	while ($row = $result->fetch_array(MYSQLI_ASSOC)) {
 		if (strlen($row['description']) > 200) {
-                        $row['description'] = htmlspecialchars(substr($row['description'], 0, 200) . "... <a href='class.php?id=" . $row['id'] . "'>Read more</a>");
+			$pattern = '/<(\w+)>/i';
+			$row['description'] = preg_replace($pattern, '', substr($row['description'], 0, 200) . "... <a href='class.php?id=" . $row['id'] . "'>Read more</a>");
                 }
 		$classes[] = $row;
 	}
