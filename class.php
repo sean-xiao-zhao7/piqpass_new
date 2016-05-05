@@ -3,10 +3,7 @@
 require_once("models/config.php");
 require_once("stripe/init.php");
 
-if (!securePage($_SERVER['PHP_SELF'])){die();}
 
-//Prevent the user visiting the logged in page if he/she is already logged in
-if(!isUserLoggedIn()) { header("Location: login.php"); die(); }
 
 require_once("db/connect.php");
 /*
@@ -91,7 +88,7 @@ $stmt->close();
     <head>
         <meta charset="utf-8">
         <meta http-equiv="x-ua-compatible" content="ie=edge">
-        <title></title>
+        <title><?= $name; ?></title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -117,7 +114,7 @@ $stmt->close();
             <!--header-->
             <div class='col-md-12'>
                 <div class='col-md-2'><img src='img/piqlanding1.jpg' /></div>
-			 				  <?php include_once('piqpass_nav.php'); ?>
+			 				  <?php // include_once('piqpass_nav.php'); ?>
             </div>
             <!--end header-->
             <!--body-->
@@ -131,11 +128,12 @@ $stmt->close();
 											</p>
 											</div>
                       <!--maps-->
-                      <div class='col-md-12' style='margin-left: -15px; margin-top: 20px;'><span class='header header-large'>Map</span></div>
+                      <!--
+											<div class='col-md-12' style='margin-left: -15px; margin-top: 20px;'><span class='header header-large'>Map</span></div>
                       <div class='col-md-12' style='margin-left: -15px; margin-top: 10px;'><p class='bg-warning' align='center' style='padding-top: 15px; padding-bottom: 15px;'><span class="glyphicon glyphicon-asterisk" aria-hidden="true"></span> The exact address of the class will be emailed to you once your request is accepted by Colin.</p></span></div>
 
                       <div class='col-md-12' style='margin-left: -15px; margin-top: 10px;'><iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2885.2783807043675!2d-79.30235888518642!3d43.683975658459296!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89d4cc1a1f985ddf%3A0x6be02d40c4bdd655!2sUpper+Beaches%2C+Toronto%2C+ON!5e0!3m2!1sen!2sca!4v1460762987826" width='100%' height="250" frameborder="0" style="border:0" allowfullscreen></iframe></span></div>
-
+										-->
                 </div>
                 <div class='col-md-3' style='margin-left: -15px;'>
                   <div class='col-md-12' style='margin-left: -15px; margin-top: 43px; margin-bottom: 20px;'>
@@ -143,7 +141,9 @@ $stmt->close();
                   </div>
                   <div class='col-md-12 bg-warning' style='margin-left: -15px; margin-top: 10px; margin-bottom: 20px;'>
                     <p><center><span class='small'>This class fee of $<?= $price ?> include the cost of ingredients, materials provided by the instructor, clean-up fee, any refreshments provided, and the instructor's time spent acquiring the ingredients and teaching the class.</span></center></p>
-                  </div>
+										<p><center><span class='small'>*Includes gratuities.</span></center></p>
+
+									</div>
 		<form method='post' name='select_session' action='<?= $_SERVER['PHP_SELF'] ?>' id='select_session'>
 			<input type='hidden' name='class_id' value='<?= $class_id ?>'>
 			<input type='hidden' name='chef_id' value='<?= $user_id ?>'>
@@ -193,7 +193,7 @@ $stmt->close();
                   </div>
 		-->
                   <div class='col-md-12' style='margin-left: -15px; margin-top: 10px;'>
-                    <center><button type='submit' form='select_session' class='btn btn-success' style='width: 100%;'><a href='<?= $request_form ?>'>Request Now</a></button></center>
+                    <center><!--<button type='submit' form='select_session' class='btn btn-success' style='width: 100%;'>--><a class='btn btn-lg btn-success' href='<?= $request_form ?>' target='_blank'><strong>Book Now</strong></a><!--</button>--></center>
                   </div>
 		</form>
                 </div>
@@ -207,6 +207,14 @@ $stmt->close();
         <script src="js/main.js"></script>
 
         <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
+				<script>
+            (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
+            function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
+            e=o.createElement(i);r=o.getElementsByTagName(i)[0];
+            e.src='https://www.google-analytics.com/analytics.js';
+            r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
+            ga('create','UA-76836253-1','auto');ga('send','pageview');
+        </script>
         <script>
 	// this identifies your website in the createToken call below
             Stripe.setPublishableKey('pk_test_5Ir0zjoUeZUgOHIWP4WRYVid');
