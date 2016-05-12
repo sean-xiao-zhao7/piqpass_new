@@ -6,6 +6,7 @@
         <title>Toronto Cooking Classes | Piq</title>
         <meta name="description" content="Piq is a social marketplace to take cooking classes from your neighbours. Experience where the people in your city come from, how they lived their lives, and the type of people they are through the dishes they pass onto you.">
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        <META NAME="ROBOTS" CONTENT="NOINDEX">
 
         <meta name="twitter:card" content="summary" />
         <meta name="twitter:site" content="@piq_toronto" /> 
@@ -43,9 +44,6 @@
             <!--header-->
             <div class='col-md-12'>
                 <div class='col-md-2'><img src='img/piqlanding1.png' width="90%" height='90%'/></div>
-                <div class='col-md-10' align='left' style='margin-top: 20px;'>
-                  <div align='left' class="fb-like" data-href="https://www.facebook.com/trypiq" data-layout="standard" data-action="like" data-show-faces="false" data-share="true"></div>
-                </div>
             </div>
             <!--end header-->
             <!--body-->
@@ -93,16 +91,6 @@
                           <span class='header header-large'><strong>Upcoming Classes</strong></span>
                         </div>
                         <div class='col-md-6 neg-15 desktop-padright' style='margin-bottom: 35px;'>
-                          <div class='col-md-12 neg-15' style='height: 350px; background-image: url("img/toronto_cooking_class_giovanni.jpg"); background-position: center; background-size: cover;'>&nbsp;</div>
-                          <div class='col-md-12 neg-15 header course-title' style='margin-top: 15px;'><a href='http://trypiq.com/class.php?id=30'>3-Course Thai Cuisine Workshop</a></div>
-                          <div class='col-md-12 neg-15'><p><strong>Chef:</strong> Giovanni La Grotta<br />
-                            <strong>Occupation:</strong> Senior Chef, Canadian Forces Army Reserve - 32 Service Battalion</br >
-                            <strong>Area:</strong> Mississauga<br />
-                            </p>
-                          </div>
-                          <div class='col-md-12 neg-15'><a href='http://trypiq.com/class.php?id=30' class='btn btn-default btn-success'>View Class (4 Seats Available)</a></div>
-                        </div>
-                        <div class='col-md-6 neg-15 desktop-padright' style='margin-bottom: 35px;'>
                           <div class='col-md-12 neg-15' style='height: 350px; background-image: url("img/thomasheitz_toronto_cooking_class.jpg"); background-position: center; background-size: cover;'>&nbsp;</div>
                           <div class='col-md-12 neg-15 header course-title' style='margin-top: 15px;'><a href='http://trypiq.com/class.php?id=24'>3-Course Culinary Experience</a></div>
                           <div class='col-md-12 neg-15'><p><strong>Chef:</strong> Thomas Heitz, C.C.C.<br />
@@ -110,7 +98,7 @@
                             <strong>Area:</strong> Leslieville, Toronto<br />
                             </p>
                           </div>
-                          <div class='col-md-12 neg-15'><a href='http://trypiq.com/class.php?id=24' class='btn btn-default btn-warning'>View Class (Only 1 Seat Left)</a></div>
+                          <div class='col-md-12 neg-15'><a href='http://trypiq.com/class.php?id=24' class='btn btn-default btn-success'>View Class (4 Seats Available)</a></div>
                         </div>
                         <div class='col-md-6 neg-15 desktop-padright' style='margin-bottom: 35px;'>
                           <div class='col-md-12 neg-15' style='height: 350px; background-image: url("img/youngkyokim-salmo.jpg"); background-position: center; background-size: cover;'>&nbsp;</div>
@@ -121,37 +109,6 @@
                             </p>
                           </div>
                           <div class='col-md-12 neg-15'><a href='http://trypiq.com/class.php?id=28' class='btn btn-default btn-success'>View Class (3 Seats Available)</a></div>
-                        </div>
-                        <div class='col-md-6 neg-15 desktop-padright' style='margin-bottom: 35px;'>
-                          <div class='col-md-12 neg-15' style='height: 350px; background-image: url("img/toronto-cooking-poutine.jpg"); background-position: center; background-size: cover;'>&nbsp;</div>
-                          <div class='col-md-12 neg-15 header course-title' style='margin-top: 15px;'><a href='http://trypiq.com/class.php?id=31'>Learn to Make Poutine – Buffalo “Wings”</a></div>
-                          <div class='col-md-12 neg-15'><p><strong>Hosted by:</strong> Marni Wasserman<br />
-
-                              <strong>Occupation:</strong> Certified Natural Chef, Culinary (Holistic) Nutritionist CNP</br >
-                            <strong>Area:</strong> Eglinton &amp; Yonge, Toronto<br />
-                            </p>
-                          </div>
-                          <div class='col-md-12 neg-15'><a href='http://trypiq.com/class.php?id=31' class='btn btn-default btn-success'>View Class (5 Seats Available)</a></div>
-                        </div>
-                        <div class='col-md-6 neg-15 desktop-padright' style='margin-bottom: 35px;'>
-                          <div class='col-md-12 neg-15' style='height: 350px; background-image: url("img/marni-wasserman-piq-toronto-cooking.jpg"); background-position: center; background-size: cover;'>&nbsp;</div>
-                          <div class='col-md-12 neg-15 header course-title' style='margin-top: 15px;'><a href='http://trypiq.com/class.php?id=32'>Savour The Summer 4-Week Series Retreat</a></div>
-                          <div class='col-md-12 neg-15'><p><strong>Hosted by:</strong> Marni Wasserman<br />
-                            <strong>Occupation:</strong> Certified Natural Chef, Culinary (Holistic) Nutritionist CNP</br >
-                            <strong>Area:</strong> Eglinton &amp; Yonge, Toronto<br />
-                            </p>
-                          </div>
-                          <div class='col-md-12 neg-15'><a href='http://trypiq.com/class.php?id=32' class='btn btn-default btn-success'>View Class (5 Seats Available)</a></div>
-                        </div>
-                        <div class='col-md-6 neg-15 desktop-padright' style='margin-bottom: 35px;'>
-                          <div class='col-md-12 neg-15' style='height: 350px; background-image: url("img/piq_toronto_cooking_class.jpg"); background-position: center; background-size: cover;'>&nbsp;</div>
-                          <div class='col-md-12 neg-15 header course-title' style='margin-top: 15px;'><a href='http://trypiq.com/class.php?id=29'>Hone Your Knife Skills with Chef Abraham</a></div>
-                          <div class='col-md-12 neg-15'><p><strong>Chef:</strong> Abraham<br />
-                            <strong>Occupation:</strong> A Chopped Canada Chef</br >
-                            <strong>Area:</strong> Eglinton &amp; Yonge, Toronto<br />
-                            </p>
-                          </div>
-                          <div class='col-md-12 neg-15'><a href='http://trypiq.com/class.php?id=29' class='btn btn-default btn-success'>View Class (5 Seats Available)</a></div>
                         </div>
                         <div class='col-md-6 neg-15 desktop-padright' style='margin-bottom: 35px;'>
                           <div class='col-md-12 neg-15' style='height: 350px; background-image: url("img/sachin_thai_soup_Toronto_Cooking_Class.jpg"); background-position: center; background-size: cover;'>&nbsp;</div>
@@ -170,7 +127,7 @@
                     <div class='col-md-12 neg-15' style='margin-top: 10px;'><hr /></div>
                     <!--3 Footer Notes-->
                     <div class='col-md-12 neg-15'>
-                        <div class='col-md-8 neg-15 pad-right'>
+                        <div class='col-md-6 neg-15 pad-right'>
                           <div class='col-md-12 neg-15' style='margin-top: 40px;'>
                             <span class='header header-large'>The Story</span>
                           </div>
@@ -178,6 +135,9 @@
                             <p>Some of us might be professional chefs, while others may have other occupations. Regardless, we all come from different walks of life...and these paths have influenced the dishes we make. Wouldn't you like to experience the lives of others in your city?</p>
                             <p>Piq is a social marketplace to take cooking classes from your neighbours. Experience where the people in your city come from, how they lived their lives, and the type of people they are through the dishes they pass onto you.</p>
                           </div>
+                        </div>
+
+                        <div class='col-md-6 neg-15'>
                           <div class='col-md-12 neg-15' style='margin-top: 40px;'>
                             <span class='header header-large'>Who Are The Chefs?</span>
                           </div>
@@ -185,10 +145,6 @@
                             <p>The chefs on Piq are anyone that is confident in their cooking. They can either be professionals with over 20+ years of experience, or hobbyists looking to share their dishes.</p>
                             <p>The classes, like tutoring classes, take place in the home of the chefs. And at the discretion of the chefs, classes may also be held in professional kitchens.</p>
                           </div>
-                        </div>
-
-                        <div class='col-md-4'>
-                          <div class="fb-page" data-href="https://www.facebook.com/trypiq/" data-tabs="timeline" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true" style='margin-top: 40px;'><div class="fb-xfbml-parse-ignore"><blockquote cite="https://www.facebook.com/trypiq/"><a href="https://www.facebook.com/trypiq/">Piq - Toronto Cooking Classes</a></blockquote></div></div>
                         </div>
                     </div>
                     <div class='col-md-12 neg-15' style='margin-top: 10px;'><hr /></div>
