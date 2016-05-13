@@ -6,6 +6,7 @@
         <title>Toronto Cooking Classes | Piq</title>
         <meta name="description" content="Piq is a social marketplace to take cooking classes from your neighbours. Experience where the people in your city come from, how they lived their lives, and the type of people they are through the dishes they pass onto you.">
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        <META NAME="ROBOTS" CONTENT="NOINDEX">
 
         <meta name="twitter:card" content="summary" />
         <meta name="twitter:site" content="@piq_toronto" /> 
