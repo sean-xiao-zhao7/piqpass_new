@@ -19,9 +19,6 @@ if(!empty($_POST)) {
 		echo "Prepare failed: (" . $mysqli_piq->errno . ") " . $mysqli_piq->error;
 	}
 
-	$dummy = 0;
-	//echo $_POST['time'] . ' ' . strtotime($_POST['time']) . ", " . $_POST['date'] . ", " . date('Y-m-d H:i:s', strtotime($_POST['date'] . ' ' . $_POST['time']));
-	//die();
 	if (strpos($time, "am")) {
 		$time = str_replace($time, "am", '');
 	} else {
@@ -195,22 +192,7 @@ if (!empty($class_ids)) {
 				if (!empty($sessions)) {
 				foreach ($sessions[$class['id']] as $session) {
 				$session_time = strtotime($session['date']);
-				$day = '';
-				switch ($session['repeat']) {
-					case 'onetime':
-						$day = date('l, F jS', $session_time);
-						break;
-					case 'weekly':
-						$day = "Repeats " . date('l', $session_time) . " of every week.";
-						break;
-					case 'monthly':
-						$day = "Repeats " . date('jS', $session_time) . " of every month.";
-						break;
-					default:
-						echo "repeat unknown";
-						break;
-				}
-
+				$day = date('l, F jS', $session_time);
 			?>
                             <!--Times-->
                             <tr>
