@@ -14,28 +14,58 @@ require_once("db/connect.php");
 //print_r($_POST); die();
 if(!empty($_POST)) {
 	//print_r($_POST); die();
-	
+
 	if (!($stmt = $mysqli_piq->prepare("insert into session (`seats`, `time`, `date`, `class_id`, `repeat`) values(?, 0, cast(? as datetime), ?, ?)"))) {
 		echo "Prepare failed: (" . $mysqli_piq->errno . ") " . $mysqli_piq->error;
 	}
-	
+
 	$dummy = 0;
-	//echo $_POST['time'] . ' ' . strtotime($_POST['time']) . ", " . $_POST['date'] . ", " . date('Y-m-d H:i:s', strtotime($_POST['date'] . ' ' . $_POST['time']));	
+	//echo $_POST['time'] . ' ' . strtotime($_POST['time']) . ", " . $_POST['date'] . ", " . date('Y-m-d H:i:s', strtotime($_POST['date'] . ' ' . $_POST['time']));
 	//die();
 	if (strpos($time, "am")) {
 		$time = str_replace($time, "am", '');
 	} else {
 		 $time = str_replace($time, "pm", '');
 	}
-	if (!$stmt->bind_param("isis", $_POST['slots'], date('Y-m-d H:i:s', strtotime($_POST['date'] . ' ' . $_POST['time'])), $_POST['class_id'], $_POST['repeat'])) {
-	    echo "Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error;
+
+	if ($_POST['repeat'] == 'weekly') {
+		$next_date = strtotime($_POST['date'] . ' ' . $_POST['time']);
+		for ($count = 0; $count <=10; $count++) {
+			if (!$stmt->bind_param("isis", $_POST['slots'], date('Y-m-d H:i:s', $next_date), $_POST['class_id'], $_POST['repeat'])) {
+			    echo "Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error;
+			}
+
+			if (!$stmt->execute()) {
+			    echo "Execute failed: (" . $stmt->errno . ") " . $stmt->error;
+			}
+			$next_date = strtotime("+1 week", $next_date);
+		}
+
+	} else if ($_POST['repeat'] == 'monthly') {
+		$next_date = strtotime($_POST['date'] . ' ' . $_POST['time']);
+		for ($count = 0; $count <=10; $count++) {
+                        if (!$stmt->bind_param("isis", $_POST['slots'], date('Y-m-d H:i:s', $next_date), $_POST['class_id'], $_POST['repeat'])) {
+                            echo "Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error;
+                        }
+
+                        if (!$stmt->execute()) {
+                            echo "Execute failed: (" . $stmt->errno . ") " . $stmt->error;
+                        }
+			$next_date = strtotime("+1 month", $next_date);
+                }
+		
+	} else {
+		if (!$stmt->bind_param("isis", $_POST['slots'], date('Y-m-d H:i:s', strtotime($_POST['date'] . ' ' . $_POST['time'])), $_POST['class_id'], $_POST['repeat'])) {
+		    echo "Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error;
+		}
+
+		if (!$stmt->execute()) {
+		    echo "Execute failed: (" . $stmt->errno . ") " . $stmt->error;
+		}
 	}
 
-	if (!$stmt->execute()) {
-	    echo "Execute failed: (" . $stmt->errno . ") " . $stmt->error;
-	}
 	$stmt->close();
-	
+
 }
 
 if (isset($_GET['delete'])) {
@@ -94,20 +124,11 @@ if (!empty($class_ids)) {
 
         <link rel="stylesheet" href="css/normalize.css">
         <link rel="stylesheet" href="css/main.css">
+        <link rel="stylesheet" href="css/style.css">
 	<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
         <script src="js/vendor/modernizr-2.8.3.min.js"></script>
         <link href="utils/jquery-timepicker/jquery_timepicker.css"  rel='stylesheet' type='text/css'>
         <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300' rel='stylesheet' type='text/css'>
-        <style>
-        .header {font-family: 'Open Sans', sans-serif; font-weight: 300;}
-        .price {font-family: 'Open Sans', sans-serif; font-weight: 300; font-size: 25px;}
-        .header-large {font-size: 25px;}
-        .header-medium {font-size: 17px;}
-        p {line-height: 1.7em; font-size: 15px; color: #333; }
-        .request {background-color: #fc6472; padding-top: 8px; padding-bottom: 8px; font-size: 18px; color: #fff;font-family: 'Open Sans', sans-serif; font-weight: 300;}
-        .small {font-size: 12px !important;}
-        .grey_td {padding:8px;}
-        </style>
     </head>
     <body style='margin-top: 40px;'>
         <!--[if lt IE 8]>
@@ -115,15 +136,11 @@ if (!empty($class_ids)) {
         <![endif]-->
 
         <!-- Add your site or application content here -->
-        <div class='row' style='width: 80%; margin: 0 auto;'>
+        <div class='row center-row'>
             <!--header-->
-            <div class='col-md-12'>
-                <div class='col-md-2' style='margin-left: -15px;'><img src='img/piqlanding1.jpg' /></div>
-                <div class='col-md-10' style='margin-top: 15px; margin-left: -15px;'>
-                  <p align='right'>
-			<?php include_once('piqpass_nav.php'); ?>
-                </p>
-                </div>
+            <div class='col-md-12 header neg-15'>
+                <div class='col-md-2'><img src='img/piqlanding1.jpg' /></div>
+		            <?php include("piqpass_nav.php"); ?>
             </div>
             <!--end header-->
             <!--body-->
@@ -147,20 +164,16 @@ if (!empty($class_ids)) {
                       <form class="form-inline" method='post' action='<?= $_SERVER['PHP_SELF'] ?>' id='add_session_form'>
 			<input type='hidden' name='class_id' value='<?= $class['id'] ?>'>
                       <div class="form-group">
-                        <label for="time" style='font-weight: 300px;'>Time:</label>
-                        <input name='time' type="text" class="form-control" id="time" style='font-size: 12px' placeholder="Eg. 7:00PM">
+                        <input name='time' type="text" class="form-control" id="time" style='width: 100px; font-size: 12px' placeholder="Select a Time">
                       </div>
                       <div class="form-group"  data-provide="datepicker">
-                        <label for="date" style='font-weight: 300px; margin-left: 20px;'> Date:</label>
-                        <input name='date' type="text" class="form-control" style='width: 180px; font-size: 12px;' id="date" data-provide="datepicker">
+                        <input name='date' type="text" class="form-control" style='width: 130px; font-size: 12px;' placeholder="Pick a Date" id="date" data-provide="datepicker">
                       </div>
 			<div class="form-group">
-                        <label for="date" style='font-weight: 300px; margin-left: 20px;'> Slots:</label>
-                        <input name='slots' type="text" class="form-control" style=' font-size: 12px;' id="slots" size='5' maxlength='5'>
+                        <input name='slots' type="text" class="form-control" style=' font-size: 12px;' id="slots" placeholder="Seats" size='3' maxlength='5'>
                       </div>
 			<div class="form-group">
-                        <label for="repeat" style='font-weight: 300px; margin-left: 20px;'> Frequency:</label>
-			<select name='repeat'  class="form-control" style=' font-size: 12px;' id="repeat">
+			<select name='repeat'  class="form-control" style=' font-size: 12px;' id="repeat" placeholder='Repeat'>
 			  <option value="onetime">One time</option>
 			  <option value="weekly">Weekly</option>
 			  <option value="monthly">Monthly</option>
@@ -178,26 +191,26 @@ if (!empty($class_ids)) {
                                 <td class='grey_td' style='width: 20%;'>&nbsp;</td>
                             </tr>
                     <!--Session-->
-			<?php	
+			<?php
 				if (!empty($sessions)) {
 				foreach ($sessions[$class['id']] as $session) {
-				$session_time = strtotime($session['date']);	
+				$session_time = strtotime($session['date']);
 				$day = '';
-				switch ($session['repeat']) { 
+				switch ($session['repeat']) {
 					case 'onetime':
 						$day = date('l, F jS', $session_time);
 						break;
 					case 'weekly':
-						$day = "Repeats " . date('l', $session_time) . " of every week."; 
+						$day = "Repeats " . date('l', $session_time) . " of every week.";
 						break;
 					case 'monthly':
-						$day = "Repeats " . date('jS', $session_time) . " of every month."; 
+						$day = "Repeats " . date('jS', $session_time) . " of every month.";
 						break;
 					default:
 						echo "repeat unknown";
-						break;						
+						break;
 				}
-							
+
 			?>
                             <!--Times-->
                             <tr>
@@ -216,7 +229,7 @@ if (!empty($class_ids)) {
         <script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
         <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.12.0.min.js"><\/script>')</script>
 	<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
-	
+
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
         <script src="js/plugins.js"></script>
