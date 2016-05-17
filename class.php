@@ -2,42 +2,33 @@
 
 require_once("models/config.php");
 require_once("stripe/init.php");
-
-
-
 require_once("db/connect.php");
-/*
+require_once('stripe/init.php');
+
+// Set your secret key: remember to change this to your live secret key in production
+// See your keys here https://dashboard.stripe.com/account/apikeys
+\Stripe\Stripe::setApiKey("sk_test_e0ZOwmIiZzNMMeUI2tkUpcy0");
+
 if (!empty($_POST)) {
+  // Get the credit card details submitted by the form
+  $token = $_POST['stripeToken'];
+  //echo "We got the token $token";
 
-	Stripe::setApiKey("sk_test_e0ZOwmIiZzNMMeUI2tkUpcy0");
-	$error = '';
-	$success = '';
-	try {
-		if (!isset($_POST['stripeToken'])) {
-			throw new Exception("The Stripe Token was not generated correctly");
-		}
+  // Create the charge on Stripe's servers - this will charge the user's card
+  try {
+    $charge = \Stripe\Charge::create(array(
+      "amount" => $_POST['amount'], // amount in cents, again
+      "currency" => "CAD",
+      "source" => $token,
+      "description" => "Example charge"
+      ));
+  } catch(\Stripe\Error\Card $e) {
+    // The card has been declined
+  }
 
-		Stripe_Charge::create(array("amount" => 1000,
-					"currency" => "usd",
-					"card" => $_POST['stripeToken']));
-		$success = 'Your payment was successful.';
+  print_r($charge);
 
-		if(!($newRequestState = $mysqli_piq->query("
-			insert into request (status, chef_id, user_id, session_id, class_id, username, class_name) values('pending', " . $_POST['chef_id'] . ", " . $loggedInUser->user_id . ", " . $_POST['session'] . ", " . $_POST['class_id'] . ", '" . $loggedInUser->displayname . "', '" . $_POST['class_name'] . "')"))) {
-			echo "Could not insert into request <br/>" . $newRequestState->error;
-		} else {
-			header('Location: dashboard.php');
-		}
-		$newRequestState->close();
-		echo $success;
-
-	}
-	catch (Exception $e) {
-		$error = $e->getMessage();
-		echo $error;
-	}
 }
-*/
 
 if (!($stmt = $mysqli_piq->prepare("
 select * from class where id = ?
@@ -179,36 +170,23 @@ $stmt->close();
 				<input type="text" size="4" class="card-expiry-year"/>
 			</div>
 		</div>
-
+-->
                   <div class='col-md-12' style='margin-left: -15px;'>
                     <select name='session' class="form-control">
                       <option>Select Time</option>
 			<?php
 				foreach ($sessions as $session) {
 				$session_time = strtotime($session['date']);
-                                $day = '';
-                                switch ($session['repeat']) {
-                                        case 'onetime':
-                                                $day = date('l, F jS', $session_time);
-                                                break;
-                                        case 'weekly':
-                                                $day = "Repeats " . date('l', $session_time) . " of every week.";
-                                                break;
-                                        case 'monthly':
-                                                $day = "Repeats " . date('jS', $session_time) . " of every month.";
-                                                break;
-                                        default:
-                                                echo "repeat unknown";
-                                                break;
-                                }
+                                $day = date('l, F jS', $session_time);
 			?>
                       <option value='<?= $session['id'] ?>'>(<?= $session['seats'] . " Slots) " . date('G:iA', $session_time) . " - " . $day; ?></option>
 			<?php } ?>
                     </select>
                   </div>
--->
+
                   <div class='col-md-12' style='margin-top: 10px;'>
-                    <center><!--<button type='submit' form='select_session' class='btn btn-success' style='width: 100%;'>--><a class='btn btn-lg btn-success' href='<?= $request_form ?>' onClick="_gaq.push(['_trackEvent', 'Book Now', 'click', '<?= $name ?>', '0']);" target='_blank'><strong>Book Now</strong></a><!--</button>--></center>
+                    <center>
+			<a id='bookButton' class='btn btn-lg btn-success' href='<?= $request_form ?>' onClick="_gaq.push(['_trackEvent', 'Book Now', 'click', '<?= $name ?>', '0']);" target='_blank'><strong>Book Now</strong></a><!--</button>--></center>
                   </div>
 		</form>
 									<div class='col-md-12 neg-15' style='margin-top: 40px;'>
@@ -266,6 +244,43 @@ $stmt->close();
                     return false; // submit from callback
                 });
             });
+	</script>
+
+	<script src="https://code.jquery.com/jquery-2.2.3.min.js"   integrity="sha256-a23g1Nt4dtEYOj7bR+vTu7+T8VP13humZFBJNIYoEJo="   crossorigin="anonymous"></script>
+
+	<script src="https://checkout.stripe.com/checkout.js"></script>
+
+	<script>
+	  var handler = StripeCheckout.configure({
+	    key: 'pk_test_5Ir0zjoUeZUgOHIWP4WRYVid',
+	    image: '/img/documentation/checkout/marketplace.png',
+	    locale: 'auto',
+	    name: 'Stripe.com',
+	    description: '2 widgets',
+	    amount: '100',
+	    currency: "CAD",
+	    token: function(token) {
+	      //console.log("token is " + token.id);
+	      $.post('<?= $_SERVER['PHP_SELF'] ?>', {'stripeToken': token.id, 'amount':<?= $price ?>}, function(data) {
+		//$( ".result" ).html( data );
+		console.log(data);
+	      });
+	    }
+	  });
+
+	  $('#bookButton').on('click', function(e) {
+	    // Open Checkout with further options:
+	    handler.open({
+
+	    });
+	    e.preventDefault();
+	  });
+
+	  // Close Checkout on page navigation:
+	  // $(window).on('popstate', function() {
+	  //   handler.close();
+	  // });
+	</script>
 
     </body>
 </html>
