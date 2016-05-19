@@ -2,42 +2,33 @@
 
 require_once("models/config.php");
 require_once("stripe/init.php");
-
-
-
 require_once("db/connect.php");
-/*
+require_once('stripe/init.php');
+
+// Set your secret key: remember to change this to your live secret key in production
+// See your keys here https://dashboard.stripe.com/account/apikeys
+\Stripe\Stripe::setApiKey("sk_test_e0ZOwmIiZzNMMeUI2tkUpcy0");
+
 if (!empty($_POST)) {
+  // Get the credit card details submitted by the form
+  $token = $_POST['stripeToken'];
+  //echo "We got the token $token";
 
-	Stripe::setApiKey("sk_test_e0ZOwmIiZzNMMeUI2tkUpcy0");
-	$error = '';
-	$success = '';
-	try {
-		if (!isset($_POST['stripeToken'])) {
-			throw new Exception("The Stripe Token was not generated correctly");
-		}
+  // Create the charge on Stripe's servers - this will charge the user's card
+  try {
+    $charge = \Stripe\Charge::create(array(
+      "amount" => $_POST['amount'], // amount in cents, again
+      "currency" => "CAD",
+      "source" => $token,
+      "description" => "Example charge"
+      ));
+  } catch(\Stripe\Error\Card $e) {
+    // The card has been declined
+  }
 
-		Stripe_Charge::create(array("amount" => 1000,
-					"currency" => "usd",
-					"card" => $_POST['stripeToken']));
-		$success = 'Your payment was successful.';
+  print_r($charge);
 
-		if(!($newRequestState = $mysqli_piq->query("
-			insert into request (status, chef_id, user_id, session_id, class_id, username, class_name) values('pending', " . $_POST['chef_id'] . ", " . $loggedInUser->user_id . ", " . $_POST['session'] . ", " . $_POST['class_id'] . ", '" . $loggedInUser->displayname . "', '" . $_POST['class_name'] . "')"))) {
-			echo "Could not insert into request <br/>" . $newRequestState->error;
-		} else {
-			header('Location: dashboard.php');
-		}
-		$newRequestState->close();
-		echo $success;
-
-	}
-	catch (Exception $e) {
-		$error = $e->getMessage();
-		echo $error;
-	}
 }
-*/
 
 if (!($stmt = $mysqli_piq->prepare("
 select * from class where id = ?
@@ -96,7 +87,6 @@ $stmt->close();
         <!-- Place favicon.ico in the root directory -->
 
         <link rel="stylesheet" href="css/normalize.css">
-        <link rel="stylesheet" href="css/sean.css">
         <link rel="stylesheet" href="css/main.css">
         <link rel="stylesheet" href="css/style.css">
         <script src="js/vendor/modernizr-2.8.3.min.js"></script>
@@ -131,8 +121,12 @@ $stmt->close();
             <!--body-->
             <div class='col-md-12' style='margin-top: 40px;'>
                   <div class='col-md-9'>
-											<div class='col-md-11' style='margin-top: 10px; height: 400px; background-image: url("img/<?= $image ?>"); background-position: center; background-size: cover;'>&nbsp;</div>
-											<div class='col-md-12 header header-large' style='margin-left: -15px; margin-top: 20px;'><?= $name ?></div>
+											<div class='col-md-11 bg-warning' style='margin-top: 25px; padding-top: 10px;'>
+												<p><Strong>What is Piq?</strong><br />
+													Piq is a social marketplace where professional chefs and hobbyists can design and promote their classes. We believe that no person can make the same food the same, and that there's a story behind the cooking of each person. We hope to provide more affordable options for those interested learning about the people of Toronto through the dishes they discover. Beyond the restaurants, we think there's a trove of culinary gems in the city waiting to be uncovered.</p>
+											</div>
+											<div class='col-md-12 header header-large' style='margin-left: -15px; margin-top: 40px;'><?= $name ?></div>
+											<div class='col-md-11' style='margin-top: 30px; height: 400px; background-image: url("img/<?= $image ?>"); background-position: center; background-size: cover;'>&nbsp;</div>
 											<div class='col-md-12' style='margin-left: -15px; margin-top: 10px;'>
 											<p>
 												<?= $description ?>
@@ -158,7 +152,7 @@ $stmt->close();
 			<input type='hidden' name='class_id' value='<?= $class_id ?>'>
 			<input type='hidden' name='chef_id' value='<?= $user_id ?>'>
 			<input type='hidden' name='class_name' value='<?= $name ?>'>
-		<!--
+<!--
 		<div class='col-md-12' style='margin-left: -15px;'>
 			<div class="form-row">
                 		<label>Card Number</label>
@@ -175,35 +169,23 @@ $stmt->close();
 				<input type="text" size="4" class="card-expiry-year"/>
 			</div>
 		</div>
+-->
                   <div class='col-md-12' style='margin-left: -15px;'>
                     <select name='session' class="form-control">
                       <option>Select Time</option>
 			<?php
 				foreach ($sessions as $session) {
 				$session_time = strtotime($session['date']);
-                                $day = '';
-                                switch ($session['repeat']) {
-                                        case 'onetime':
-                                                $day = date('l, F jS', $session_time);
-                                                break;
-                                        case 'weekly':
-                                                $day = "Repeats " . date('l', $session_time) . " of every week.";
-                                                break;
-                                        case 'monthly':
-                                                $day = "Repeats " . date('jS', $session_time) . " of every month.";
-                                                break;
-                                        default:
-                                                echo "repeat unknown";
-                                                break;
-                                }
+                                $day = date('l, F jS', $session_time);
 			?>
                       <option value='<?= $session['id'] ?>'>(<?= $session['seats'] . " Slots) " . date('G:iA', $session_time) . " - " . $day; ?></option>
 			<?php } ?>
                     </select>
                   </div>
-		-->
+
                   <div class='col-md-12' style='margin-top: 10px;'>
-                    <center><!--<button type='submit' form='select_session' class='btn btn-success' style='width: 100%;'>--><a class='btn btn-lg btn-success' href='<?= $request_form ?>' onClick="_gaq.push(['_trackEvent', 'Book Now', 'click', '<?= $name ?>', '0']);" target='_blank'><strong>Book Now</strong></a><!--</button>--></center>
+                    <center>
+			<a id='bookButton' class='btn btn-lg btn-success' href='<?= $request_form ?>' onClick="_gaq.push(['_trackEvent', 'Book Now', 'click', '<?= $name ?>', '0']);" target='_blank'><strong>Book Now</strong></a><!--</button>--></center>
                   </div>
 		</form>
 									<div class='col-md-12 neg-15' style='margin-top: 40px;'>
@@ -228,39 +210,42 @@ $stmt->close();
             r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
             ga('create','UA-76836253-1','auto');ga('send','pageview');
         </script>
-        <script>
-	// this identifies your website in the createToken call below
-            Stripe.setPublishableKey('pk_test_5Ir0zjoUeZUgOHIWP4WRYVid');
-            function stripeResponseHandler(status, response) {
-                if (response.error) {
-                    // re-enable the submit button
-                    $('.submit-button').removeAttr("disabled");
-                    // show the errors on the form
-                    $(".payment-errors").html(response.error.message);
-                } else {
-                    var form$ = $("#payment-form");
-                    // token contains id, last4, and card type
-                    var token = response['id'];
-                    // insert the token into the form so it gets submitted to the server
-                    form$.append("<input type='hidden' name='stripeToken' value='" + token + "' />");
-                    // and submit
-                    form$.get(0).submit();
-                }
-            }
-            $(document).ready(function() {
-                $("#select_session").submit(function(event) {
-                    // disable the submit button to prevent repeated clicks
-                    $('.submit-button').attr("disabled", "disabled");
-                    // createToken returns immediately - the supplied callback submits the form if there are no errors
-                    Stripe.createToken({
-                        number: $('.card-number').val(),
-                        cvc: $('.card-cvc').val(),
-                        exp_month: $('.card-expiry-month').val(),
-                        exp_year: $('.card-expiry-year').val()
-                    }, stripeResponseHandler);
-                    return false; // submit from callback
-                });
-            });
+
+	<script src="https://code.jquery.com/jquery-2.2.3.min.js"   integrity="sha256-a23g1Nt4dtEYOj7bR+vTu7+T8VP13humZFBJNIYoEJo="   crossorigin="anonymous"></script>
+
+	<script src="https://checkout.stripe.com/checkout.js"></script>
+
+	<script>
+	  var handler = StripeCheckout.configure({
+	    key: 'pk_test_5Ir0zjoUeZUgOHIWP4WRYVid',
+	    image: 'img/piqlanding1.jpg',
+	    locale: 'auto',
+	    name: 'Piq',
+	    description: '<?=  date('G:iA', $session_time) . " - " . $day ?> for class <?= $name ?>',
+	    amount: '100',
+	    currency: "CAD",
+	    token: function(token) {
+	      //console.log("token is " + token.id);
+	      $.post('<?= $_SERVER['PHP_SELF'] ?>', {'stripeToken': token.id, 'amount':<?= $price ?>}, function(data) {
+		//$( ".result" ).html( data );
+		console.log(data);
+	      });
+	    }
+	  });
+
+	  $('#bookButton').on('click', function(e) {
+	    // Open Checkout with further options:
+	    handler.open({
+
+	    });
+	    e.preventDefault();
+	  });
+
+	  // Close Checkout on page navigation:
+	  // $(window).on('popstate', function() {
+	  //   handler.close();
+	  // });
+	</script>
 
     </body>
 </html>
