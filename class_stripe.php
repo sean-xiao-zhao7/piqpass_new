@@ -18,16 +18,29 @@ if (!empty($_POST)) {
   try {
     $charge = \Stripe\Charge::create(array(
       "amount" => $_POST['amount'], // amount in cents, again
-      "currency" => "CAD",
+      "currency" => "USD",
       "source" => $token,
-      "description" => "Example charge"
+      "description" => $_POST['class_name'] . ' - ' . $_POST['session']
       ));
   } catch(\Stripe\Error\Card $e) {
     // The card has been declined
+	echo false;
+	die();
   }
 
-  print_r($charge);
+	//print_r($_POST); 
 
+	$stmt = $mysqli_piq->prepare("update session set seats = seats - 1 where id = ?");
+	$stmt->bind_param('i', $_POST['session_id']);
+	$result = $stmt->execute();		
+	if (!$result) {
+		error_log("could not decrement seats for session id " . $_POST['session_id']);			
+		echo false;		
+	} else {
+		echo true;
+	}
+ 
+	die();
 }
 
 if (!($stmt = $mysqli_piq->prepare("
@@ -171,15 +184,20 @@ $stmt->close();
 		</div>
 -->
                   <div class='col-md-12' style='margin-left: -15px;'>
-                    <select name='session' class="form-control">
+                    <select name='session' class="form-control" id='sessions_select'>
                       <option>Select Time</option>
 			<?php
 				foreach ($sessions as $session) {
-				$session_time = strtotime($session['date']);
-                                $day = date('l, F jS', $session_time);
+					if ($session['seats'] > 0) {
+						$session_time = strtotime($session['date']);
+						$day = date('l, F jS', $session_time);				
 			?>
-                      <option value='<?= $session['id'] ?>'>(<?= $session['seats'] . " Slots) " . date('G:iA', $session_time) . " - " . $day; ?></option>
-			<?php } ?>
+						<option value='<?= $session['id'] ?>'>(<?= $session['seats'] . " Slots) " . date('G:iA', $session_time) . " - " . $day; ?></option>
+			<?php 
+					}
+				}
+			
+			 ?>
                     </select>
                   </div>
 
@@ -220,25 +238,37 @@ $stmt->close();
 	    key: 'pk_test_5Ir0zjoUeZUgOHIWP4WRYVid',
 	    image: 'img/piqlanding1.jpg',
 	    locale: 'auto',
-	    name: 'Piq',
-	    description: '<?=  date('G:iA', $session_time) . " - " . $day ?> for class <?= $name ?>',
-	    amount: '100',
-	    currency: "CAD",
+	    name: '<?= $name ?>',
+	    description: '<?=  date('G:iA', $session_time) . " - " . $day ?>',
+	    amount: '<?= $price * 100 ?>',
+	    currency: "USD",
 	    token: function(token) {
-	      //console.log("token is " + token.id);
-	      $.post('<?= $_SERVER['PHP_SELF'] ?>', {'stripeToken': token.id, 'amount':<?= $price ?>}, function(data) {
-		//$( ".result" ).html( data );
-		console.log(data);
-	      });
-	    }
-	  });
+	      //console.log("token is " + token.id)
+			$.post(
+				'<?= $_SERVER['PHP_SELF'] ?>', 
+				{
+					'stripeToken': token.id,
+					'amount': <?= $price * 100 ?>,
+					'class_name': '<?= $name ?>',
+					'session': $('#sessions_select').find(":selected").text(),
+					'session_id': $('#sessions_select').find(":selected").val()
+				}, 
+				function(data) {
+					//$( ".result" ).html( data );
+					console.log(data);
+				}
+			);
+		}	
+	});
 
 	  $('#bookButton').on('click', function(e) {
 	    // Open Checkout with further options:
-	    handler.open({
-
-	    });
-	    e.preventDefault();
+		if ($('#sessions_select').find(":selected").text() == 'Select Time') {
+			alert('Please select a session.');
+		} else {
+			handler.open({});
+		}
+	    	e.preventDefault();
 	  });
 
 	  // Close Checkout on page navigation:
