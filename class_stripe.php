@@ -30,16 +30,27 @@ if (!empty($_POST)) {
 
 	//print_r($_POST); 
 
+	// update session by decrementing the seats
 	$stmt = $mysqli_piq->prepare("update session set seats = seats - 1 where id = ?");
 	$stmt->bind_param('i', $_POST['session_id']);
 	$result = $stmt->execute();		
 	if (!$result) {
 		error_log("could not decrement seats for session id " . $_POST['session_id']);			
 		echo false;		
-	} else {
-		echo true;
-	}
+	} 
+
+	//add a new row in the request table to keep track. Not really a request at this point since no approval is required.
+	$stmt = $mysqli_piq->prepare("insert into request (status, user_id, session_id, class_id, class_name) 
+					values('approved', ?, ?, ?, ?)");
+	$stmt->bind_param('iiis', $loggedInUser->user_id, $_POST['session_id'], $_POST['class_id'], $_POST['class_name']);
+	$result = $stmt->execute();
+	if (!$result) {
+		error_log("could not make a new request for session id " . $_POST['session_id']);
+                echo false;
+	} 
  
+	echo true;
+	$stmt->close();
 	die();
 }
 
@@ -251,7 +262,8 @@ $stmt->close();
 					'amount': <?= $price * 100 ?>,
 					'class_name': '<?= $name ?>',
 					'session': $('#sessions_select').find(":selected").text(),
-					'session_id': $('#sessions_select').find(":selected").val()
+					'session_id': $('#sessions_select').find(":selected").val(),
+					'class_id': <?= $class_id ?>
 				}, 
 				function(data) {
 					//$( ".result" ).html( data );
