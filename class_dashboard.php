@@ -13,7 +13,7 @@ if (!$loggedInUser->checkPermission(array(3)))
 
 require_once("db/connect.php");
 
-if (!($result = $mysqli_piq->query("select * from class"))) {
+if (!($result = $mysqli_piq->query("select * from class where user_id = " . $loggedInUser->user_id))) {
         echo "Prepare failed: (" . $mysqli_piq->errno . ") " . $mysqli_piq->error;
 } else {
 	$classes = [];
