@@ -136,6 +136,7 @@ require_once("models/header.php");
                       <div class="form-group">
                         <label for="exampleInputEmail1">Password</label>
                         <input type="password" name='password' class="form-control" id="pass" placeholder="Password">
+                         <a href="forgot-password.php">Forgot Your Password?</a>
                       </div>
                       <button type="submit" class="btn btn-default">Login</button>
                       </form>
