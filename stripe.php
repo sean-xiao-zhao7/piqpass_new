@@ -4,7 +4,7 @@ require('stripe/init.php');
 
 // Set your secret key: remember to change this to your live secret key in production
 // See your keys here https://dashboard.stripe.com/account/apikeys
-\Stripe\Stripe::setApiKey("sk_test_BQokikJOvBiI2HlWgH4olfQ2");
+\Stripe\Stripe::setApiKey("sk_test_e0ZOwmIiZzNMMeUI2tkUpcy0");
 
 if (!empty($_POST)) {
   // Get the credit card details submitted by the form
@@ -22,6 +22,8 @@ if (!empty($_POST)) {
   } catch(\Stripe\Error\Card $e) {
     // The card has been declined
   }
+
+  print_r($charge);
   
 }
 
@@ -35,7 +37,7 @@ if (!empty($_POST)) {
 
 <script>
   var handler = StripeCheckout.configure({
-    key: 'pk_test_6pRNASCoBOKtIshFeQd4XMUh',
+    key: 'pk_test_5Ir0zjoUeZUgOHIWP4WRYVid',
     image: '/img/documentation/checkout/marketplace.png',
     locale: 'auto',
     name: 'Stripe.com',
@@ -44,10 +46,9 @@ if (!empty($_POST)) {
     currency: "CAD", 
     token: function(token) {
       //console.log("token is " + token.id);
-      alert('about to post!');
       $.post('stripe.php', {'stripeToken': token.id}, function(data) {
         //$( ".result" ).html( data );
-        alert(data);
+        document.write(data);
       });
     }
   });

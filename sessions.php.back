@@ -2,50 +2,12 @@
 
 require_once("models/config.php");
 require_once("stripe/init.php");
-
-require_once("models/header.php");
-if (!$loggedInUser) {
-        header('Location: login.php');
-}
-
 require_once("db/connect.php");
-/*
-if (!empty($_POST)) {
-
-	Stripe::setApiKey("sk_test_e0ZOwmIiZzNMMeUI2tkUpcy0");
-	$error = '';
-	$success = '';
-	try {
-		if (!isset($_POST['stripeToken'])) {
-			throw new Exception("The Stripe Token was not generated correctly");
-		}
-
-		Stripe_Charge::create(array("amount" => 1000,
-					"currency" => "usd",
-					"card" => $_POST['stripeToken']));
-		$success = 'Your payment was successful.';
-
-		if(!($newRequestState = $mysqli_piq->query("
-			insert into request (status, chef_id, user_id, session_id, class_id, username, class_name) values('pending', " . $_POST['chef_id'] . ", " . $loggedInUser->user_id . ", " . $_POST['session'] . ", " . $_POST['class_id'] . ", '" . $loggedInUser->displayname . "', '" . $_POST['class_name'] . "')"))) {
-			echo "Could not insert into request <br/>" . $newRequestState->error;
-		} else {
-			header('Location: dashboard.php');
-		}
-		$newRequestState->close();
-		echo $success;
-
-	}
-	catch (Exception $e) {
-		$error = $e->getMessage();
-		echo $error;
-	}
-}
-*/
 
 if (!($stmt = $mysqli_piq->prepare("
 select * from class where id = ?
 "))) {
-	echo "Prepare failed: (" . $mysqli_piq->errno . ") " . $mysqli_piq->error;
+        echo "Prepare failed: (" . $mysqli_piq->errno . ") " . $mysqli_piq->error;
 }
 
 if (!$stmt->bind_param("i", $_GET['id'])) {
@@ -62,7 +24,7 @@ $stmt->fetch();
 $stmt->close();
 
 if (!($stmt = $mysqli_piq->prepare("
-	select seats, `date`, `repeat`, id from `session` where `class_id` = ?
+select seats, `date`, `repeat`, id from session where class_id = ?
 "))) {
 	echo "Prepare failed: (" . $mysqli_piq->errno . ") " . $mysqli_piq->error;
 }
@@ -74,12 +36,12 @@ if (!$stmt->bind_param("i", $_GET['id'])) {
 if (!$stmt->execute()) {
     echo "Execute failed: (" . $stmt->errno . ") " . $stmt->error;
 }
-
-$stmt->bind_result($seats, $date, $repeat, $id);
+$stmt->store_result();
+$stmt->bind_result($seats, $date, $repeat, $session_id);
 
 $sessions = [];
 while($stmt->fetch()) {
-	$sessions[] = array('seats' => $seats, 'date' => $date, 'repeat' => $repeat, 'id' => $id);
+	$sessions[] = array('seats' => $seats, 'date' => $date, 'repeat' => $repeat, 'id' => $session_id);
 }
 
 $stmt->close();

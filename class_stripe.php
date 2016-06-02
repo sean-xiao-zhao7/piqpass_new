@@ -50,8 +50,8 @@ if (!empty($_POST)) {
 		error_log("successfully charged card");
 
 		/* SQL - add session for user after paying */
-		$stmt = $mysqli_piq->prepare("insert into request (status, user_id, session_id, class_id, class_name, chef_id) values('approved', ?, ?, ?, ?, ?)");
-		$stmt->bind_param("iiisi", $loggedInUser->user_id, $_POST['session_id'], $_POST['class_id'], $_POST['class_name'], $_POST['chef_id']);
+		$stmt = $mysqli_piq->prepare("insert into request (status, user_id, session_id, class_id, class_name, chef_id, username) values('approved', ?, ?, ?, ?, ?, ?)");
+		$stmt->bind_param("iiisis", $loggedInUser->user_id, $_POST['session_id'], $_POST['class_id'], $_POST['class_name'], $_POST['chef_id'], $_POST['username']);
 		$stmt->execute();
 
 		echo true;
@@ -282,6 +282,7 @@ $stmt->close();
 					'class_name': '<?= $name ?>',
 					'class_id': '<?= $class_id ?>',
 					'chef_id': '<?= $user_id ?>',
+					'username': '<?= $loggedInUser->displayname ?>',
 					'session': $('#sessions_select').find(":selected").text(),
 					'session_id': $('#sessions_select').find(":selected").val()
 				},

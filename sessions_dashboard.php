@@ -19,6 +19,7 @@ if(!empty($_POST)) {
 		echo "Prepare failed: (" . $mysqli_piq->errno . ") " . $mysqli_piq->error;
 	}
 
+	$time = $_POST['time'];
 	if (strpos($time, "am")) {
 		$time = str_replace($time, "am", '');
 	} else {
@@ -161,16 +162,16 @@ if (!empty($class_ids)) {
                       <form class="form-inline" method='post' action='<?= $_SERVER['PHP_SELF'] ?>' id='add_session_form'>
 			<input type='hidden' name='class_id' value='<?= $class['id'] ?>'>
                       <div class="form-group">
-                        <input name='time' type="text" class="form-control" id="time" style='width: 100px; font-size: 12px' placeholder="Select a Time">
+                        <input name='time' type="text" class="form-control time" style='width: 100px; font-size: 12px' placeholder="Select a Time">
                       </div>
                       <div class="form-group"  data-provide="datepicker">
-                        <input name='date' type="text" class="form-control" style='width: 130px; font-size: 12px;' placeholder="Pick a Date" id="date" data-provide="datepicker">
+                        <input name='date' type="text" class="form-control date" style='width: 130px; font-size: 12px;' placeholder="Pick a Date" data-provide="datepicker">
                       </div>
 			<div class="form-group">
-                        <input name='slots' type="text" class="form-control" style=' font-size: 12px;' id="slots" placeholder="Seats" size='3' maxlength='5'>
+                        <input name='slots' type="text" class="form-control slots" style=' font-size: 12px;' placeholder="Seats" size='3' maxlength='5'>
                       </div>
 			<div class="form-group">
-			<select name='repeat'  class="form-control" style=' font-size: 12px;' id="repeat" placeholder='Repeat'>
+			<select name='repeat'  class="form-control repeat" style=' font-size: 12px;' placeholder='Repeat'>
 			  <option value="onetime">One time</option>
 			  <option value="weekly">Weekly</option>
 			  <option value="monthly">Monthly</option>
@@ -226,8 +227,8 @@ if (!empty($class_ids)) {
             e.src='https://www.google-analytics.com/analytics.js';
             r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
             ga('create','UA-XXXXX-X','auto');ga('send','pageview');
-		$('#date').datepicker();
-		$('#time').timepicker();
+		$('.date').datepicker();
+		$('.time').timepicker();
         </script>
     </body>
 </html>

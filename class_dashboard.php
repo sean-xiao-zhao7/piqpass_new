@@ -82,9 +82,14 @@ $result->close();
         			    <div class='col-md-12 mobile-neg-15'><span class='header header-large'><a href='class.php?id=<?= $class['id'] ?>'><?= $class['name']; ?></a></span></div>
         			    <div class='col-md-12 mobile-neg-15' style='margin-top: 10px;'><p><?= $class['description']; ?></p></div>
         			    <div class='col-md-12 mobile-neg-15' style='margin-top: 10px;'>
-              				<a href='class.php?id=<?= $class['id'] ?>' class='btn btn-sm btn-default'>View</a>
+              				<a href='class_stripe.php?id=<?= $class['id'] ?>' class='btn btn-sm btn-default'>View</a>
               				<a href='edit_class.php?class_id=<?= $class['id'] ?>' class='btn btn-sm btn-default'>Edit</a>
-              				<a href='#' class='btn btn-sm btn-default'>Manage Sessions</a>
+					<!--
+					<form method='post' id='go2enrollment' action='class_enrollment.php'>
+						<input type='hidden' name='class_id' value='<?= $class['id'] ?>' />
+	              				<input type='submit' name='submit' class='btn btn-sm btn-default' value='Enrollment' />
+					</form>
+					-->
               		</div>
         			</div>
     		    </div>

@@ -13,6 +13,6 @@ if(isUserLoggedIn())
 	$loggedInUser->userLogOut();
 }
 
-header("Location: https://piqpass.com/site/index.php");
+header("Location: /index.php");
 
 die();

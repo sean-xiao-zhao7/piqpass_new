@@ -7,21 +7,35 @@ http://usercake.com
 require_once("models/config.php");
 if (!securePage($_SERVER['PHP_SELF'])){die();}
 require_once("models/header.php");
+
+if (!$loggedInUser) {
+	header('Location: login.php');
+}
+
 require_once("db/connect.php");
 
 if (!($result = $mysqli_piq->query("select * from request where user_id = " . $loggedInUser->user_id))) {
         echo "DB Query failed: (" . $mysqli_piq->errno . ") " . $mysqli_piq->error;
 } else {
-        $pending_reqs = [];
+        $session_ids = [];
+	$pending_reqs = [];
         $approved_reqs = [];
         while ($row = $result->fetch_array(MYSQLI_ASSOC)) {
-                if ($row['status'] == 'pending') {
-                        $pending_reqs[] = $row;
-                }
-                else if ($row['status'] == 'approved') {
-                        $approved_reqs[] = $row;
+                if ($row['status'] == 'approved') {
+                	$approved_reqs[] = $row;
+			$session_ids[] = $row['session_id'];
                 }
         }
+
+	// put all sessions in hash with session_id as key for ease of access
+	if (!empty($session_ids)) {
+		$sessions = [];
+		$stmt = $mysqli_piq->query("select * from session where id in (" . implode(',', $session_ids) . ")");
+		while ($row = $stmt->fetch_array(MYSQLI_ASSOC)) {
+			$sessions[$row['id']] = $row;	
+		}		
+		$stmt->close();
+	}
 }
 
 $result->close();
@@ -101,6 +115,14 @@ $result->close();
             <div class='col-md-12'>
                 <div class='col-md-4' style='margin-bottom: 20px; margin-top: 10px;'>
                     <div class='col-md-12' style='margin-top: 10px;'><p><strong>Class:</strong> <?= $request['class_name'] ?></p></div>
+			<div>
+				<?php
+					$s = $sessions[$request['session_id']];
+					$session_time = strtotime($s['date']);
+                                        $day = date('l, F jS', $session_time);
+	                        ?>
+                                <?= date('G:iA', $session_time) . " - " . $day; ?>
+			</div>
                     <div class='col-md-12' style='margin-top: 10px;'>
                         <a href="class.php?id=<?= $request['class_id'] ?>" class='btn btn-default btn-sm'>View Class</a>
                     </div>

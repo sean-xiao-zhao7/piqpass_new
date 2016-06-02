@@ -3,10 +3,7 @@
 require_once("models/config.php");
 require_once("stripe/init.php");
 
-require_once("models/header.php");
-if (!$loggedInUser) {
-        header('Location: login.php');
-}
+
 
 require_once("db/connect.php");
 /*
@@ -134,17 +131,7 @@ $stmt->close();
             <!--body-->
             <div class='col-md-12' style='margin-top: 40px;'>
                   <div class='col-md-9'>
-											<div class='col-md-11 bg-warning' style='margin-top: 25px; padding-top: 10px;'>
-												<p><Strong>What is Piq?</strong><br />
-													Piq is a social marketplace where professional chefs and hobbyists can design and promote their classes. We believe that no person can make the same food the same, and that there's a story behind the cooking of each person. We hope to provide more affordable options for those interested learning about the people of Toronto through the dishes they discover. Beyond the restaurants, we think there's a trove of culinary gems in the city waiting to be uncovered.</p>
-											</div>
-											<div class='col-md-12 header header-large' style='margin-left: -15px; margin-top: 40px;'><?= $name ?></div>
-											<div class='col-md-11' style='margin-top: 30px; height: 400px; background-image: url("img/<?= $image ?>"); background-position: center; background-size: cover;'>&nbsp;</div>
-											<div class='col-md-12' style='margin-left: -15px; margin-top: 10px;'>
-											<p>
-												<?= $description ?>
-											</p>
-											</div>
+											<div class='col-md-12 header header-large' style='margin-left: -15px; margin-top: 40px;'>Sessions for <?= $name ?></div>
                       <!--maps-->
                       <!--
 											<div class='col-md-12' style='margin-left: -15px; margin-top: 20px;'><span class='header header-large'>Map</span></div>

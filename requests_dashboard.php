@@ -30,21 +30,33 @@ if (!empty($_POST)) {
 }
 
 if (!($result = $mysqli_piq->query("select * from request where chef_id = " . $loggedInUser->user_id))) {
+
         echo "DB Query failed: (" . $mysqli_piq->errno . ") " . $mysqli_piq->error;
+
 } else {
+	$session_ids = [];
         $pending_reqs = [];
         $approved_reqs = [];
         while ($row = $result->fetch_array(MYSQLI_ASSOC)) {
-		if ($row['status'] == 'pending') {
-	                $pending_reqs[] = $row;
-		}
-		else if ($row['status'] == 'approved') {
-			$approved_reqs[] = $row;
-		}
+                if ($row['status'] == 'approved') {
+                        $approved_reqs[] = $row;
+                        $session_ids[] = $row['session_id'];
+                }
         }
+
+	if (!empty($session_ids)) {
+		// put all sessions in hash with session_id as key for ease of access
+		$sessions = [];
+		$stmt = $mysqli_piq->query("select * from session where id in (" . implode(',', $session_ids) . ")");
+		while ($row = $stmt->fetch_array(MYSQLI_ASSOC)) {
+			$sessions[$row['id']] = $row;
+		}
+		$stmt->close();
+	}
 }
 
 $result->close();
+
 ?>
 <!doctype html>
 <html class="no-js" lang="">
@@ -85,54 +97,29 @@ $result->close();
 		            <?php include("piqpass_nav.php"); ?>
             </div>
             <!--end header-->
-
-
 		<?php
-			if (!empty($pending_reqs)) {
-				echo "<div class='col-md-12 header header-large' style='margin-top: 50px; margin-bottom: 30px'>Class Requests<div>";
-			}
-			foreach ($pending_reqs as $request) {
-		?>
-            <div class='col-md-12' style='margin-left: -15px;'>
-                <div class='col-md-4' style='margin-left: -15px; margin-bottom: 20px; margin-top: 10px;'>
-                    <div class='col-md-12 header header-large' style='margin-top: 20px;'><?= $request['username'] ?></div>
-                    <div class='col-md-12' style='margin-top: 10px;'><p><strong>Class:</strong> <?= $request['class_name'] ?></p></div>
-                    <div class='col-md-12' style='margin-top: 10px;'>
-                        <a href="class.php?id=<?= $request['class_id'] ?>" class='btn btn-default btn-sm'>View Class</a>
-			<form id='confirm' method='post' name='confirm' action="<?= $_SERVER['PHP_SELF'] ?>">
-				<input type='hidden' form='confirm' name='status' value='approved' />
-				<input type='hidden' form='confirm' name='session_id' value='<?= $request['session_id'] ?>' />
-				<input type='hidden' form='confirm' name='request_id' value="<?= $request['id'] ?>" />
-				<button type='submit' form='confirm' class='btn btn-default btn-sm'>Confirm</button>
-			</form>
-			<form id='deny' method='post' name='deny' action="<?= $_SERVER['PHP_SELF'] ?>">
-				<input type='hidden' form='deny' name='status' value='approved' />
-				<input type='hidden' form='deny' name='session_id' value='<?= $request['session_id'] ?>' />
-                                <input type='hidden' form='deny' name='request_id' value="<?= $request['id'] ?>" />
-                                <button type='submit' form='deny' class='btn btn-default btn-sm'>Deny</button>
-			</form>
-                    </div>
-                </div>
-            </div>
-		<?php } ?>
-
-	    <?php
-			if (!empty($approved_reqs)) {
+                        if (!empty($approved_reqs)) {
                                 echo "<h4 style='margin-top: 20px; float:left; margin-left: 15px;'>Approved requests</h4>";
                         }
+                ?>
+
+		<div class='col-md-12'>
+		<ul>
+		<?php
                         foreach ($approved_reqs as $request) {
                 ?>
-            <div class='col-md-12' style='margin-left: -15px;'>
-                <div class='col-md-4' style='margin-left: -15px; margin-bottom: 20px; margin-top: 10px;'>
-                    <div class='col-md-12 header header-large' style='margin-top: 20px;'><?= $request['username'] ?></div>
-                    <div class='col-md-12' style='margin-top: 10px;'><p><strong>Class:</strong> <?= $request['class_name'] ?></p></div>
-                    <div class='col-md-12' style='margin-top: 10px;'>
-                        <a href="class.php?id=<?= $request['class_id'] ?>" class='btn btn-default btn-sm'>View Class</a>
-                    </div>
-                </div>
-            </div>
+			<?php
+				$s = $sessions[$request['session_id']];
+				$session_time = strtotime($s['date']);
+				$day = date('l, F jS', $session_time);
+			?>
+			<li>
+			User <?= $request['username'] ?> requested session <?= date('G:iA', $session_time) . " - " . $day; ?> for class <a href="class.php?id=<?= $request['class_id'] ?>"><?= $request['class_name'] ?></a>
+			</li>
                 <?php }
-		?>
+                ?>
+		</ul>
+		</div>
         </div>
         <script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
         <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.12.0.min.js"><\/script>')</script>
