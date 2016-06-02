@@ -142,10 +142,10 @@ $stmt->close();
             <!--header-->
             <div class='col-md-12'>
                 <div class='col-md-2'><img src='img/piqlanding1.jpg' /></div>
-			 				  <?php // include_once('piqpass_nav.php'); ?>
 								<div class='col-md-10' align='left' style='margin-top: 20px;'>
 									<div align='left' class="fb-like" data-href="https://www.facebook.com/trypiq" data-layout="standard" data-action="like" data-show-faces="false" data-share="true"></div>
 								</div>
+							<?php include_once('piqpass_nav.php'); ?>
             </div>
             <!--end header-->
             <!--body-->
