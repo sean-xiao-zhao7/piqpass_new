@@ -8,9 +8,8 @@ if (!securePage($_SERVER['PHP_SELF'])){die();}
 if(!isUserLoggedIn()) { header("Location: login.php"); die(); }
 
 //Forms posted
-if(!empty($_POST))
+if(isset($_POST['submit']))
 {
-	//print_r($_POST); die();
 	$class_name = trim($_POST["name"]);
 	$image = $_POST["image"] ? trim($_POST["image"]) : "";
 	$description = trim($_POST["class_description"]);
@@ -24,41 +23,30 @@ if(!empty($_POST))
 	$imageFileType = pathinfo($_FILES["image"]["name"],PATHINFO_EXTENSION);
 	$target_file = random_string(15) . "." . $imageFileType;
 	$uploadOk = 1;
+
 	// Check if image file is a actual image or fake image
-	if(isset($_POST["submit"])) {
-	    $check = getimagesize($_FILES["image"]["tmp_name"]);
-	    if($check !== false) {
-		echo "File is an image - " . $check["mime"] . ".";
-		$uploadOk = 1;
-	    } else {
-		echo "File is not an image.";
-		$uploadOk = 0;
-	    }
+	$message = false;
+	if($image) {
+		$check = getimagesize($_FILES["image"]["tmp_name"]);
+		if($check === false) {
+			$message = "File is not an image - " . $check["mime"] . ".";
+		} else if ($_FILES["image"]["size"] > 1000000) {
+			$message = "Sorry, your file is too large.";
+		} else if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg" && $imageFileType != "gif" ) {
+			$message = "Sorry, only JPG, JPEG, PNG & GIF files are allowed.";
+		} else { 
+		
+			if (!move_uploaded_file($_FILES["image"]["tmp_name"], $target_dir . $target_file)) {
+				$message = "Sorry, there was an error uploading your file.";
+			} else {
+				// echo "The file ". basename( $_FILES["image"]["name"]). " has been uploaded.";
+				$image = $target_file;
+			}
+		}
+		if ($message) { echo $message; die(); }		
 	}
 
-	// Check file size
-	if ($_FILES["image"]["size"] > 1000000) {
-	    echo "Sorry, your file is too large.";
-	    $uploadOk = 0;
-	}
-
-	// Allow certain file formats
-	if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg"
-	&& $imageFileType != "gif" ) {
-	    echo "Sorry, only JPG, JPEG, PNG & GIF files are allowed.";
-	    $uploadOk = 0;
-	}
-
-	// Check if $uploadOk is set to 0 by an error
-	if ($uploadOk == 0) {
-	    echo "Sorry, your file was not uploaded.";
-	// if everything is ok, try to upload file
-	} else {
-	    if (!move_uploaded_file($_FILES["image"]["tmp_name"], $target_dir . $target_file)) {
-		echo "Sorry, there was an error uploading your file.";
-	    } else {
-		// echo "The file ". basename( $_FILES["image"]["name"]). " has been uploaded.";
-		$image = $target_file;
+	if ($message === false) {
 
 		$mysqli_piq = new mysqli($db_host_piq, $db_user_piq, $db_pass_piq, $db_name_piq);
 		//GLOBAL $mysqli_piq;
@@ -88,10 +76,8 @@ if(!empty($_POST))
 			$row = $result->fetch_array(MYSQLI_ASSOC);
 			header('Location: class.php?id=' . $row['id']);
 			$result->close();			
-		}
-	    }
-	}
-
+		}	
+	}	
 }
 
 require_once("models/header.php");
@@ -144,6 +130,11 @@ require_once("models/header.php");
                 <div class='col-md-8' style='margin-bottom: 50px;'>
                     <div class='col-md-12 header header-large' style='margin-top: 20px;'>Add A Class</div>
                     <div class='col-md-12' style='margin-top: 20px;'>
+			<?php 
+				if ($message !== false) {
+			?>
+				<div><?= $message ?></div>
+			<?php } ?>
                       <form id='add_class_form' name='add_class_form' action='<?= $_SERVER['PHP_SELF'] ?>' method='post' enctype="multipart/form-data">
 											<div class="form-group">
                         <label for="exampleInputEmail1">Class Name</label>
@@ -174,6 +165,7 @@ require_once("models/header.php");
                         <input type='text' name="request_form" class="form-control" id="request_form" value="<?= $request_form ?>">
                       </div>
 			<input name="user_id" type='hidden' value='<?= $loggedInUser->user_id; ?>'>
+			<input name='submit' type='hidden' value=1 />
                       <button type="submit" class="btn btn-default">Add Class</button>
                       </form>
                     </div>
