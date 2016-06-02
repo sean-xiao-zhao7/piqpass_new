@@ -204,8 +204,10 @@ $stmt->close();
                     <select name='session' class="form-control" id='sessions_select'>
                       <option>Select Time</option>
 			<?php
+				$total_seats = 0;
 				foreach ($sessions as $session) {
 					if ($session['seats'] > 0) {
+						$total_seats += $session['seats'];
 						$session_time = strtotime($session['date']);
 						$day = date('l, F jS', $session_time);
 			?>
@@ -213,14 +215,19 @@ $stmt->close();
 			<?php
 					}
 				}
-
 			 ?>
                     </select>
                   </div>
 
-                  <div class='col-md-12' style='margin-top: 10px; margin-left: -15px;'>
+                  <div class='col-md-12' style='margin-top: 10px; margin-left: -15px;'			>
                     <center>
-			                     <a id='bookButton' class='btn btn-lg btn-success' href='<?= $request_form ?>' onClick="_gaq.push(['_trackEvent', 'Book Now', 'click', '<?= $name ?>', '0']);" target='_blank'><strong>Book Now</strong></a><!--</button>-->
+				<?php
+					if ($total_seats > 0) {
+				?>
+			                     <a id='bookButton' class='btn btn-lg btn-success' href='<?= $request_form ?>' onClick="_gaq.push(['_trackEvent', 'Book Now', 'click', '<?= $name ?>', '0']);" target='_blank'><strong>Book Now</strong></a>
+				<?php } else { ?>
+						<button class='btn btn-lg btn-success'>No more sessions available</button>
+				<?php } ?>
                     </center>
                   </div>
 
