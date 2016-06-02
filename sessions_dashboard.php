@@ -81,7 +81,7 @@ if (isset($_GET['delete'])) {
         $stmt->close();
 }
 
-if (!($result = $mysqli_piq->query("select id, name from class where user_id = " . $loggedInUser->user_id))) {
+if (!($result = $mysqli_piq->query("select id, name, image from class where user_id = " . $loggedInUser->user_id))) {
         echo "Select Prepare failed: (" . $mysqli_piq->errno . ") " . $mysqli_piq->error;
 } else {
         $classes = [];
@@ -155,7 +155,7 @@ if (!empty($class_ids)) {
 			foreach ($classes as $class) {
 		?>
             <div class='col-md-12' style='margin-top: 20px;'>
-                <div class='col-md-3' style='background-color: #999; height: 220px; margin-bottom: 20px; margin-top: 10px;'>&nbsp;</div>
+		<div class='col-md-3' style='height: 220px; margin-bottom: 20px; margin-top: 10px; background-image: url("<?= IMAGE_PATH . $class['image'] ?>"); background-position: center; background-size: cover;'>&nbsp;</div>
                 <div class='col-md-9'>
                     <div class='col-md-12'><span class='header header-large'><?= $class['name'] ?></span></div>
                     <div class='col-md-12' style='margin-top: 10px;'>
