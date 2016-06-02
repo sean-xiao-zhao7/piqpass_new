@@ -5,6 +5,13 @@ require_once("stripe/init.php");
 require_once("db/connect.php");
 require_once('stripe/init.php');
 
+require_once("models/header.php");
+
+if (!$loggedInUser) {
+        header('Location: login.php');
+}
+
+
 // Set your secret key: remember to change this to your live secret key in production
 // See your keys here https://dashboard.stripe.com/account/apikeys
 \Stripe\Stripe::setApiKey("sk_test_e0ZOwmIiZzNMMeUI2tkUpcy0");
@@ -25,32 +32,31 @@ if (!empty($_POST)) {
   } catch(\Stripe\Error\Card $e) {
     // The card has been declined
 	echo false;
+	error_log("card denied");
 	die();
   }
 
-	//print_r($_POST); 
-
-	// update session by decrementing the seats
+	//print_r($_POST);
+	
+	/* SQL - decrement session seats */
 	$stmt = $mysqli_piq->prepare("update session set seats = seats - 1 where id = ?");
 	$stmt->bind_param('i', $_POST['session_id']);
-	$result = $stmt->execute();		
-	if (!$result) {
-		error_log("could not decrement seats for session id " . $_POST['session_id']);			
-		echo false;		
-	} 
-
-	//add a new row in the request table to keep track. Not really a request at this point since no approval is required.
-	$stmt = $mysqli_piq->prepare("insert into request (status, user_id, session_id, class_id, class_name) 
-					values('approved', ?, ?, ?, ?)");
-	$stmt->bind_param('iiis', $loggedInUser->user_id, $_POST['session_id'], $_POST['class_id'], $_POST['class_name']);
 	$result = $stmt->execute();
 	if (!$result) {
-		error_log("could not make a new request for session id " . $_POST['session_id']);
-                echo false;
-	} 
- 
-	echo true;
-	$stmt->close();
+		error_log("could not decrement seats for session id " . $_POST['session_id']);
+		echo false;
+
+	} else {
+		error_log("successfully charged card");
+
+		/* SQL - add session for user after paying */
+		$stmt = $mysqli_piq->prepare("insert into request (status, user_id, session_id, class_id, class_name, chef_id) values('approved', ?, ?, ?, ?, ?)");
+		$stmt->bind_param("iiisi", $loggedInUser->user_id, $_POST['session_id'], $_POST['class_id'], $_POST['class_name'], $_POST['chef_id']);
+		$stmt->execute();
+
+		echo true;
+	}
+
 	die();
 }
 
@@ -116,8 +122,8 @@ $stmt->close();
         <script src="js/vendor/modernizr-2.8.3.min.js"></script>
         <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300' rel='stylesheet' type='text/css'>
 				<script>(function(){var qs,js,q,s,d=document,gi=d.getElementById,ce=d.createElement,gt=d.getElementsByTagName,id='typef_orm',b='https://s3-eu-west-1.amazonaws.com/share.typeform.com/';if(!gi.call(d,id)){js=ce.call(d,'script');js.id=id;js.src=b+'share.js';q=gt.call(d,'script')[0];q.parentNode.insertBefore(js,q)}id=id+'_';if(!gi.call(d,id)){qs=ce.call(d,'link');qs.rel='stylesheet';qs.id=id;qs.href=b+'share-button.css';s=gt.call(d,'head')[0];s.appendChild(qs,s)}})()</script>
-
-    </head>
+        <script src="//load.sumome.com/" data-sumo-site-id="5e445f80d3e8e136270db5056c7a69fd73be6ee2dc7d167cd25ad34e2dc09fe1" async="async"></script>
+  </head>
     <body style='margin-top: 40px;'>
 			<div id="fb-root"></div>
 			<script>(function(d, s, id) {
@@ -151,11 +157,12 @@ $stmt->close();
 											</div>
 											<div class='col-md-12 header header-large' style='margin-left: -15px; margin-top: 40px;'><?= $name ?></div>
 											<div class='col-md-11' style='margin-top: 30px; height: 400px; background-image: url("img/<?= $image ?>"); background-position: center; background-size: cover;'>&nbsp;</div>
-											<div class='col-md-12' style='margin-left: -15px; margin-top: 10px;'>
+                      <div class='col-md-12' style='margin-left: -15px; margin-top: 10px;'>
 											<p>
 												<?= $description ?>
 											</p>
 											</div>
+                      <div class="fb-comments col-md-12" style='margin-left: -15px; margin-top: 30px;' data-width="100%" data-href="http://trypiq.com/class.php?id=<?php echo $class_id;?>" data-numposts="5"></div>
                       <!--maps-->
                       <!--
 											<div class='col-md-12' style='margin-left: -15px; margin-top: 20px;'><span class='header header-large'>Map</span></div>
@@ -170,7 +177,6 @@ $stmt->close();
                   </div>
                   <div class='col-md-12 bg-warning' style='margin-left: -15px; margin-top: 10px; margin-bottom: 20px;'>
                     <p><center><span class='small'>This class fee of $<?= $price ?> include the cost of ingredients, materials provided by the instructor, clean-up fee, any refreshments provided, and the instructor's time spent acquiring the ingredients and teaching the class.</span></center></p>
-
 									</div>
 		<form method='post' name='select_session' action='<?= $_SERVER['PHP_SELF'] ?>' id='select_session'>
 			<input type='hidden' name='class_id' value='<?= $class_id ?>'>
@@ -201,23 +207,36 @@ $stmt->close();
 				foreach ($sessions as $session) {
 					if ($session['seats'] > 0) {
 						$session_time = strtotime($session['date']);
-						$day = date('l, F jS', $session_time);				
+						$day = date('l, F jS', $session_time);
 			?>
 						<option value='<?= $session['id'] ?>'>(<?= $session['seats'] . " Slots) " . date('G:iA', $session_time) . " - " . $day; ?></option>
-			<?php 
+			<?php
 					}
 				}
-			
+
 			 ?>
                     </select>
                   </div>
 
-                  <div class='col-md-12' style='margin-top: 10px;'>
+                  <div class='col-md-12' style='margin-top: 10px; margin-left: -15px;'>
                     <center>
-			<a id='bookButton' class='btn btn-lg btn-success' href='<?= $request_form ?>' onClick="_gaq.push(['_trackEvent', 'Book Now', 'click', '<?= $name ?>', '0']);" target='_blank'><strong>Book Now</strong></a><!--</button>--></center>
+			                     <a id='bookButton' class='btn btn-lg btn-success' href='<?= $request_form ?>' onClick="_gaq.push(['_trackEvent', 'Book Now', 'click', '<?= $name ?>', '0']);" target='_blank'><strong>Book Now</strong></a><!--</button>-->
+                    </center>
+                  </div>
+
+                  <div class='col-md-12' style='margin-left: -15px; margin-top: 50px;'>
+                    <p class='small'><strong>Refund Policy:</strong> Piq offers full refunds as long the order is canceled 3 days before the class. We also offer a 50% discount if you request a refund the day of the class. All students will be refunded 100% of the class fees if the chef cancels the class at any time.</p>
+                    <p class='small'><strong>Payment Methods:</strong> All Canadian users can use Visa, MasterCard, and American Express. U.S. consumers can use Visa, MasterCard, American Express, JCB, Discover, and Diners Club.</p>
+                    <p class='small'><strong>Securing Payments</strong><br />
+                    All payments on Piq is processed using Stripe - a highly secure payment processor. Piq does not store any credit card information.</p>
+                  </div>
+                  <div class='col-md-12' style='margin-top: 10px; margin-left: -15px;'>
+                    <center>
+			                     <a class='btn btn-sm btn-default' href='https://travis47.typeform.com/to/pULTZo' target='_blank'><strong>Contact Us</strong></a><!--</button>-->
+                    </center>
                   </div>
 		</form>
-									<div class='col-md-12 neg-15' style='margin-top: 40px;'>
+									<div class='col-md-12 neg-15' style='margin-top: 20px;'>
 										<div class="fb-page" data-href="https://www.facebook.com/trypiq/" data-tabs="timeline" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true" style='margin-top: 40px;'><div class="fb-xfbml-parse-ignore"><blockquote cite="https://www.facebook.com/trypiq/"><a href="https://www.facebook.com/trypiq/">Piq - Toronto Cooking Classes</a></blockquote></div></div>
 									</div>
                 </div>
@@ -247,7 +266,7 @@ $stmt->close();
 	<script>
 	  var handler = StripeCheckout.configure({
 	    key: 'pk_test_5Ir0zjoUeZUgOHIWP4WRYVid',
-	    image: 'img/piqlanding1.jpg',
+	    image: 'img/stripe_logo.jpg',
 	    locale: 'auto',
 	    name: '<?= $name ?>',
 	    description: '<?=  date('G:iA', $session_time) . " - " . $day ?>',
@@ -256,21 +275,25 @@ $stmt->close();
 	    token: function(token) {
 	      //console.log("token is " + token.id)
 			$.post(
-				'<?= $_SERVER['PHP_SELF'] ?>', 
+				'<?= $_SERVER['PHP_SELF'] ?>',
 				{
 					'stripeToken': token.id,
 					'amount': <?= $price * 100 ?>,
 					'class_name': '<?= $name ?>',
+					'class_id': '<?= $class_id ?>',
+					'chef_id': '<?= $user_id ?>',
 					'session': $('#sessions_select').find(":selected").text(),
-					'session_id': $('#sessions_select').find(":selected").val(),
-					'class_id': <?= $class_id ?>
-				}, 
+					'session_id': $('#sessions_select').find(":selected").val()
+				},
 				function(data) {
 					//$( ".result" ).html( data );
 					console.log(data);
+					if (data) {
+						window.location = 'dashboard.php';
+					}
 				}
 			);
-		}	
+		}
 	});
 
 	  $('#bookButton').on('click', function(e) {
