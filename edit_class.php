@@ -9,6 +9,7 @@ if(!isUserLoggedIn()) { header("Location: login.php"); die(); }
 
 if(!empty($_GET) || isset($_POST['class_id'])){
 	require_once("db/connect.php");
+
 	$stmt = $mysqli_piq->prepare("select * from class where id = ?");
 	$class_id = ($_POST['class_id'] ? $_POST['class_id'] : $_GET['class_id']);
 	$stmt->bind_param("i", $class_id);
@@ -18,7 +19,17 @@ if(!empty($_GET) || isset($_POST['class_id'])){
 	$stmt->fetch();
 	$stmt->close();
 	if (!$loggedInUser->checkPermission(array(2)) && $user_id != $loggedInUser->user_id) {
+		header("Location: class_dashboard.php"); 
+		die();
+	}
+
+	if (isset($_GET['delete'])) {
+		$stmt = $mysqli_piq->prepare("delete from class where id = ?");
+		$stmt->bind_param('i', $_GET['class_id']);
+		$stmt->execute();
+		$stmt->close();
 		header("Location: class_dashboard.php");
+		die();
 	}
 }
 
@@ -198,6 +209,7 @@ require_once("models/header.php");
                       <button type="submit" class="btn btn-default">Save class information</button>
                       </form>
                     </div>
+			<a href='<?= $_SERVER['PHP_SELF'] ?>?delete=1&class_id=<?= $class_id ?>' onclick="return confirm('Are you sure?')" >Delete class</a>
                 </div>
             </div>
         </div>
