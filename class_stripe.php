@@ -4,6 +4,7 @@ require_once("models/config.php");
 require_once("stripe/init.php");
 require_once("db/connect.php");
 require_once('stripe/init.php');
+require_once('utils/utils.php');
 
 require_once("models/header.php");
 
@@ -37,7 +38,7 @@ if (!empty($_POST)) {
   }
 
 	//print_r($_POST);
-	
+
 	/* SQL - decrement session seats */
 	$stmt = $mysqli_piq->prepare("update session set seats = seats - 1 where id = ?");
 	$stmt->bind_param('i', $_POST['session_id']);
@@ -66,7 +67,7 @@ select * from class where id = ?
 	echo "Prepare failed: (" . $mysqli_piq->errno . ") " . $mysqli_piq->error;
 }
 
-if (!$stmt->bind_param("i", $_GET['id'])) {
+if (!$stmt->bind_param("i", $_GET['class_id'])) {
     echo "Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error;
 }
 
@@ -74,10 +75,12 @@ if (!$stmt->execute()) {
     echo "Execute failed: (" . $stmt->errno . ") " . $stmt->error;
 }
 $stmt->store_result();
-$stmt->bind_result($name, $description, $image, $price, $user_id, $address, $intersection, $class_id, $request_form);
+$stmt->bind_result($name, $description, $image, $price, $user_id, $address, $intersection, $id, $request_form);
 $stmt->fetch();
 
 $stmt->close();
+
+$class_id = $id;
 
 if (!($stmt = $mysqli_piq->prepare("
 	select seats, `date`, `repeat`, id from `session` where `class_id` = ?
@@ -119,12 +122,18 @@ $stmt->close();
         <link rel="stylesheet" href="css/normalize.css">
         <link rel="stylesheet" href="css/main.css">
         <link rel="stylesheet" href="css/style.css">
+
+	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+	<link rel="stylesheet" href="//blueimp.github.io/Gallery/css/blueimp-gallery.min.css">
+	<link rel="stylesheet" href="bootstrap/gallery/css/bootstrap-image-gallery.min.css">
+
         <script src="js/vendor/modernizr-2.8.3.min.js"></script>
         <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300' rel='stylesheet' type='text/css'>
 				<script>(function(){var qs,js,q,s,d=document,gi=d.getElementById,ce=d.createElement,gt=d.getElementsByTagName,id='typef_orm',b='https://s3-eu-west-1.amazonaws.com/share.typeform.com/';if(!gi.call(d,id)){js=ce.call(d,'script');js.id=id;js.src=b+'share.js';q=gt.call(d,'script')[0];q.parentNode.insertBefore(js,q)}id=id+'_';if(!gi.call(d,id)){qs=ce.call(d,'link');qs.rel='stylesheet';qs.id=id;qs.href=b+'share-button.css';s=gt.call(d,'head')[0];s.appendChild(qs,s)}})()</script>
         <script src="//load.sumome.com/" data-sumo-site-id="5e445f80d3e8e136270db5056c7a69fd73be6ee2dc7d167cd25ad34e2dc09fe1" async="async"></script>
   </head>
     <body style='margin-top: 40px;'>
+
 			<div id="fb-root"></div>
 			<script>(function(d, s, id) {
 				var js, fjs = d.getElementsByTagName(s)[0];
@@ -161,6 +170,56 @@ $stmt->close();
 											<p>
 												<?= $description ?>
 											</p>
+											</div>
+											<div class='col-md-11'>
+											<!-- The Bootstrap Image Gallery lightbox, should be a child element of the document body -->
+											<div id="blueimp-gallery" class="blueimp-gallery">
+											    <!-- The container for the modal slides -->
+											    <div class="slides"></div>
+											    <!-- Controls for the borderless lightbox -->
+											    <h3 class="title"></h3>
+											    <a class="prev">‹</a>
+											    <a class="next">›</a>
+											    <a class="close">×</a>
+											    <a class="play-pause"></a>
+											    <ol class="indicator"></ol>
+											    <!-- The modal dialog, which will be used to wrap the lightbox content -->
+											    <div class="modal fade">
+												<div class="modal-dialog">
+												    <div class="modal-content">
+													<div class="modal-header">
+													    <button type="button" class="close" aria-hidden="true">&times;</button>
+													    <h4 class="modal-title"></h4>
+													</div>
+													<div class="modal-body next"></div>
+													<div class="modal-footer">
+													    <button type="button" class="btn btn-default pull-left prev">
+														<i class="glyphicon glyphicon-chevron-left"></i>
+														Previous
+													    </button>
+													    <button type="button" class="btn btn-primary next">
+														Next
+														<i class="glyphicon glyphicon-chevron-right"></i>
+													    </button>
+													</div>
+												    </div>
+												</div>
+											    </div>
+											</div>
+											<div id='links'>
+											<?php
+												$gallery = scandir(IMAGE_PATH . $class_id);
+												if (!empty($gallery)) {
+													foreach ($gallery as $pic) {
+														if ($pic != '.' && $pic != '..') {
+											?>
+														<a href="<?= IMAGE_PATH . $class_id . "/" . $pic ?>" data-gallery>
+															<img src="<?= IMAGE_PATH . $class_id . "/" . $pic ?>" alt="Dish image">
+														    </a>														
+											<?php 
+												}}
+											} ?>
+											</div>
 											</div>
                       <div class="fb-comments col-md-12" style='margin-left: -15px; margin-top: 30px;' data-width="100%" data-href="http://trypiq.com/class.php?id=<?php echo $class_id;?>" data-numposts="5"></div>
                       <!--maps-->
@@ -226,7 +285,7 @@ $stmt->close();
 				?>
 			                     <a id='bookButton' class='btn btn-lg btn-success' href='<?= $request_form ?>' onClick="_gaq.push(['_trackEvent', 'Book Now', 'click', '<?= $name ?>', '0']);" target='_blank'><strong>Book Now</strong></a>
 				<?php } else { ?>
-						<button class='btn btn-lg btn-success'>No more sessions available</button>
+						<button class='btn btn-lg btn-danger'>Sold Out</button>
 				<?php } ?>
                     </center>
                   </div>
@@ -249,12 +308,48 @@ $stmt->close();
                 </div>
             </div>
 
+	<div id="blueimp-gallery" class="blueimp-gallery">
+	    <!-- The container for the modal slides -->
+	    <div class="slides"></div>
+	    <!-- Controls for the borderless lightbox -->
+	    <h3 class="title"></h3>
+	    <a class="prev">‹</a>
+	    <a class="next">›</a>
+	    <a class="close">×</a>
+	    <a class="play-pause"></a>
+	    <ol class="indicator"></ol>
+	    <!-- The modal dialog, which will be used to wrap the lightbox content -->
+	    <div class="modal fade">
+		<div class="modal-dialog modal-lg">
+		    <div class="modal-content">
+			<div class="modal-header">
+			    <button type="button" class="close" aria-hidden="true">×</button>
+			    <h4 class="modal-title"></h4>
+			</div>
+			<div class="modal-body next"></div>
+			<div class="modal-footer">
+			    <button type="button" class="btn btn-default pull-left prev">
+				<i class="glyphicon glyphicon-chevron-left"></i>
+				Previous
+			    </button>
+			    <button type="button" class="btn btn-primary next">
+				Next
+				<i class="glyphicon glyphicon-chevron-right"></i>
+			    </button>
+			</div>
+		    </div>
+		</div>
+	    </div>
+	</div>
+
         <script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
         <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.12.0.min.js"><\/script>')</script>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
         <script src="js/plugins.js"></script>
         <script src="js/main.js"></script>
+	<script src="//blueimp.github.io/Gallery/js/jquery.blueimp-gallery.min.js"></script>
+        <script src="bootstrap/gallery/js/bootstrap-image-gallery.min.js"></script>
 
         <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
 				<script>
