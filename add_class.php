@@ -34,8 +34,8 @@ if(isset($_POST['submit']))
 			$message = "Sorry, your file is too large.";
 		} else if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg" && $imageFileType != "gif" ) {
 			$message = "Sorry, only JPG, JPEG, PNG & GIF files are allowed.";
-		} else { 
-		
+		} else {
+
 			if (!move_uploaded_file($_FILES["image"]["tmp_name"], $target_dir . $target_file)) {
 				$message = "Sorry, there was an error uploading your file.";
 			} else {
@@ -43,7 +43,7 @@ if(isset($_POST['submit']))
 				$image = $target_file;
 			}
 		}
-		if ($message) { echo $message; die(); }		
+		if ($message) { echo $message; die(); }
 	}
 
 	if ($message === false) {
@@ -56,7 +56,7 @@ if(isset($_POST['submit']))
 			exit();
 		}
 
-		if (!($stmt = $mysqli_piq->prepare("INSERT INTO class (name, image, description, intersection, address, price, request_form, user_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?)"))) {
+		if (!($stmt = $mysqli_piq->prepare("INSERT INTO class (name, image, description, intersection, address, price, request_form, user_id, approval) VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'pending')"))) {
 			echo "Prepare failed: (" . $mysqli_piq->errno . ") " . $mysqli_piq->error;
 		}
 
@@ -74,10 +74,10 @@ if(isset($_POST['submit']))
 			echo "Select query failed: (" . $mysqli_piq->errno . ") " . $mysqli_piq->error;
 		} else {
 			$row = $result->fetch_array(MYSQLI_ASSOC);
-			header('Location: class.php?id=' . $row['id']);
-			$result->close();			
-		}	
-	}	
+			header('Location: class_stripe.php?id=' . $row['id']);
+			$result->close();
+		}
+	}
 }
 
 require_once("models/header.php");
@@ -130,7 +130,7 @@ require_once("models/header.php");
                 <div class='col-md-8' style='margin-bottom: 50px;'>
                     <div class='col-md-12 header header-large' style='margin-top: 20px;'>Add A Class</div>
                     <div class='col-md-12' style='margin-top: 20px;'>
-			<?php 
+			<?php
 				if ($message !== false) {
 			?>
 				<div><?= $message ?></div>
@@ -141,29 +141,32 @@ require_once("models/header.php");
                         <input name="name" class="form-control" id="name" placeholder="Burger Making 101" value=<?= $class_name ?>>
                       </div>
                       <div class="form-group">
-                        <label for="exampleInputFile">Logo image</label>
+                        <label for="exampleInputFile">Class Image</label>
                         <input name='image' type="file" id="image">
                       </div>
                       <div class="form-group">
                         <label for="exampleInputEmail1">Description</label>
                         <textarea name='class_description' class="form-control" id='class_description' rows="3"  value="<?= $description ?>"></textarea>
                       </div>
+											<!--
                       <div class="form-group">
                         <label for="exampleInputEmail1">Major Intersection (Displayed to Public)</label>
                         <input name="intersection" class="form-control" id="name" placeholder="eg. Yonge and Eglinton"  value="<?= $intersection ?>">
                       </div>
+										-->
                       <div class="form-group">
-                        <label for="exampleInputEmail1">Exact Address (Sent to Confirmed Students)</label>
+                        <label for="exampleInputEmail1">Exact Address (Only Sent to Confirmed Students)</label>
                         <input name="address" class="form-control" id="name" placeholder="eg. 12 Soudan Dr., Toronto, Ontario M3K 1K3"  value="<?= $address ?>">
                       </div>
                       <div class="form-group">
                         <label for="exampleInputEmail1">Class Fee (Number Only)</label>
                         <input name="price" class="form-control" id="confirmpass" placeholder="25"  value="<?= $price ?>">
                       </div>
-			<div class="form-group">
+											<!--<div class="form-group">
                         <label for="exampleInputEmail1">Request Form (Request from Admin)</label>
                         <input type='text' name="request_form" class="form-control" id="request_form" value="<?= $request_form ?>">
                       </div>
+										-->
 			<input name="user_id" type='hidden' value='<?= $loggedInUser->user_id; ?>'>
 			<input name='submit' type='hidden' value=1 />
                       <button type="submit" class="btn btn-default">Add Class</button>
