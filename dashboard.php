@@ -24,6 +24,7 @@ if (!($result = $mysqli_piq->query("select * from request where user_id = " . $l
                 if ($row['status'] == 'approved') {
                 	$approved_reqs[] = $row;
 			$session_ids[] = $row['session_id'];
+			$class_ids[] = $row['class_id'];
                 }
         }
 
@@ -32,9 +33,18 @@ if (!($result = $mysqli_piq->query("select * from request where user_id = " . $l
 		$sessions = [];
 		$stmt = $mysqli_piq->query("select * from session where id in (" . implode(',', $session_ids) . ")");
 		while ($row = $stmt->fetch_array(MYSQLI_ASSOC)) {
-			$sessions[$row['id']] = $row;	
-		}		
+			$sessions[$row['id']] = $row;
+		}
 		$stmt->close();
+	}
+
+	if (!empty($approved_reqs)) {		
+		$addresses = [];
+		$stmt = $mysqli_piq->query("select address from class where id in (". implode(',', $class_ids) . ")");
+		while ($row = $stmt->fetch_array(MYSQLI_ASSOC)) {
+                        $addresses[$row['class_id']] = $row['address'];
+                }
+                $stmt->close();
 	}
 }
 
@@ -47,7 +57,7 @@ $result->close();
     <head>
         <meta charset="utf-8">
         <meta http-equiv="x-ua-compatible" content="ie=edge">
-        <title></title>
+        <title>Dashboard | Piq - Toronto Cooking Classes</title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -82,17 +92,17 @@ $result->close();
             </div>
             <!--end header-->
             <!--body-->
-            <div class='col-md-12' style='margin-top: 40px;'>
+						<?php if (empty($approved_reqs)) { ?>
+						<div class='col-md-12' style='margin-top: 40px;'>
                 <div class='col-md-6' style='margin-bottom: 20px; margin-top: 10px;'>
                     <div class='col-md-12' style='height: 300px; border: 4px dashed #f6edc1;'>
                         <div class='col-md-12'style='margin-top: 120px;'><span ><center><a href='./browse.php' class='btn btn-default'>Browse Classes</a></center></span></div>
                     </div>
                 </div>
             </div>
-
-		<?php
+						<?php }
                         if (!empty($pending_reqs)) {
-                                echo "<h4 style='margin-top: 20px; float:left; margin-left: 15px;'>Pending requests</h4>";
+                                echo "<div class='col-md-12'><h4 style='margin-top: 20px; float:left;'>Pending requests</h4></div>";
                         }
                         foreach ($pending_reqs as $request) {
                 ?>
@@ -108,27 +118,37 @@ $result->close();
 
             <?php
                         if (!empty($approved_reqs)) {
-                                echo "<h4 style='margin-top: 20px; float:left; margin-left: 15px;'>Approved requests</h4>";
+                                echo "<div class='col-md-12' style='margin-top: 30px;'><h4 class='header header-large' style='margin-top: 20px; float:left; margin-left: 15px;'>Confirmed Registrations</h4></div> \n
+																<div class='col-md-12'>";
                         }
                         foreach ($approved_reqs as $request) {
                 ?>
-            <div class='col-md-12'>
-                <div class='col-md-4' style='margin-bottom: 20px; margin-top: 10px;'>
-                    <div class='col-md-12' style='margin-top: 10px;'><p><strong>Class:</strong> <?= $request['class_name'] ?></p></div>
-			<div>
-				<?php
-					$s = $sessions[$request['session_id']];
-					$session_time = strtotime($s['date']);
-                                        $day = date('l, F jS', $session_time);
-	                        ?>
-                                <?= date('G:iA', $session_time) . " - " . $day; ?>
-			</div>
+
+                <div class='col-md-4 neg-15' style='margin-bottom: 20px; margin-top: 10px;'>
+                    <div class='col-md-12' style='margin-top: 10px;'><p>Title: <?= $request['class_name'] ?></p></div>
+							  		<div class='col-md-12' style='margin-top: 10px;'>
+											<?php
+												$s = $sessions[$request['session_id']];
+												$session_time = strtotime($s['date']);
+							          $day = date('l, F jS', $session_time); ?>
+							          <p>Time: <?= date('G:iA', $session_time) . " - " . $day; ?></p>
+										</div>
+		                <div class='col-md-12' style='margin-top: 10px;'><p>Seat: 1 Person</p></div>
+		                <div class='col-md-12' style='margin-top: 10px;'>Address<p><?= $addresses[$request['class_id']] ?></p></div>
                     <div class='col-md-12' style='margin-top: 10px;'>
                         <a href="class.php?id=<?= $request['class_id'] ?>" class='btn btn-default btn-sm'>View Class</a>
                     </div>
                 </div>
-            </div>
                 <?php }
+								if (!empty($approved_reqs)) { ?>
+										<div class='col-md-4 neg-15' style='margin-bottom: 20px; margin-top: 10px;'>
+		                    <div class='col-md-12' style='height: 200px; border: 4px dashed #f6edc1;'>
+		                        <div class='col-md-12'style='margin-top: 80px;'><span ><center><a href='./browse.php' class='btn btn-default'>Browse More Classes</a></center></span></div>
+		                    </div>
+		                </div>
+								<?php
+								echo "</div>";
+								}
                 ?>
 
         </div>
