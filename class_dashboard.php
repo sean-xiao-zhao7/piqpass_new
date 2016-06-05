@@ -71,18 +71,51 @@ $result->close();
 		            <?php include("piqpass_nav.php"); ?>
             </div>
             <!--end header-->
+            <div class='col-md-12' style='margin-top: 50px; padding: 10px;'>
+              <div class='col-md-4 neg-15'>
+                 <h2 class='header header-large'><strong>How To Post Classes</strong></h2>
+                 <p>
+                   <ol>
+                     <li>Add your first class: <a href='add_class.php'>click here</a>.</li>
+                     <li>Add images to your class. Click on the <strong><i>Add Images</i></strong> button beside the class below.</li>
+                     <li>Schedule sessions for your class: <a href='sessions_dashboard.php'>click here</a>.</li>
+                   </ol>
+                 </p>
+               </div>
+               <div class='col-md-4'>
+                  <h2 class='header header-large'>Class Tips</h2>
+                  <p>
+                    <ul>
+                      <li>Single dish classes sell best between $18-$25 per person.</li>
+                      <li>Multi-course classes sell best between $45 - $66 per person.</li>
+                      <li>Name your classes with fun titles. For example, An evening of Mexican Taco Delights.</li>
+                      <li>Classes with themes sell best. For example, Spanish Cuisine.</li>
+                    </ul>
+                  </p>
+                </div>
+                <div class='col-md-4'>
+                   <h2 class='header header-large'>Promoting Yourself</h2>
+                   <p>
+                     <ul>
+                       <li>Share the link of your class on social media.</li>
+                       <li>Sharing links on LinkedIn, Facebook and Twitter gets the best results.</li>
+                     </ul>
+                   </p>
+                 </div>
+            </div>
             <!--Class List-->
-            <div class='col-md-12 header header-large' style='margin-top: 50px; margin-bottom: 30px'>Your Classes</div>
+
 		<?php
-		foreach ($classes as $class) {
+    if (!empty($classes)) { echo "<div class='col-md-12 header header-large' style='margin-top: 20px; margin-bottom: 30px'>Your Classes</div>"; }
+    foreach ($classes as $class) {
 		?>
     		    <div class='col-md-12' style='margin-bottom: 70px;'>
         			<div class='col-md-5' style='height: 300px; background-image: url("<?= IMAGE_PATH . $class['image'] ?>"); background-position: center; background-size: cover;'>&nbsp;</div>
         			<div class='col-md-7 mobile-neg-15'>
-        			    <div class='col-md-12 mobile-neg-15'><span class='header header-large'><a href='class.php?id=<?= $class['id'] ?>'><?= $class['name']; ?></a></span></div>
+        			    <div class='col-md-12 mobile-neg-15'><span class='header header-large'><a href='class_stripe.php?class_id=<?= $class['id'] ?>'><?= $class['name']; ?></a></span></div>
         			    <div class='col-md-12 mobile-neg-15' style='margin-top: 10px;'><p><?= $class['description']; ?></p></div>
         			    <div class='col-md-12 mobile-neg-15' style='margin-top: 10px;'>
-              				<a href='class_stripe.php?id=<?= $class['id'] ?>' class='btn btn-sm btn-default'>View</a>
+              				<a href='class_stripe.php?class_id=<?= $class['id'] ?>' class='btn btn-sm btn-default'>View</a>
               				<a href='edit_class.php?class_id=<?= $class['id'] ?>' class='btn btn-sm btn-default'>Edit</a>
 					<!--
 					<form method='post' id='go2enrollment' action='class_enrollment.php'>

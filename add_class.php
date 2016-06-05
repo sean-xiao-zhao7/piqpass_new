@@ -74,7 +74,7 @@ if(isset($_POST['submit']))
 			echo "Select query failed: (" . $mysqli_piq->errno . ") " . $mysqli_piq->error;
 		} else {
 			$row = $result->fetch_array(MYSQLI_ASSOC);
-			header('Location: class_stripe.php?id=' . $row['id']);
+			header('Location: class_stripe.php?class_id=' . $row['id']);
 			$result->close();
 		}
 	}

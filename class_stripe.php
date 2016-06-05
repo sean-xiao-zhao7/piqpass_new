@@ -75,7 +75,7 @@ if (!$stmt->execute()) {
     echo "Execute failed: (" . $stmt->errno . ") " . $stmt->error;
 }
 $stmt->store_result();
-$stmt->bind_result($name, $description, $image, $price, $user_id, $address, $intersection, $id, $request_form);
+$stmt->bind_result($name, $description, $image, $price, $user_id, $address, $intersection, $id, $request_form, $approval);
 $stmt->fetch();
 
 $stmt->close();
@@ -104,7 +104,6 @@ while($stmt->fetch()) {
 }
 
 $stmt->close();
-
 ?>
 
 <!doctype html>
@@ -208,6 +207,7 @@ $stmt->close();
 											</div>
 											<div id='links'>
 											<?php
+												if (file_exists(IMAGE_PATH . $class_id)) {
 												$gallery = scandir(IMAGE_PATH . $class_id);
 												if (!empty($gallery)) {
 													foreach ($gallery as $pic) {
@@ -217,7 +217,7 @@ $stmt->close();
 															<img src="<?= IMAGE_PATH . $class_id . "/" . $pic ?>" alt="Dish image">
 														    </a>														
 											<?php 
-												}}
+												}}}
 											} ?>
 											</div>
 											</div>
@@ -371,7 +371,7 @@ $stmt->close();
 	    image: 'img/stripe_logo.jpg',
 	    locale: 'auto',
 	    name: '<?= $name ?>',
-	    description: '<?=  date('G:iA', $session_time) . " - " . $day ?>',
+	    description: $('#sessions_select').find(":selected").text(), 
 	    amount: '<?= $price * 100 ?>',
 	    currency: "USD",
 	    token: function(token) {

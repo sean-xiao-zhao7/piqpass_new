@@ -57,7 +57,7 @@ if(!empty($_POST))
                         $successes[] = lang("ACCOUNT_EMAIL_UPDATED");
                 }
         }
-	
+
 	if ($password_new != "" OR $password_confirm != "")
         {
                 if(trim($password_new) == "")
@@ -140,31 +140,30 @@ require_once("models/header.php");
             <!--body-->
             <div class='col-md-12 neg-15' style='margin-top: 40px;'>
                 <div class='col-md-6' style='margin-bottom: 50px;'>
-                    <div class='col-md-12 header header-large' style='margin-top: 20px;'>Create Student Profile</div>
+                    <div class='col-md-12 header header-large' style='margin-top: 20px;'>Update Profile</div>
                     <!-- <div class='col-md-12 bg-danger' style='margin-top: 15px; padding-top: 10px;'></div> -->
 		    <?= resultBlock($errors,$successes); ?>
                     <div class='col-md-12' style='margin-top: 20px;'>
 
 			<form name='updateAccount' action='<?= $_SERVER['PHP_SELF'] ?>' method='post'>
 			<div class="form-group">
-			<label>Password:</label>
-			<input type='password' name='password' />
+			<label>Email:</label>
+			<input type='text' class="form-control" name='email' value='<?= $loggedInUser->email ?>' />
 			</div>
 			<div class="form-group">
-			<label>Email:</label>
-			<input type='text' name='email' value='<?= $loggedInUser->email ?>' />
+			<label>Old Password:</label>
+			<input type='password' class="form-control" name='password' />
+			</div>
+      <div class="form-group">
+			<label>New Password:</label>
+			<input type='password' class="form-control" name='passwordc' />
 			</div>
                         <div class="form-group">
-			<label>New Pass:</label>
-			<input type='password' name='passwordc' />
+			<label>Confirm New Password:</label>
+			<input type='password' class="form-control" name='passwordcheck' />
 			</div>
-                        <div class="form-group">
-			<label>Confirm Pass:</label>
-			<input type='password' name='passwordcheck' />
-			</div>
-                        <div class="form-group">
-			<label>&nbsp;</label>
-			<input type='submit' value='Update' class='submit' />
+      <div class="form-group">
+			<input type='submit' value='Update' class='btn btn-sm btn-success' />
 			</div>
 			</form>
                       </form>

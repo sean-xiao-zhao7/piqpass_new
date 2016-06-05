@@ -120,7 +120,8 @@ require_once("models/header.php");
             <!--body-->
             <div class='col-md-12 neg-15' style='margin-top: 40px;'>
                 <div class='col-md-6' style='margin-bottom: 50px;'>
-                    <div class='col-md-12 header header-large' style='margin-top: 20px;'>Create Student Profile</div>
+                    <div class='col-md-12 header header-large' style='margin-top: 20px;'>Create Student Account</div>
+                    <div class='col-md-12'><p><i>A Student Account is used to take cooking classes taught by other chefs.</i></p></div>
                     <!-- <div class='col-md-12 bg-danger' style='margin-top: 15px; padding-top: 10px;'></div> -->
 		    <?= resultBlock($errors,$successes); ?>
                     <div class='col-md-12' style='margin-top: 20px;'>

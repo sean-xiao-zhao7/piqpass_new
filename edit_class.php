@@ -15,7 +15,7 @@ if(!empty($_GET) || isset($_POST['class_id'])){
 	$stmt->bind_param("i", $class_id);
 	$stmt->execute();
 	$stmt->store_result();
-	$stmt->bind_result($class_name, $description, $image, $price, $user_id, $address, $intersection, $class_id, $request_form);
+	$stmt->bind_result($class_name, $description, $image, $price, $user_id, $address, $intersection, $class_id, $request_form, $approval);
 	$stmt->fetch();
 	$stmt->close();
 	if (!$loggedInUser->checkPermission(array(2)) && $user_id != $loggedInUser->user_id) {
@@ -33,10 +33,48 @@ if(!empty($_GET) || isset($_POST['class_id'])){
 	}
 }
 
-//Forms posted
-if(!empty($_POST))
+if(isset($_POST['gallery'])) {
+	$message = '';
+	$imageFileType = pathinfo($_FILES["new_gallery_image"]["name"],PATHINFO_EXTENSION);
+	$target_file = random_string(15) . "." . $imageFileType;
+	// Check if image file is a actual image or fake image
+	if(isset($_POST["submit"])) {
+	    $check = getimagesize($_FILES["new_gallery_image"]["tmp_name"]);
+	    if($check !== false) {
+		$message ="File is an image - " . $check["mime"] . ".";
+	    } else {
+		$message ="File is not an image.";
+	    }
+	}
+
+	// Check file size
+	if ($_FILES["new_gallery_image"]["size"] > 10000000) {
+	    $message ="Error: File upload limit is 10MB.";
+	}
+
+	// Allow certain file formats
+	if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg"
+	&& $imageFileType != "gif" ) {
+	    $message ="Sorry, only JPG, JPEG, PNG & GIF files are allowed.";
+	}
+
+	if ($message == '') {
+		if (!file_exists(IMAGE_PATH . $_POST['class_id'])) {
+			mkdir(IMAGE_PATH . $_POST['class_id']);
+		}
+	    if (!move_uploaded_file($_FILES["new_gallery_image"]["tmp_name"], IMAGE_PATH . $_POST['class_id'] . "/" . $target_file)) {
+		$message ="Sorry, there was an error uploading your file.";
+	    } else {
+		$message ="The file ". basename( $_FILES["new_gallery_image"]["name"]). " has been uploaded.";
+		$image = $target_file;	
+		error_log($message);	
+	    }
+	} else {
+		error_log("could not upload gallery image: $message");
+	}
+
+} else if(!empty($_POST))
 {
-	//print_r($_POST); die();
 	$class_name = trim($_POST["name"]);
 	$class_id = trim($_POST["class_id"]);
 	$image = $_POST["image"] ? trim($_POST["image"]) : "";
@@ -168,8 +206,22 @@ require_once("models/header.php");
             <!--end header-->
             <!--body-->
             <div class='col-md-12 neg-15' style='margin-top: 40px;'>
+		<div><?= $message ?></div>
                 <div class='col-md-8' style='margin-bottom: 50px;'>
                     <div class='col-md-12 header header-large' style='margin-top: 20px;'>Edit Class: <?= $class_name ?></div>
+
+			<div class='col-md-12' style='margin-top: 20px;'>
+				<form id='gallery_form' action='<?= $_SERVER['PHP_SELF'] ?>?class_id=<?= $class_id ?>' method='post' enctype="multipart/form-data">
+					 <div class="form-group">
+                        			<label for="exampleInputFile">Add an image to gallery</label>
+						<input name='class_id' value='<?= $class_id ?>' type='hidden' />
+			                        <input name='new_gallery_image' type="file" id="new_gallery_image">
+						<input name='gallery' value='1' type='hidden'/>
+						<button type="submit" class="btn btn-default">Submit</button>					
+                			 </div>
+				</form>
+			</div>
+
                     <div class='col-md-12' style='margin-top: 20px;'>
                       <form id='add_class_form' name='add_class_form' action='<?= $_SERVER['PHP_SELF'] ?>' method='post' enctype="multipart/form-data">
 			<input type='hidden' name='old_image' value='<?= $image ?>'>
@@ -234,5 +286,8 @@ require_once("models/header.php");
             ga('create','UA-XXXXX-X','auto');ga('send','pageview');
 		CKEDITOR.replace( 'class_description' );
         </script>
+
+	<script src="js/dropzone.js"></script>
+
     </body>
 </html>

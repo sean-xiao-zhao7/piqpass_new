@@ -56,7 +56,7 @@ if (!$stmt->execute()) {
     echo "Execute failed: (" . $stmt->errno . ") " . $stmt->error;
 }
 $stmt->store_result();
-$stmt->bind_result($name, $description, $image, $price, $user_id, $address, $intersection, $class_id, $request_form);
+$stmt->bind_result($name, $description, $image, $price, $user_id, $address, $intersection, $class_id, $request_form, $approval);
 $stmt->fetch();
 
 $stmt->close();

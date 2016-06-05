@@ -28,7 +28,7 @@ if (!($result = $mysqli_piq->query("select * from class"))) {
 	while ($row = $result->fetch_array(MYSQLI_ASSOC)) {
 		if (strlen($row['description']) > 200) {
 			$pattern = '/<(\w+)>/i';
-			$row['description'] = preg_replace($pattern, '', substr($row['description'], 0, 200) . "... <a href='class.php?id=" . $row['id'] . "'>Read more</a>");
+			$row['description'] = preg_replace($pattern, '', substr($row['description'], 0, 200) . "... <a href='class.php?class_id=" . $row['id'] . "'>Read more</a>");
                 }
 		$classes[] = $row;
 	}
@@ -90,10 +90,10 @@ $result->close();
     		    <div class='col-md-12' style='margin-bottom: 70px;'>
         			<div class='col-md-5' style='height: 300px; background-image: url("<?= IMAGE_PATH . $class['image'] ?>"); background-position: center; background-size: cover;'>&nbsp;</div>
         			<div class='col-md-7 mobile-neg-15'>
-        			    <div class='col-md-12 mobile-neg-15'><span class='header header-large'><a href='class.php?id=<?= $class['id'] ?>'><?= $class['name']; ?></a></span></div>
+        			    <div class='col-md-12 mobile-neg-15'><span class='header header-large'><a href='class_stripe.php?class_id=<?= $class['id'] ?>'><?= $class['name']; ?></a></span></div>
         			    <div class='col-md-12 mobile-neg-15' style='margin-top: 10px;'><p><?= $class['description']; ?></p></div>
         			    <div class='col-md-12 mobile-neg-15' style='margin-top: 10px;'>
-              				<a href='class_stripe.php?id=<?= $class['id'] ?>' class='btn btn-sm btn-default'>View</a>
+              				<a href='class_stripe.php?class_id=<?= $class['id'] ?>' class='btn btn-sm btn-default'>View</a>
               				<a href='edit_class.php?class_id=<?= $class['id'] ?>' class='btn btn-sm btn-default'>Edit</a>
 					<?php
 						if ($class['approval'] == 'approved') {

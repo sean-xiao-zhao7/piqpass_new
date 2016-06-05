@@ -99,11 +99,11 @@ $result->close();
             <!--end header-->
 		<?php
                         if (!empty($approved_reqs)) {
-                                echo "<h4 style='margin-top: 20px; float:left; margin-left: 15px;'>Approved requests</h4>";
+                                echo "<div class='col-md-12 neg-15' style='margin-top: 30px;'><h4 class='header header-large' style='margin-top: 20px; float:left; margin-left: 15px;'>Confirmed Registrations</h4></div>";
                         }
                 ?>
 
-		<div class='col-md-12'>
+		<div class='col-md-12 neg-15'>
 		<ul>
 		<?php
                         foreach ($approved_reqs as $request) {
@@ -113,11 +113,8 @@ $result->close();
 				$session_time = strtotime($s['date']);
 				$day = date('l, F jS', $session_time);
 			?>
-			<li>
-			User <?= $request['username'] ?> requested session <?= date('G:iA', $session_time) . " - " . $day; ?> for class <a href="class.php?id=<?= $request['class_id'] ?>"><?= $request['class_name'] ?></a>
-			</li>
-                <?php }
-                ?>
+			<li><?= $request['username'] ?> confirmed for <?= date('G:iA', $session_time) . " - " . $day; ?> for <a href="class.php?id=<?= $request['class_id'] ?>"><?= $request['class_name'] ?></a></li>
+      <?php } ?>
 		</ul>
 		</div>
         </div>

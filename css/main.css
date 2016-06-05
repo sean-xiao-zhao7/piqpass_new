@@ -280,3 +280,7 @@ textarea {
         page-break-after: avoid;
     }
 }
+
+#links a img {
+	height:10em;
+}
