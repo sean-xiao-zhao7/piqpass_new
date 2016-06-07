@@ -86,6 +86,7 @@ if(isset($_POST['gallery'])) {
 	$user_id = trim($_POST["user_id"]);
 
 	$uploadOk = 1;
+	$uploaded = false;
 	if (file_exists($_FILES['image']['tmp_name']) && is_uploaded_file($_FILES['image']['tmp_name'])) {
 		$imageFileType = pathinfo($_FILES["image"]["name"],PATHINFO_EXTENSION);
 		$target_file = random_string(15) . "." . $imageFileType;
@@ -122,50 +123,47 @@ if(isset($_POST['gallery'])) {
 		    if (!move_uploaded_file($_FILES["image"]["tmp_name"], IMAGE_PATH . $target_file)) {
 			echo "Sorry, there was an error uploading your file.";
 		    } else {
-			echo "The file ". basename( $_FILES["image"]["name"]). " has been uploaded.";
+			echo "The file ". basename($_FILES["image"]["name"]). " has been uploaded.";
+			echo $target_file;
 			$image = $target_file;
-			unlink($_POST["old_image"]);
-		}
+			$uploaded = true;
+			unlink($_POST["old_image"]);			
+			}
 		}
 	} 
 	
-	if ($uploadOk == 1) {
+	$mysqli_piq = new mysqli($db_host_piq, $db_user_piq, $db_pass_piq, $db_name_piq);
+	//GLOBAL $mysqli_piq;
 
-		$mysqli_piq = new mysqli($db_host_piq, $db_user_piq, $db_pass_piq, $db_name_piq);
-		//GLOBAL $mysqli_piq;
-
-		if(mysqli_connect_errno()) {
-			echo "Connection Failed: " . mysqli_connect_errno();
-			exit();
-		}
-
-		if(file_exists($_FILES['image']['tmp_name']) && is_uploaded_file($_FILES['image']['tmp_name'])) {
-			$pq = "update class set name=?, image=?, description=?, intersection=?, address=?, price=?, request_form=? where id=?";
-		} else {
-			$pq = "update class set name=?, description=?, intersection=?, address=?, price=?, request_form=? where id=?";
-		}
-
-		if (!($stmt = $mysqli_piq->prepare($pq))) {
-			echo "Prepare failed: (" . $mysqli_piq->errno . ") " . $mysqli_piq->error;
-		}
-
-		if(file_exists($_FILES['image']['tmp_name']) && is_uploaded_file($_FILES['image']['tmp_name'])) {
-			if (!$stmt->bind_param("sssssdsi", $class_name, $image, $description, $intersection, $address, $price, $request_form, $class_id)) {
-			    echo "Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error;
-			}
-		} else {
-			if (!$stmt->bind_param("ssssdsi", $class_name, $description, $intersection, $address, $price, $request_form, $class_id)) {
-                            echo "Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error;
-                        }
-		}
-
-		if (!$stmt->execute()) {
-		    echo "Execute failed: (" . $stmt->errno . ") " . $stmt->error;
-		}
-		$stmt->close();
-
-	//	header('Location: class_dashboard.php');
+	if(mysqli_connect_errno()) {
+		echo "Connection Failed: " . mysqli_connect_errno();
+		exit();
 	}
+
+	if ($uploaded) {
+		$pq = "update class set name=?, image=?, description=?, intersection=?, address=?, price=?, request_form=? where id=?";
+	} else {
+		$pq = "update class set name=?, description=?, intersection=?, address=?, price=?, request_form=? where id=?";
+	}
+
+	if (!($stmt = $mysqli_piq->prepare($pq))) {
+		echo "Prepare failed: (" . $mysqli_piq->errno . ") " . $mysqli_piq->error;
+	}
+
+	if ($uploaded) {
+		if (!$stmt->bind_param("sssssdsi", $class_name, $image, $description, $intersection, $address, $price, $request_form, $class_id)) {
+		    echo "Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error;
+		}
+	} else {
+		if (!$stmt->bind_param("ssssdsi", $class_name, $description, $intersection, $address, $price, $request_form, $class_id)) {
+		    echo "Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error;
+		}
+	}
+
+	if (!$stmt->execute()) {
+	    echo "Execute failed: (" . $stmt->errno . ") " . $stmt->error;
+	}
+	$stmt->close();
 }
 
 require_once("models/header.php");
