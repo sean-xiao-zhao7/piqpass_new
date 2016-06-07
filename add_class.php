@@ -11,7 +11,10 @@ if(!isUserLoggedIn()) { header("Location: login.php"); die(); }
 if(isset($_POST['submit']))
 {
 	$class_name = trim($_POST["name"]);
-	$image = $_POST["image"] ? trim($_POST["image"]) : "";
+	$image = false;
+	if (file_exists($_FILES['image']['tmp_name']) && is_uploaded_file($_FILES['image']['tmp_name'])) {
+		$image = true;
+	}
 	$description = trim($_POST["class_description"]);
 	$intersection = trim($_POST["intersection"]);
 	$address = trim($_POST["address"]);
