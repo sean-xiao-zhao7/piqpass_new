@@ -77,7 +77,6 @@ if(isset($_POST['gallery'])) {
 {
 	$class_name = trim($_POST["name"]);
 	$class_id = trim($_POST["class_id"]);
-	$image = $_POST["image"] ? trim($_POST["image"]) : "";
 	$old_image = $_POST["old_image"];
 	$description = trim($_POST["class_description"]);
 	$intersection = trim($_POST["intersection"]);
@@ -87,7 +86,7 @@ if(isset($_POST['gallery'])) {
 	$user_id = trim($_POST["user_id"]);
 
 	$uploadOk = 1;
-	if ($image != "") {
+	if (file_exists($_FILES['image']['tmp_name']) && is_uploaded_file($_FILES['image']['tmp_name'])) {
 		$imageFileType = pathinfo($_FILES["image"]["name"],PATHINFO_EXTENSION);
 		$target_file = random_string(15) . "." . $imageFileType;
 		// Check if image file is a actual image or fake image
@@ -103,7 +102,7 @@ if(isset($_POST['gallery'])) {
 		}
 
 		// Check file size
-		if ($_FILES["image"]["size"] > 1000000) {
+		if ($_FILES["image"]["size"] > 10000000) {
 		    echo "Sorry, your file is too large.";
 		    $uploadOk = 0;
 		}
@@ -123,15 +122,13 @@ if(isset($_POST['gallery'])) {
 		    if (!move_uploaded_file($_FILES["image"]["tmp_name"], IMAGE_PATH . $target_file)) {
 			echo "Sorry, there was an error uploading your file.";
 		    } else {
-			// echo "The file ". basename( $_FILES["image"]["name"]). " has been uploaded.";
+			echo "The file ". basename( $_FILES["image"]["name"]). " has been uploaded.";
 			$image = $target_file;
 			unlink($_POST["old_image"]);
 		}
 		}
-	} else {
-		$image = $old_image;
-	}
-
+	} 
+	
 	if ($uploadOk == 1) {
 
 		$mysqli_piq = new mysqli($db_host_piq, $db_user_piq, $db_pass_piq, $db_name_piq);
@@ -142,12 +139,24 @@ if(isset($_POST['gallery'])) {
 			exit();
 		}
 
-		if (!($stmt = $mysqli_piq->prepare("update class set name=?, image=?, description=?, intersection=?, address=?, price=?, request_form=? where id=?"))) {
+		if(file_exists($_FILES['image']['tmp_name']) && is_uploaded_file($_FILES['image']['tmp_name'])) {
+			$pq = "update class set name=?, image=?, description=?, intersection=?, address=?, price=?, request_form=? where id=?";
+		} else {
+			$pq = "update class set name=?, description=?, intersection=?, address=?, price=?, request_form=? where id=?";
+		}
+
+		if (!($stmt = $mysqli_piq->prepare($pq))) {
 			echo "Prepare failed: (" . $mysqli_piq->errno . ") " . $mysqli_piq->error;
 		}
 
-		if (!$stmt->bind_param("sssssdsi", $class_name, $image, $description, $intersection, $address, $price, $request_form, $class_id)) {
-		    echo "Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error;
+		if(file_exists($_FILES['image']['tmp_name']) && is_uploaded_file($_FILES['image']['tmp_name'])) {
+			if (!$stmt->bind_param("sssssdsi", $class_name, $image, $description, $intersection, $address, $price, $request_form, $class_id)) {
+			    echo "Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error;
+			}
+		} else {
+			if (!$stmt->bind_param("ssssdsi", $class_name, $description, $intersection, $address, $price, $request_form, $class_id)) {
+                            echo "Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error;
+                        }
 		}
 
 		if (!$stmt->execute()) {
@@ -155,7 +164,7 @@ if(isset($_POST['gallery'])) {
 		}
 		$stmt->close();
 
-		header('Location: class_dashboard.php');
+	//	header('Location: class_dashboard.php');
 	}
 }
 
