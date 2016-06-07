@@ -15,7 +15,8 @@ if (!$loggedInUser) {
 
 // Set your secret key: remember to change this to your live secret key in production
 // See your keys here https://dashboard.stripe.com/account/apikeys
-\Stripe\Stripe::setApiKey("sk_test_e0ZOwmIiZzNMMeUI2tkUpcy0");
+//\Stripe\Stripe::setApiKey("sk_test_e0ZOwmIiZzNMMeUI2tkUpcy0");
+\Stripe\Stripe::setApiKey("sk_test_Ce8F3Ggs8XHQywFO9MrJRvOm");
 
 if (!empty($_POST)) {
   // Get the credit card details submitted by the form
@@ -88,7 +89,7 @@ if (!($stmt = $mysqli_piq->prepare("
 	echo "Prepare failed: (" . $mysqli_piq->errno . ") " . $mysqli_piq->error;
 }
 
-if (!$stmt->bind_param("i", $_GET['id'])) {
+if (!$stmt->bind_param("i", $_GET['class_id'])) {
     echo "Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error;
 }
 
@@ -96,11 +97,11 @@ if (!$stmt->execute()) {
     echo "Execute failed: (" . $stmt->errno . ") " . $stmt->error;
 }
 
-$stmt->bind_result($seats, $date, $repeat, $id);
+$stmt->bind_result($seats, $date, $repeat, $session_id);
 
 $sessions = [];
 while($stmt->fetch()) {
-	$sessions[] = array('seats' => $seats, 'date' => $date, 'repeat' => $repeat, 'id' => $id);
+	$sessions[] = array('seats' => $seats, 'date' => $date, 'repeat' => $repeat, 'id' => $session_id);
 }
 
 $stmt->close();
@@ -367,13 +368,14 @@ $stmt->close();
 
 	<script>
 	  var handler = StripeCheckout.configure({
-	    key: 'pk_test_5Ir0zjoUeZUgOHIWP4WRYVid',
+	    //key: 'pk_test_5Ir0zjoUeZUgOHIWP4WRYVid',
+	    key: 'pk_test_kSNhD4BW18Yhnb8iiDnZqlfZ',
 	    image: 'img/stripe_logo.jpg',
 	    locale: 'auto',
 	    name: '<?= $name ?>',
 	    description: $('#sessions_select').find(":selected").text(), 
 	    amount: '<?= $price * 100 ?>',
-	    currency: "USD",
+	    currency: "CAD",
 	    token: function(token) {
 	      //console.log("token is " + token.id)
 			$.post(
