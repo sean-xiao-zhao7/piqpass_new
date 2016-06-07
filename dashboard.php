@@ -40,9 +40,9 @@ if (!($result = $mysqli_piq->query("select * from request where user_id = " . $l
 
 	if (!empty($approved_reqs)) {		
 		$addresses = [];
-		$stmt = $mysqli_piq->query("select address from class where id in (". implode(',', $class_ids) . ")");
-		while ($row = $stmt->fetch_array(MYSQLI_ASSOC)) {
-                        $addresses[$row['class_id']] = $row['address'];
+		$stmt = $mysqli_piq->query("select id, address from class where id in (". implode(',', $class_ids) . ")");		
+		while ($row = $stmt->fetch_array(MYSQLI_ASSOC)) {			
+                        $addresses[$row['id']] = $row['address'];
                 }
                 $stmt->close();
 	}
