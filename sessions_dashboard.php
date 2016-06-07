@@ -11,10 +11,7 @@ if (!$loggedInUser->checkPermission(array(3)))
  	header("Location: index.php");
 }
 require_once("db/connect.php");
-//print_r($_POST); die();
 if(!empty($_POST)) {
-	//print_r($_POST); die();
-
 	if (!($stmt = $mysqli_piq->prepare("insert into session (`seats`, `time`, `date`, `class_id`, `repeat`) values(?, 0, cast(? as datetime), ?, ?)"))) {
 		echo "Prepare failed: (" . $mysqli_piq->errno . ") " . $mysqli_piq->error;
 	}
@@ -159,7 +156,7 @@ if (!empty($class_ids)) {
                 <div class='col-md-9'>
                     <div class='col-md-12'><span class='header header-large'><?= $class['name'] ?></span></div>
                     <div class='col-md-12' style='margin-top: 10px;'>
-                      <form class="form-inline" method='post' action='<?= $_SERVER['PHP_SELF'] ?>' id='add_session_form'>
+                      <form class="form-inline" method='post' action='<?= $_SERVER['PHP_SELF'] ?>'>
 			<input type='hidden' name='class_id' value='<?= $class['id'] ?>'>
                       <div class="form-group">
                         <input name='time' type="text" class="form-control time" style='width: 100px; font-size: 12px' placeholder="Select a Time">
@@ -177,7 +174,7 @@ if (!empty($class_ids)) {
 			  <option value="monthly">Monthly</option>
 			</select>
                       </div>
-                      <button type="submit" class="btn btn-default" form='add_session_form' value='Add Session'>Add Session</button>
+                      <input type="submit" class="btn btn-default" value='Add Session' />
                       </form>
                     </div>
 			<div class='col-md-12' style='margin-top: 20px;'>
