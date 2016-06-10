@@ -15,8 +15,9 @@ if (!$loggedInUser) {
 
 // Set your secret key: remember to change this to your live secret key in production
 // See your keys here https://dashboard.stripe.com/account/apikeys
-//\Stripe\Stripe::setApiKey("sk_test_e0ZOwmIiZzNMMeUI2tkUpcy0");
-\Stripe\Stripe::setApiKey("sk_test_Ce8F3Ggs8XHQywFO9MrJRvOm");
+\Stripe\Stripe::setApiKey("sk_test_e0ZOwmIiZzNMMeUI2tkUpcy0");
+//\Stripe\Stripe::setApiKey("sk_test_Ce8F3Ggs8XHQywFO9MrJRvOm");
+//\Stripe\Stripe::setApiKey("sk_live_KC2m6m6mExkcDQuBIYnY81BB");
 
 if (!empty($_POST)) {
   // Get the credit card details submitted by the form
@@ -27,7 +28,7 @@ if (!empty($_POST)) {
   try {
     $charge = \Stripe\Charge::create(array(
       "amount" => $_POST['amount'], // amount in cents, again
-      "currency" => "USD",
+      "currency" => "CAD",
       "source" => $token,
       "description" => $_POST['class_name'] . ' - ' . $_POST['session']
       ));
@@ -82,7 +83,6 @@ $stmt->fetch();
 $stmt->close();
 
 $class_id = $id;
-
 if (!($stmt = $mysqli_piq->prepare("
 	select seats, `date`, `repeat`, id from `session` where `class_id` = ?
 "))) {
@@ -151,10 +151,12 @@ $stmt->close();
             <!--header-->
             <div class='col-md-12'>
                 <div class='col-md-2'><img src='img/piqlanding1.jpg' /></div>
-								<div class='col-md-10' align='left' style='margin-top: 20px;'>
-									<div align='left' class="fb-like" data-href="https://www.facebook.com/trypiq" data-layout="standard" data-action="like" data-show-faces="false" data-share="true"></div>
-								</div>
 							<?php include_once('piqpass_nav.php'); ?>
+            </div>
+            <div class='col-md-12'>
+            <div class='col-md-10' align='left' style='margin-top: 20px;'>
+              <div align='left' class="fb-like" data-href="https://www.facebook.com/trypiq" data-layout="standard" data-action="like" data-show-faces="false" data-share="true"></div>
+            </div>
             </div>
             <!--end header-->
             <!--body-->
@@ -216,8 +218,8 @@ $stmt->close();
 											?>
 														<a href="<?= IMAGE_PATH . $class_id . "/" . $pic ?>" data-gallery>
 															<img src="<?= IMAGE_PATH . $class_id . "/" . $pic ?>" alt="Dish image">
-														    </a>														
-											<?php 
+														    </a>
+											<?php
 												}}}
 											} ?>
 											</div>
@@ -368,12 +370,13 @@ $stmt->close();
 
 	<script>
 	  var handler = StripeCheckout.configure({
-	    //key: 'pk_test_5Ir0zjoUeZUgOHIWP4WRYVid',
-	    key: 'pk_test_kSNhD4BW18Yhnb8iiDnZqlfZ',
+	    key: 'pk_test_5Ir0zjoUeZUgOHIWP4WRYVid',
+	    //key: 'pk_test_kSNhD4BW18Yhnb8iiDnZqlfZ',
+	    //key: 'pk_live_hC6ZepVs9FaQCkuKivoiH7mB',
 	    image: 'img/stripe_logo.jpg',
 	    locale: 'auto',
 	    name: '<?= $name ?>',
-	    description: $('#sessions_select').find(":selected").text(), 
+	    description: $('#sessions_select').find(":selected").text(),
 	    amount: '<?= $price * 100 ?>',
 	    currency: "CAD",
 	    token: function(token) {
