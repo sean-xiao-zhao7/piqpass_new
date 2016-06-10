@@ -38,11 +38,13 @@ if (!($result = $mysqli_piq->query("select * from request where user_id = " . $l
 		$stmt->close();
 	}
 
-	if (!empty($approved_reqs)) {		
+	if (!empty($approved_reqs)) {
 		$addresses = [];
-		$stmt = $mysqli_piq->query("select id, address from class where id in (". implode(',', $class_ids) . ")");		
-		while ($row = $stmt->fetch_array(MYSQLI_ASSOC)) {			
+		$images = [];
+		$stmt = $mysqli_piq->query("select id, image, address from class where id in (". implode(',', $class_ids) . ")");
+		while ($row = $stmt->fetch_array(MYSQLI_ASSOC)) {
                         $addresses[$row['id']] = $row['address'];
+			$images[$row['id']] = $row['image'];
                 }
                 $stmt->close();
 	}
@@ -110,7 +112,7 @@ $result->close();
                 <div class='col-md-4' style='margin-bottom: 20px; margin-top: 10px;'>
                     <div class='col-md-12' style='margin-top: 10px;'><p><strong>Class:</strong> <?= $request['class_name'] ?></p></div>
                     <div class='col-md-12' style='margin-top: 10px;'>
-                        <a href="class.php?id=<?= $request['class_id'] ?>" class='btn btn-default btn-sm'>View Class</a>
+                        <a href="class_stripe.php?class_id=<?= $request['class_id'] ?>" class='btn btn-default btn-sm'>View Class</a>
                     </div>
                 </div>
             </div>
@@ -124,19 +126,20 @@ $result->close();
                         foreach ($approved_reqs as $request) {
                 ?>
 
-                <div class='col-md-4 neg-15' style='margin-bottom: 20px; margin-top: 10px;'>
-                    <div class='col-md-12' style='margin-top: 10px;'><p>Title: <?= $request['class_name'] ?></p></div>
-							  		<div class='col-md-12' style='margin-top: 10px;'>
+                <div class='col-md-4' style='margin-bottom: 20px; margin-top: 10px;'>
+                    <div class='col-md-12' style='height: 300px; background-image: url("<?= IMAGE_PATH . $images[$request['class_id']] ?>"); background-position: center; background-size: cover;'>&nbsp;</div>
+										<div class='col-md-12' style='margin-left: -15px; margin-top: 15px;'><p><strong><?= $request['class_name'] ?></strong></p></div>
+										<div class='col-md-12' style='margin-left: -15px;' >
 											<?php
 												$s = $sessions[$request['session_id']];
 												$session_time = strtotime($s['date']);
 							          $day = date('l, F jS', $session_time); ?>
 							          <p>Time: <?= date('G:iA', $session_time) . " - " . $day; ?></p>
 										</div>
-		                <div class='col-md-12' style='margin-top: 10px;'><p>Seat: 1 Person</p></div>
-		                <div class='col-md-12' style='margin-top: 10px;'>Address<p><?= $addresses[$request['class_id']] ?></p></div>
-                    <div class='col-md-12' style='margin-top: 10px;'>
-                        <a href="class.php?id=<?= $request['class_id'] ?>" class='btn btn-default btn-sm'>View Class</a>
+		                <div class='col-md-12' style='margin-left: -15px;' ><p>Seat: 1 Person</p></div>
+		                <div class='col-md-12' style='margin-left: -15px;'><p>Address: <?= $addresses[$request['class_id']] ?></p></div>
+                    <div class='col-md-12' style='margin-left: -15px;'>
+                        <a href="class_stripe.php?id=<?= $request['class_id'] ?>" class='btn btn-default btn-sm'>View Class</a>
                     </div>
                 </div>
                 <?php }
@@ -166,7 +169,7 @@ $result->close();
             e=o.createElement(i);r=o.getElementsByTagName(i)[0];
             e.src='https://www.google-analytics.com/analytics.js';
             r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
-            ga('create','UA-XXXXX-X','auto');ga('send','pageview');
+            ga('create','UA-76836253-1','auto');ga('send','pageview');
         </script>
     </body>
 </html>
