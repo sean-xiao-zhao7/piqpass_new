@@ -12,6 +12,13 @@ if (!$loggedInUser->checkPermission(array(2)))
 }
 require_once("db/connect.php");
 
+if (isset($_POST['submit'])) {	
+	$stmt = $mysqli_piq->prepare('delete from request where id = ?');
+	$stmt->bind_param('i', $_POST['request_id']);
+	$stmt->execute();
+	$stmt->close(); 
+}
+
 if (!($result = $mysqli_piq->query("select * from request"))) {
 
         echo "DB Query failed: (" . $mysqli_piq->errno . ") " . $mysqli_piq->error;
@@ -102,7 +109,12 @@ $result->close();
 				$session_time = strtotime($s['date']);
 				$day = date('l, F jS', $session_time);
 			?>
-			<li><?= $request['username'] ?> confirmed for <?= date('G:iA', $session_time) . " - " . $day; ?> for <a href="class_stripe.php?id=<?= $request['class_id'] ?>"><?= $request['class_name'] ?></a></li>
+			<li><?= $request['username'] ?> confirmed for <?= date('G:iA', $session_time) . " - " . $day; ?> for <a href="class_stripe.php?id=<?= $request['class_id'] ?>"><?= $request['class_name'] ?></a>
+				<form action='<?= $_SERVER['PHP_SELF'] ?>' method='post'>
+					<input name='request_id' type='hidden' value='<?= $request['id'] ?>' />
+					<input onclick='return confirm("Confirm removal")' name='submit' value='Remove request' type='submit' />
+				</form>
+			</li>
       <?php } ?>
 		</ul>
 		</div>
