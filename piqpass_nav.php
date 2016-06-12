@@ -28,9 +28,9 @@ if(isUserLoggedIn()) {
 										<span class='caret'></span>
 									</button>
 									<ul class='dropdown-menu' aria-labelledby='mode'>
-										<li><a href='requests_dashboard.php'>Class Requests</a></li>
+										<li><a href='requests_dashboard.php'>Confirmed Students</a></li>
 										<li><a href='class_dashboard.php'>Class List</a></li>
-										<li><a href='sessions_dashboard.php'>Class Sessions</a></li>
+										<li><a href='sessions_dashboard.php'>Add Sessions</a></li>
 									</ul>
 								</div>
 								<div class='dropdown' style='float: right; margin-left: 8px;'><a class='btn btn-default btn-sm' href='browse.php'>Browse</a></div>
@@ -88,11 +88,8 @@ if(isUserLoggedIn()) {
 						<span class='caret'></span>
 					</button>
 					<ul class='dropdown-menu' aria-labelledby='mode'>
-						<li><a href='#'>Chef Mode</a></li>
-						<li><a href='#'>Student Mode</a></li>
-						<li role='separator' class='divider'></li>
+					  <li><a href='browse.php'>Browse</a></li>
 						<li><a href='dashboard.php'>Dashboard</a></li>
-						<li><a href='browse.php'>Browse</a></li>
 						<li role='separator' class='divider'></li>
 						<li><a href='account.php'>Update Profile</a></li>
 						<li><a href='update_password.php'>Change Password</a></li>
@@ -109,8 +106,9 @@ if(isUserLoggedIn()) {
 	<li><a href='admin_configuration.php'>Admin Configuration</a></li>
 	<li><a href='admin_users.php'>Admin Users</a></li>
 	<li><a href='admin_permissions.php'>Admin Permissions</a></li>
-	<li><a href='admin_pages.php'>Admin Pages</a></li>	
-	<li><a href='class_approval.php'>Approve classes</a></li></ul>";	
+	<li><a href='admin_pages.php'>Admin Pages</a></li>
+	<li><a href='class_approval.php'>Approve classes</a></li></ul>
+	<li><a href='all_requests.php'>All requests</a></li></ul>";
 	}
 
 }
