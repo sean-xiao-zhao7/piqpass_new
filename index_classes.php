@@ -138,7 +138,7 @@
 
                         <div class='col-md-6 neg-15 desktop-padright' style='margin-bottom: 35px;'>
                           <div class='col-md-12 neg-15' style='height: 350px; background-image: url("<?= IMAGE_PATH . $class['image'] ?>"); background-position: center; background-size: cover;'>&nbsp;</div>
-                          <div class='col-md-12 neg-15 header course-title' style='margin-top: 15px;'><a href='http://trypiq.com/class.php?id=30'><?= $class['name'] ?></a></div>
+                          <div class='col-md-12 neg-15 header course-title' style='margin-top: 15px;'><a href='http://trypiq.com/class_stripe.php?class_id=<?= $class['id'] ?>' ><?= $class['name'] ?></a></div>
 			<!--
                           <div class='col-md-12 neg-15'><p><strong>Chef:</strong> Giovanni La Grotta<br />
                             <strong>Occupation:</strong> Senior Chef, Canadian Forces Army Reserve - 32 Service Battalion</br >
