@@ -8,7 +8,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
         <meta name="twitter:card" content="summary" />
-        <meta name="twitter:site" content="@piq_toronto" /> 
+        <meta name="twitter:site" content="@piq_toronto" />
         <meta name="twitter:title" content="Piq" />
         <meta name="twitter:description" content="Piq is a social marketplace to take cooking classes from your neighbours. Experience where the people in your city come from and how they lived their lives through the dishes they pass onto you." />
 
@@ -43,9 +43,41 @@
             <!--header-->
             <div class='col-md-12'>
                 <div class='col-md-2'><img src='img/piqlanding1.png' width="90%" height='90%'/></div>
-                <div class='col-md-10' align='left' style='margin-top: 20px;'>
-                  <div align='left' class="fb-like" data-href="https://www.facebook.com/trypiq" data-layout="standard" data-action="like" data-show-faces="false" data-share="true"></div>
-                </div>
+                <!--Account-->
+              	<div class='col-md-10 desktop neg-15' style='margin-top: 9px;'>
+              		<p align='right'>
+              			<div class='dropdown' style='float: right; margin-left: 8px;'><a href='login.php' class='btn btn-default btn-sm'>Login</a></div>
+              			<div class='dropdown' style='float: right; margin-left: 15px;'>
+              				<button class='btn btn-success btn-sm dropdown-toggle' type='button' id='mode' data-toggle='dropdown' aria-haspopup='true' aria-expanded='true'>
+              					Register
+              					<span class='caret'></span>
+              				</button>
+              				<ul class='dropdown-menu' aria-labelledby='mode'>
+              					<li><a href='register.php'>Student Registration</a></li>
+              					<li><a href='register_chef.php'>Chef Registration</a></li>
+              				</ul>
+              			</div>
+              		</p>
+              	</div>
+                <div class='col-md-10 mobile' style='margin-top: 30px;'>
+              		<p align='left'>
+              			<div class='dropdown' style='float: left; margin-left: 15px;'>
+              				<button class='btn btn-success btn-sm dropdown-toggle' type='button' id='mode' data-toggle='dropdown' aria-haspopup='true' aria-expanded='true'>
+              					Register
+              					<span class='caret'></span>
+              				</button>
+              				<ul class='dropdown-menu' aria-labelledby='mode'>
+              					<li><a href='register.php'>Student Registration</a></li>
+              					<li><a href='register_chef.php'>Chef Registration</a></li>
+              				</ul>
+              			</div>
+              			<div class='dropdown' style='float: left; margin-left: 8px;'><a href='login.php' class='btn btn-default btn-sm'>Login</a></div>
+
+              		</p>
+              	</div>
+            </div>
+            <div class='col-md-12' align='left' style='margin-top: 20px; margin-left: 15px;'>
+              <div align='left' class="fb-like" data-href="https://www.facebook.com/trypiq" data-layout="standard" data-action="like" data-show-faces="false" data-share="true"></div>
             </div>
             <!--end header-->
             <!--body-->
@@ -53,14 +85,12 @@
                 <div class='col-md-12'>
                     <!--Big Screen-->
                     <div class='col-md-12 pic-bg'>
-                        <div class='col-md-12 dark-header'><span class='intro-heading intro-dark'>TORONTO COOKING CLASSES.</span></div>
+                        <div class='col-md-12 dark-header'><span class='intro-heading intro-dark'>SOCIAL COOKING CLASSES.</span></div>
                         <div class='col-md-12 dark-header-2nd'><span class='intro-heading-2nd intro-dark'>HOSTED BY PROFESSIONAL CHEFS AND HOBBYISTS.</span></div>
                         <!--<div class='col-md-12 dark-sub-header'><span class='sub-heading sub-intro-dark'>CUISINES INCLUDE FRENCH, CHINESE, GREEK, ITALIAN, INDIAN, AND SO MUCH MORE.</span></div>
                         -->
                           <div class='col-md-12 header-button'>
-                            <div class='browse-class'><center><a class="typeform-share sub-heading" href="https://travis47.typeform.com/to/t5seUG" data-mode="1" target="_blank">JOIN FOR FREE</a>
-<script>(function(){var qs,js,q,s,d=document,gi=d.getElementById,ce=d.createElement,gt=d.getElementsByTagName,id='typef_orm',b='https://s3-eu-west-1.amazonaws.com/share.typeform.com/';if(!gi.call(d,id)){js=ce.call(d,'script');js.id=id;js.src=b+'share.js';q=gt.call(d,'script')[0];q.parentNode.insertBefore(js,q)}id=id+'_';if(!gi.call(d,id)){qs=ce.call(d,'link');qs.rel='stylesheet';qs.id=id;qs.href=b+'share-button.css';s=gt.call(d,'head')[0];s.appendChild(qs,s)}})()</script>
-</center></div>
+                            <div class='browse-class'><center><a class="sub-heading" href="browse.php" data-mode="1" target="_blank">BROWSE CLASSES</a></center></div>
                           </div>
                     </div>
                     <div class='col-md-12 neg-15' style='margin-top: 10px;'><hr /></div>
@@ -86,8 +116,8 @@
                         </div>
                     </div>
                     <!--Upcoming Classes-->
-                    <div class='col-md-12 neg-15' style='margin-top: 10px;'><hr /></div>
-                    <!--3 Footer Notes-->
+                    <!--
+
                     <div class='col-md-12 neg-15'>
                         <div class='col-md-12' align='center' style='margin-top: 20px; margin-bottom: 40px;'>
                           <span class='header header-large'><strong>Upcoming Classes</strong></span>
@@ -167,8 +197,9 @@
                           <span class='header header-large bg-warning' style='padding: 10px 15px;'>More classes coming very shortly.</span>
                         </div>
                     </div>
+                  -->
                     <div class='col-md-12 neg-15' style='margin-top: 10px;'><hr /></div>
-                    <!--3 Footer Notes-->
+
                     <div class='col-md-12 neg-15'>
                         <div class='col-md-8 neg-15 pad-right'>
                           <div class='col-md-12 neg-15' style='margin-top: 40px;'>
@@ -208,25 +239,6 @@
                       <p>&copy; 2016 All Right Reserved. Piq.</p>
                     </div>
 
-                </div>
-
-            </div>
-        </div>
-        <script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
-        <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.12.0.min.js"><\/script>')</script>
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
-        <script src="js/plugins.js"></script>
-        <script src="js/main.js"></script>
-
-        <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
-        <script>
-            (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
-            function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
-            e=o.createElement(i);r=o.getElementsByTagName(i)[0];
-            e.src='https://www.google-analytics.com/analytics.js';
-            r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
-            ga('create','UA-76836253-1','auto');ga('send','pageview');
-        </script>
+        <?php include "footer.php"; ?>
     </body>
 </html>
