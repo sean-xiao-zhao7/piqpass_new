@@ -42,7 +42,6 @@ $result->close();
         <!-- Place favicon.ico in the root directory -->
 
         <link rel="stylesheet" href="css/normalize.css">
-        <link rel="stylesheet" href="css/sean.css">
         <link rel="stylesheet" href="css/main.css">
         <link rel="stylesheet" href="css/style.css">
         <script src="js/vendor/modernizr-2.8.3.min.js"></script>
@@ -74,17 +73,17 @@ $result->close();
             <div class='col-md-12' style='margin-top: 50px; padding: 10px;'>
               <div class='col-md-4 neg-15'>
                  <h2 class='header header-large'><strong>How To Post Classes</strong></h2>
-                 <p>
-                   <ol>
-                     <li>Add your first class: <a href='add_class.php'>click here</a>.</li>
-                     <li>Add images to your class. Click on the <strong><i>Add Images</i></strong> button beside the class below.</li>
-                     <li>Schedule sessions for your class: <a href='sessions_dashboard.php'>click here</a>.</li>
-                   </ol>
-                 </p>
+                 <p><strong>Step 1: </strong><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add your first class: <a href='add_class.php'>click here</a>. <br />
+                  <strong>Step 2: </strong><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> Schedule sessions for your class: <a href='sessions_dashboard.php'>click here</a>.</p>
                </div>
+               <style>
+               .instructions {
+                 font-size: 10px !important;
+               }
+               </style>
                <div class='col-md-4'>
                   <h2 class='header header-large'>Class Tips</h2>
-                  <p>
+                  <p class='instructions'>
                     <ul>
                       <li>Single dish classes sell best between $18-$25 per person.</li>
                       <li>Multi-course classes sell best between $45 - $66 per person.</li>
@@ -95,13 +94,19 @@ $result->close();
                 </div>
                 <div class='col-md-4'>
                    <h2 class='header header-large'>Promoting Yourself</h2>
-                   <p>
+                   <p class='instructions'>
                      <ul>
                        <li>Share the link of your class on social media.</li>
                        <li>Sharing links on LinkedIn, Facebook and Twitter gets the best results.</li>
                      </ul>
                    </p>
                  </div>
+            </div>
+
+            <div class='col-md-12' style='margin-top: 40px;'>
+                <a href='requests_dashboard.php' class='btn btn-default'>Confirmed Students</a>&nbsp;
+                <a href='#' class='btn btn-default disabled'>Class List</a>&nbsp;
+                <a href='sessions_dashboard.php' class='btn btn-default'>Add Sessions</a>
             </div>
             <!--Class List-->
 
@@ -117,6 +122,8 @@ $result->close();
         			    <div class='col-md-12 mobile-neg-15' style='margin-top: 10px;'>
               				<a href='class_stripe.php?class_id=<?= $class['id'] ?>' class='btn btn-sm btn-default'>View</a>
               				<a href='edit_class.php?class_id=<?= $class['id'] ?>' class='btn btn-sm btn-default'>Edit</a>
+              				<a href='sessions_dashboard.php' class='btn btn-sm btn-success'>Add Sessions</a>&nbsp;&nbsp;&nbsp;&nbsp;
+              				<a href='edit_class.php?class_id=<?= $class['id']?>#delete' class='btn btn-sm btn-danger'>Delete</a>
 					<!--
 					<form method='post' id='go2enrollment' action='class_enrollment.php'>
 						<input type='hidden' name='class_id' value='<?= $class['id'] ?>' />
@@ -144,7 +151,7 @@ $result->close();
             e=o.createElement(i);r=o.getElementsByTagName(i)[0];
             e.src='https://www.google-analytics.com/analytics.js';
             r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
-            ga('create','UA-XXXXX-X','auto');ga('send','pageview');
+            ga('create','UA-76836253-1','auto');ga('send','pageview');
         </script>
     </body>
 </html>

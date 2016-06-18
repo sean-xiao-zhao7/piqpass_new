@@ -8,7 +8,7 @@ require_once("models/config.php");
 if (!securePage($_SERVER['PHP_SELF'])){die();}
 
 //Prevent the user visiting the logged in page if he/she is already logged in
-if(isUserLoggedIn()) { header("Location: account.php"); die(); }
+if(isUserLoggedIn()) { header("Location: browse.php"); die(); }
 
 //Forms posted
 if(!empty($_POST))
@@ -139,6 +139,8 @@ require_once("models/header.php");
                       </div>
                       <button type="submit" class="btn btn-default">Login</button>
                       </form>
+
+			<a href='forgot-password.php'>Forgot password?</a>
                     </div>
                 </div>
             </div>

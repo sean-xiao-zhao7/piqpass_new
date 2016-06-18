@@ -132,6 +132,7 @@ require_once("models/header.php");
             <div class='col-md-12 neg-15' style='margin-top: 40px;'>
                 <div class='col-md-8' style='margin-bottom: 50px;'>
                     <div class='col-md-12 header header-large' style='margin-top: 20px;'>Add A Class</div>
+									  <div class='col-md-12' style='margin-top: 5px;'><p><i>All new classes will be approved within 24 hours before it goes live in the "Browse" section.</i></p></div>
                     <div class='col-md-12' style='margin-top: 20px;'>
 			<?php
 				if ($message !== false) {
@@ -176,6 +177,43 @@ require_once("models/header.php");
                       </form>
                     </div>
                 </div>
+								<div class='col-md-4'>
+									<h2 class='header header-large'>Class Tips</h2>
+									<p class='instructions'>
+										<ul>
+											<li>Single dish classes sell best between $18-$25 per person.</li>
+											<li>Multi-course classes sell best between $45 - $66 per person.</li>
+											<li>Name your classes with fun titles. For example, An evening of Mexican Taco Delights.</li>
+											<li>Classes with themes sell best. For example, Spanish Cuisine.</li>
+										</ul>
+									</p>
+									<h2 class='header header-large'>Promoting Yourself</h2>
+									<p class='instructions'>
+										<ul>
+											<li>Share the link of your class on social media.</li>
+											<li>Sharing links on LinkedIn, Facebook and Twitter gets the best results.</li>
+										</ul>
+									</p>
+									<h2 class='header header-large'>Refund Policy</h2>
+									<p class='instructions'>
+										<ul>
+											<li>Piq offers full refunds to students as long the order is canceled 7 days before the class. We also offer a 50% discount if they request a refund 3 days before the class. We don't offer refunds if the student cancels the day of the class. All students will be refunded 100% of the class fees if the chef cancels the class at any time.</li>
+										</ul>
+									</p>
+									<h2 class='header header-large'>Payments</h2>
+									<p class='instructions'>
+										<ul>
+											<li>Payments are sent to you via transfer within 24 hours the class takes place.</li>
+										</ul>
+									</p>
+									<h2 class='header header-large'>Fees</h2>
+									<p class='instructions'>
+										<ul>
+											<li>Piq takes a 10% fee on the course fee you set. Eg. If you set the price to $50, we pay you $45.</li>
+											<li>Piq also adds 10% to the price when sold to the student. Eg. If you set the price to $50, the student pays $55.</li>
+										</ul>
+									</p>
+								</div>
             </div>
         </div>
         <script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>

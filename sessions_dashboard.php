@@ -48,7 +48,7 @@ if(!empty($_POST)) {
                         }
 			$next_date = strtotime("+1 month", $next_date);
                 }
-		
+
 	} else {
 		if (!$stmt->bind_param("isis", $_POST['slots'], date('Y-m-d H:i:s', strtotime($_POST['date'] . ' ' . $_POST['time'])), $_POST['class_id'], $_POST['repeat'])) {
 		    echo "Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error;
@@ -140,14 +140,14 @@ if (!empty($class_ids)) {
             <!--end header-->
             <!--body-->
             <div class='col-md-12' style='margin-top: 40px;'>
-                <a href='requests_dashboard.php' class='btn btn-default'>Requests</a>&nbsp;
-                <a href='class_dashboard.php' class='btn btn-default'>Classes</a>&nbsp;
-                <a href='#' class='btn btn-default disabled'>Sessions</a>
+                <a href='requests_dashboard.php' class='btn btn-default'>Confirmed Students</a>&nbsp;
+                <a href='class_dashboard.php' class='btn btn-default'>Class List</a>&nbsp;
+                <a href='#' class='btn btn-default disabled'>Add Sessions</a>
             </div>
             <!--Class List-->
 		<?php
 			if (empty($classes)) {
-				echo "<p>No classes</p>";
+				echo "<div class='col-md-12' style='margin-top: 30px;'><p>Please add classes <a href='add_class.php'>here</a>.</p></div>";
 			} else {
 			foreach ($classes as $class) {
 		?>

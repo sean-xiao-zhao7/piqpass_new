@@ -19,7 +19,7 @@ if(!empty($_GET) || isset($_POST['class_id'])){
 	$stmt->fetch();
 	$stmt->close();
 	if (!$loggedInUser->checkPermission(array(2)) && $user_id != $loggedInUser->user_id) {
-		header("Location: class_dashboard.php"); 
+		header("Location: class_dashboard.php");
 		die();
 	}
 
@@ -66,8 +66,8 @@ if(isset($_POST['gallery'])) {
 		$message ="Sorry, there was an error uploading your file.";
 	    } else {
 		$message ="The file ". basename( $_FILES["new_gallery_image"]["name"]). " has been uploaded.";
-		$image = $target_file;	
-		error_log($message);	
+		$image = $target_file;
+		error_log($message);
 	    }
 	} else {
 		error_log("could not upload gallery image: $message");
@@ -127,11 +127,11 @@ if(isset($_POST['gallery'])) {
 			echo $target_file;
 			$image = $target_file;
 			$uploaded = true;
-			unlink($_POST["old_image"]);			
+			unlink($_POST["old_image"]);
 			}
 		}
-	} 
-	
+	}
+
 	$mysqli_piq = new mysqli($db_host_piq, $db_user_piq, $db_pass_piq, $db_name_piq);
 	//GLOBAL $mysqli_piq;
 
@@ -224,7 +224,7 @@ require_once("models/header.php");
 						<input name='class_id' value='<?= $class_id ?>' type='hidden' />
 			                        <input name='new_gallery_image' type="file" id="new_gallery_image">
 						<input name='gallery' value='1' type='hidden'/>
-						<button type="submit" class="btn btn-default">Submit</button>					
+						<button type="submit" class="btn btn-default">Submit</button>
                 			 </div>
 				</form>
 			</div>
@@ -268,7 +268,7 @@ require_once("models/header.php");
                       <button type="submit" class="btn btn-default">Save class information</button>
                       </form>
                     </div>
-			<a href='<?= $_SERVER['PHP_SELF'] ?>?delete=1&class_id=<?= $class_id ?>' onclick="return confirm('Are you sure?')" >Delete class</a>
+										<div class='col-md-12' style='margin-top: 20px;'><a href='<?= $_SERVER['PHP_SELF'] ?>?delete=1&class_id=<?= $class_id ?>' onclick="return confirm('Are you sure?')" class='btn btn-danger btn-sm'>Delete class</a></div>
                 </div>
             </div>
         </div>

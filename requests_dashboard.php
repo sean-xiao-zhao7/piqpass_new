@@ -96,10 +96,18 @@ $result->close();
                 <div class='col-md-2'><img src='img/piqlanding1.jpg' /></div>
 		            <?php include("piqpass_nav.php"); ?>
             </div>
+                        <div class='col-md-12' style='margin-top: 40px;'>
+                            <a href='#' class='btn btn-default disabled'>Confirmed Students</a>&nbsp;
+                            <a href='class_dashboard.php' class='btn btn-default'>Class List</a>&nbsp;
+                            <a href='sessions_dashboard.php' class='btn btn-default'>Add Sessions</a>
+                        </div>
             <!--end header-->
 		<?php
                         if (!empty($approved_reqs)) {
                                 echo "<div class='col-md-12 neg-15' style='margin-top: 30px;'><h4 class='header header-large' style='margin-top: 20px; float:left; margin-left: 15px;'>Confirmed Registrations</h4></div>";
+                        }
+                        else {
+                            echo "<div class='col-md-12' style='margin-top: 30px;'><h4 class='header header-large'>Sorry! Try sharing your listed classes on social media :)</h4></div>";
                         }
                 ?>
 
@@ -113,7 +121,7 @@ $result->close();
 				$session_time = strtotime($s['date']);
 				$day = date('l, F jS', $session_time);
 			?>
-			<li><?= $request['username'] ?> confirmed for <?= date('G:iA', $session_time) . " - " . $day; ?> for <a href="class.php?id=<?= $request['class_id'] ?>"><?= $request['class_name'] ?></a></li>
+			<li><?= $request['username'] ?> confirmed for <?= date('G:iA', $session_time) . " - " . $day; ?> for <a href="class_stripe.php?id=<?= $request['class_id'] ?>"><?= $request['class_name'] ?></a></li>
       <?php } ?>
 		</ul>
 		</div>
@@ -132,7 +140,7 @@ $result->close();
             e=o.createElement(i);r=o.getElementsByTagName(i)[0];
             e.src='https://www.google-analytics.com/analytics.js';
             r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
-            ga('create','UA-XXXXX-X','auto');ga('send','pageview');
+            ga('create','UA-76836253-1','auto');ga('send','pageview');
         </script>
     </body>
 </html>

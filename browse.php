@@ -16,7 +16,7 @@ if (!($result = $mysqli_piq->query("select * from class where approval = 'approv
         while ($row = $result->fetch_array(MYSQLI_ASSOC)) {
 		if (strlen($row['description']) > 200) {
 			$pattern = '/<(\w+)>/i';
-			$row['description'] = preg_replace($pattern, '', substr($row['description'], 0, 200) . "... <a href='class_stripe.php?class_id=" . $row['id'] . "'>Read more</a>");	
+			$row['description'] = preg_replace($pattern, '', substr($row['description'], 0, 200) . "... <a href='class_stripe.php?class_id=" . $row['id'] . "'>Read more</a>");
 		}
                 $classes[] = $row;
         }
@@ -39,7 +39,6 @@ if (!($result = $mysqli_piq->query("select * from class where approval = 'approv
         <link rel="stylesheet" href="css/normalize.css">
         <link rel="stylesheet" href="css/main.css">
         <link rel="stylesheet" href="css/style.css">
-        <link rel="stylesheet" href="css/sean.css">
         <script src="js/vendor/modernizr-2.8.3.min.js"></script>
         <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300' rel='stylesheet' type='text/css'>
         <style>

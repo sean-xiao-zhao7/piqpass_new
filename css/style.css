@@ -35,10 +35,10 @@
     .browse-class {background-color: #5cb85c; border: 1px solid #4cae4c; width: 230px; padding-top: 8px; padding-bottom: 8px; margin-top: 10px; margin-left: 15px;}
     .browse-class:hover {background-color: #4cae4c; cursor: pointer;}
 }
-@media (min-width: 300px) and (max-width: 600px) {
+@media (min-width: 250px) and (max-width: 600px) {
     .desktop {display: none; margin-left: -15px;}
     .course-title {font-size: 5.5vw;}
-    .header-large {font-size: 3.5vw;}
+    .header-large {font-size: 6.5vw;}
     .mobile {display: block; margin-left: -15px; margin-top: 30px;}
     .intro-heading {font-family: 'Open Sans', sans-serif; font-weight: 800; color: #fff; font-size: 8vw; line-height: 1.5em;}
     p {line-height: 1.7em; font-size: 13px; color: #333; }

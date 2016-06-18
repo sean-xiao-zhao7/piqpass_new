@@ -4,9 +4,6 @@ require_once("models/config.php");
 require_once("stripe/init.php");
 
 require_once("models/header.php");
-if (!$loggedInUser) {
-        header('Location: login.php');
-}
 
 require_once("db/connect.php");
 /*

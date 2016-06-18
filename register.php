@@ -8,7 +8,7 @@ require_once("models/config.php");
 if (!securePage($_SERVER['PHP_SELF'])){die();}
 
 //Prevent the user visiting the logged in page if he/she is already logged in
-if(isUserLoggedIn()) { header("Location: account.php"); die(); }
+if(isUserLoggedIn()) { header("Location: browse.php"); die(); }
 
 //Forms posted
 if(!empty($_POST))
@@ -121,7 +121,9 @@ require_once("models/header.php");
             <div class='col-md-12 neg-15' style='margin-top: 40px;'>
                 <div class='col-md-6' style='margin-bottom: 50px;'>
                     <div class='col-md-12 header header-large' style='margin-top: 20px;'>Create Student Account</div>
-                    <div class='col-md-12'><p><i>A Student Account is used to take cooking classes taught by other chefs.</i></p></div>
+                    <div class='col-md-12'><p><i>A Student Account is used to <strong>take</strong> cooking classes taught by other chefs.</i></p></div>
+
+                    <div class='col-md-12' style='margin-top: 15px;'><p><i>Want to <strong>teach</strong> cooking classes? <a href='register_chef.php'>Register as a Chef</a>.</i></p></div>
                     <!-- <div class='col-md-12 bg-danger' style='margin-top: 15px; padding-top: 10px;'></div> -->
 		    <?= resultBlock($errors,$successes); ?>
                     <div class='col-md-12' style='margin-top: 20px;'>

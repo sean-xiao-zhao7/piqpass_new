@@ -1,13 +1,3 @@
-<?php
-	require_once("models/config.php");
-	require_once("db/connect.php");		
-	$result = $mysqli_piq->query("select * from class order by id limit 8");
-	$classes = [];
-	while ($row = $result->fetch_array(MYSQLI_ASSOC)) {
-		$classes[] = $row;
-	}
-	$result->close();
-?>
 <!doctype html>
 <html class="no-js" lang="">
     <head>
@@ -126,33 +116,88 @@
                         </div>
                     </div>
                     <!--Upcoming Classes-->
+                    <!--
 
                     <div class='col-md-12 neg-15'>
                         <div class='col-md-12' align='center' style='margin-top: 20px; margin-bottom: 40px;'>
                           <span class='header header-large'><strong>Upcoming Classes</strong></span>
                         </div>
-	
-			<?php 
-				foreach ($classes as $class) {	
-			?>
-
                         <div class='col-md-6 neg-15 desktop-padright' style='margin-bottom: 35px;'>
-                          <div class='col-md-12 neg-15' style='height: 350px; background-image: url("<?= IMAGE_PATH . $class['image'] ?>"); background-position: center; background-size: cover;'>&nbsp;</div>
-                          <div class='col-md-12 neg-15 header course-title' style='margin-top: 15px;'><a href='http://trypiq.com/class_stripe.php?class_id=<?= $class['id'] ?>' ><?= $class['name'] ?></a></div>
-			<!--
+                          <div class='col-md-12 neg-15' style='height: 350px; background-image: url("img/toronto_cooking_class_giovanni.jpg"); background-position: center; background-size: cover;'>&nbsp;</div>
+                          <div class='col-md-12 neg-15 header course-title' style='margin-top: 15px;'><a href='http://trypiq.com/class.php?id=30'>3-Course Thai Cuisine Workshop</a></div>
                           <div class='col-md-12 neg-15'><p><strong>Chef:</strong> Giovanni La Grotta<br />
                             <strong>Occupation:</strong> Senior Chef, Canadian Forces Army Reserve - 32 Service Battalion</br >
                             <strong>Area:</strong> Mississauga<br />
                             </p>
                           </div>
-			-->
-                          <div class='col-md-12 neg-15'><a href='http://trypiq.com/class_stripe.php?class_id=<?= $class['id'] ?>' class='btn btn-default btn-success'>View Class</a></div>
+                          <div class='col-md-12 neg-15'><a href='http://trypiq.com/class.php?id=30' class='btn btn-default btn-success'>View Class (4 Seats Available)</a></div>
                         </div>
-	
-			<?php 
-				}
-			?>	
+                        <div class='col-md-6 neg-15 desktop-padright' style='margin-bottom: 35px;'>
+                          <div class='col-md-12 neg-15' style='height: 350px; background-image: url("img/thomasheitz_toronto_cooking_class.jpg"); background-position: center; background-size: cover;'>&nbsp;</div>
+                          <div class='col-md-12 neg-15 header course-title' style='margin-top: 15px;'><a href='http://trypiq.com/class.php?id=24'>3-Course Culinary Experience</a></div>
+                          <div class='col-md-12 neg-15'><p><strong>Chef:</strong> Thomas Heitz, C.C.C.<br />
+                            <strong>Occupation:</strong> Chef &amp; Sommelier Professor at Centennial College</br >
+                            <strong>Area:</strong> Leslieville, Toronto<br />
+                            </p>
+                          </div>
+                          <div class='col-md-12 neg-15'><a href='http://trypiq.com/class.php?id=24' class='btn btn-default btn-warning'>View Class (Only 1 Seat Left)</a></div>
+                        </div>
+                        <div class='col-md-6 neg-15 desktop-padright' style='margin-bottom: 35px;'>
+                          <div class='col-md-12 neg-15' style='height: 350px; background-image: url("img/youngkyokim-salmo.jpg"); background-position: center; background-size: cover;'>&nbsp;</div>
+                          <div class='col-md-12 neg-15 header course-title' style='margin-top: 15px;'><a href='http://trypiq.com/class.php?id=28'>Salmon en Croute w/ Trio Couscous Salad</a></div>
+                          <div class='col-md-12 neg-15'><p><strong>Chef:</strong> YoungKyo Kim<br />
+                            <strong>Occupation:</strong> Earls King St.</br >
+                            <strong>Area:</strong> Downtown, Toronto<br />
+                            </p>
+                          </div>
+                          <div class='col-md-12 neg-15'><a href='http://trypiq.com/class.php?id=28' class='btn btn-default btn-success'>View Class (3 Seats Available)</a></div>
+                        </div>
+                        <div class='col-md-6 neg-15 desktop-padright' style='margin-bottom: 35px;'>
+                          <div class='col-md-12 neg-15' style='height: 350px; background-image: url("img/toronto-cooking-poutine.jpg"); background-position: center; background-size: cover;'>&nbsp;</div>
+                          <div class='col-md-12 neg-15 header course-title' style='margin-top: 15px;'><a href='http://trypiq.com/class.php?id=31'>Learn to Make Poutine – Buffalo “Wings”</a></div>
+                          <div class='col-md-12 neg-15'><p><strong>Hosted by:</strong> Marni Wasserman<br />
 
+                              <strong>Occupation:</strong> Certified Natural Chef, Culinary (Holistic) Nutritionist CNP</br >
+                            <strong>Area:</strong> Eglinton &amp; Yonge, Toronto<br />
+                            </p>
+                          </div>
+                          <div class='col-md-12 neg-15'><a href='http://trypiq.com/class.php?id=31' class='btn btn-default btn-success'>View Class (5 Seats Available)</a></div>
+                        </div>
+                        <div class='col-md-6 neg-15 desktop-padright' style='margin-bottom: 35px;'>
+                          <div class='col-md-12 neg-15' style='height: 350px; background-image: url("img/marni-wasserman-piq-toronto-cooking.jpg"); background-position: center; background-size: cover;'>&nbsp;</div>
+                          <div class='col-md-12 neg-15 header course-title' style='margin-top: 15px;'><a href='http://trypiq.com/class.php?id=32'>Savour The Summer 4-Week Series Retreat</a></div>
+                          <div class='col-md-12 neg-15'><p><strong>Hosted by:</strong> Marni Wasserman<br />
+                            <strong>Occupation:</strong> Certified Natural Chef, Culinary (Holistic) Nutritionist CNP</br >
+                            <strong>Area:</strong> Eglinton &amp; Yonge, Toronto<br />
+                            </p>
+                          </div>
+                          <div class='col-md-12 neg-15'><a href='http://trypiq.com/class.php?id=32' class='btn btn-default btn-success'>View Class (5 Seats Available)</a></div>
+                        </div>
+                        <div class='col-md-6 neg-15 desktop-padright' style='margin-bottom: 35px;'>
+                          <div class='col-md-12 neg-15' style='height: 350px; background-image: url("img/piq_toronto_cooking_class.jpg"); background-position: center; background-size: cover;'>&nbsp;</div>
+                          <div class='col-md-12 neg-15 header course-title' style='margin-top: 15px;'><a href='http://trypiq.com/class.php?id=29'>Hone Your Knife Skills with Chef Abraham</a></div>
+                          <div class='col-md-12 neg-15'><p><strong>Chef:</strong> Abraham<br />
+                            <strong>Occupation:</strong> A Chopped Canada Chef</br >
+                            <strong>Area:</strong> Eglinton &amp; Yonge, Toronto<br />
+                            </p>
+                          </div>
+                          <div class='col-md-12 neg-15'><a href='http://trypiq.com/class.php?id=29' class='btn btn-default btn-success'>View Class (5 Seats Available)</a></div>
+                        </div>
+                        <div class='col-md-6 neg-15 desktop-padright' style='margin-bottom: 35px;'>
+                          <div class='col-md-12 neg-15' style='height: 350px; background-image: url("img/sachin_thai_soup_Toronto_Cooking_Class.jpg"); background-position: center; background-size: cover;'>&nbsp;</div>
+                          <div class='col-md-12 neg-15 header course-title' style='margin-top: 15px;'><a href='#'>Tom Kha Gai (Thai Soup)</a></div>
+                          <div class='col-md-12 neg-15'><p><strong>Chef:</strong> Sachin Muzhapravan<br />
+                            <strong>Occupation:</strong> Banquet Chef at Ritz Carlton Hotel</br >
+                            <strong>Area:</strong> Scarborough, Toronto<br />
+                            </p>
+                          </div>
+                          <div class='col-md-12 neg-15'><a href='#' class='btn btn-default disabled'>Coming Soon</a></div>
+                        </div>
+                        <div class='col-md-12' align='center' style='margin-top: 20px; margin-bottom: 20px;'>
+                          <span class='header header-large bg-warning' style='padding: 10px 15px;'>More classes coming very shortly.</span>
+                        </div>
+                    </div>
+                  -->
                     <div class='col-md-12 neg-15' style='margin-top: 10px;'><hr /></div>
 
                     <div class='col-md-12 neg-15'>
