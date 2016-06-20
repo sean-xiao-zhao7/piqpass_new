@@ -28,7 +28,7 @@ if(!empty($_POST))
         }
         if(minMaxRange(5,25,$username))
         {
-                $errors[] = lang("ACCOUNT_USER_CHAR_LIMIT",array(5,25));
+                $errors[] = lang("ACCOUNT_USER_CHAR_LIMIT",array(5,150));
         }
 	/*
         if(!ctype_alnum($username)){
@@ -37,7 +37,7 @@ if(!empty($_POST))
 	*/
         if(minMaxRange(5,25,$displayname))
         {
-                $errors[] = lang("ACCOUNT_DISPLAY_CHAR_LIMIT",array(5,25));
+                $errors[] = lang("ACCOUNT_DISPLAY_CHAR_LIMIT",array(5,150));
         }
 	/*
         if(!ctype_alnum($displayname)){
