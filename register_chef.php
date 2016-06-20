@@ -26,7 +26,7 @@ if(!empty($_POST))
         {
                 $errors[] = lang("CAPTCHA_FAIL");
         }
-        if(minMaxRange(5,25,$username))
+        if(minMaxRange(5,150,$username))
         {
                 $errors[] = lang("ACCOUNT_USER_CHAR_LIMIT",array(5,150));
         }
@@ -35,7 +35,7 @@ if(!empty($_POST))
                 $errors[] = lang("ACCOUNT_USER_INVALID_CHARACTERS");
         }
 	*/
-        if(minMaxRange(5,25,$displayname))
+        if(minMaxRange(5,150,$displayname))
         {
                 $errors[] = lang("ACCOUNT_DISPLAY_CHAR_LIMIT",array(5,150));
         }
