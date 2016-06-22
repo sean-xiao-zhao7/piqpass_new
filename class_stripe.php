@@ -23,7 +23,7 @@ if (!empty($_POST)) {
   // Create the charge on Stripe's servers - this will charge the user's card
   try {
     $charge = \Stripe\Charge::create(array(
-      "amount" => $_POST['amount'] * 1.13, // amount in cents, again
+      "amount" => $_POST['amount'], // amount in cents, again
       "currency" => "CAD",
       "source" => $token,
       "description" => $_POST['class_name'] . ' - ' . $_POST['session']
@@ -260,8 +260,16 @@ $price = $price * 1.1;
 				<span> / </span>
 				<input type="text" size="4" class="card-expiry-year"/>
 			</div>
-		</div>
+		</div>	
 -->
+			<?php
+				if (!$loggedInUser->user_id) {
+                        ?>
+					<a class='btn btn-lg btn-success' href='register.php'>Register Now</a>
+                        <?php
+                                } else {
+                        ?>
+
                   <div class='col-md-12' style='margin-left: -15px;'>
                     <select name='session' class="form-control" id='sessions_select'>
                       <option>Select Time</option>
@@ -283,12 +291,8 @@ $price = $price * 1.1;
 
                   <div class='col-md-12' style='margin-top: 10px; margin-left: -15px;'			>
                     <center>
-				<?php
-					if (!$loggedInUser) {
-				?>
-					<a id='bookButton' class='btn btn-lg btn-success' href='register.php'>Register Now</a>
 				<?php					
-					} else if ($total_seats > 0) {
+					if ($total_seats > 0) {
 				?>
 			                     <a id='bookButton' class='btn btn-lg btn-success' href='<?= $request_form ?>' onClick="_gaq.push(['_trackEvent', 'Book Now', 'click', '<?= $name ?>', '0']);" target='_blank'><strong>Book Now</strong></a>
 				<?php } else { ?>
@@ -296,6 +300,10 @@ $price = $price * 1.1;
 				<?php } ?>
                     </center>
                   </div>
+	
+		<?php
+			}
+		?>
 
 
                   <div class='col-md-12' style='margin-left: -15px; margin-top: 50px;'>
@@ -382,7 +390,7 @@ $price = $price * 1.1;
 	    locale: 'auto',
 	    name: '<?= $name ?>',
 	    description: $('#sessions_select').find(":selected").text(),
-	    amount: '<?= $price * 100 ?>',
+	    amount: '<?= $price * 1.13 * 100 ?>',
 	    currency: "CAD",
 	    token: function(token) {
 	      //console.log("token is " + token.id)
@@ -390,7 +398,7 @@ $price = $price * 1.1;
 				'<?= $_SERVER['PHP_SELF'] ?>',
 				{
 					'stripeToken': token.id,
-					'amount': <?= $price * 100 ?>,
+					'amount': <?= $price * 1.13 * 100 ?>,
 					'class_name': '<?= $name ?>',
 					'class_id': '<?= $class_id ?>',
 					'chef_id': '<?= $user_id ?>',
