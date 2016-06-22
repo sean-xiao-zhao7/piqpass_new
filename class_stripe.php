@@ -8,16 +8,12 @@ require_once('utils/utils.php');
 
 require_once("models/header.php");
 
-if (!$loggedInUser) {
-        header('Location: login.php');
-}
-
 
 // Set your secret key: remember to change this to your live secret key in production
 // See your keys here https://dashboard.stripe.com/account/apikeys
-\Stripe\Stripe::setApiKey("sk_test_e0ZOwmIiZzNMMeUI2tkUpcy0");
-//\Stripe\Stripe::setApiKey("sk_test_Ce8F3Ggs8XHQywFO9MrJRvOm");
-//\Stripe\Stripe::setApiKey("sk_live_KC2m6m6mExkcDQuBIYnY81BB");
+//\Stripe\Stripe::setApiKey("sk_test_e0ZOwmIiZzNMMeUI2tkUpcy0"); // sean test
+//\Stripe\Stripe::setApiKey("sk_test_Ce8F3Ggs8XHQywFO9MrJRvOm"); // travis test
+\Stripe\Stripe::setApiKey("sk_live_KC2m6m6mExkcDQuBIYnY81BB"); // live
 
 if (!empty($_POST)) {
   // Get the credit card details submitted by the form
@@ -27,7 +23,7 @@ if (!empty($_POST)) {
   // Create the charge on Stripe's servers - this will charge the user's card
   try {
     $charge = \Stripe\Charge::create(array(
-      "amount" => $_POST['amount'], // amount in cents, again
+      "amount" => $_POST['amount'] * 1.13, // amount in cents, again
       "currency" => "CAD",
       "source" => $token,
       "description" => $_POST['class_name'] . ' - ' . $_POST['session']
@@ -104,6 +100,9 @@ while($stmt->fetch()) {
 }
 
 $stmt->close();
+
+$price = $price * 1.1;
+
 ?>
 
 <!doctype html>
@@ -223,7 +222,9 @@ $stmt->close();
 											} ?>
 											</div>
 											</div>
+                      <!--
                       <div class="fb-comments col-md-12" style='margin-left: -15px; margin-top: 30px;' data-width="100%" data-href="http://trypiq.com/class.php?id=<?php echo $class_id;?>" data-numposts="5"></div>
+                      -->
                       <!--maps-->
                       <!--
 											<div class='col-md-12' style='margin-left: -15px; margin-top: 20px;'><span class='header header-large'>Map</span></div>
@@ -283,7 +284,11 @@ $stmt->close();
                   <div class='col-md-12' style='margin-top: 10px; margin-left: -15px;'			>
                     <center>
 				<?php
-					if ($total_seats > 0) {
+					if (!$loggedInUser) {
+				?>
+					<a id='bookButton' class='btn btn-lg btn-success' href='register.php'>Register Now</a>
+				<?php					
+					} else if ($total_seats > 0) {
 				?>
 			                     <a id='bookButton' class='btn btn-lg btn-success' href='<?= $request_form ?>' onClick="_gaq.push(['_trackEvent', 'Book Now', 'click', '<?= $name ?>', '0']);" target='_blank'><strong>Book Now</strong></a>
 				<?php } else { ?>
@@ -291,6 +296,7 @@ $stmt->close();
 				<?php } ?>
                     </center>
                   </div>
+
 
                   <div class='col-md-12' style='margin-left: -15px; margin-top: 50px;'>
                     <p class='small'><strong>Refund Policy:</strong> Piq offers full refunds as long the order is canceled 3 days before the class. We also offer a 50% discount if you request a refund the day of the class. All students will be refunded 100% of the class fees if the chef cancels the class at any time.</p>
@@ -369,9 +375,9 @@ $stmt->close();
 
 	<script>
 	  var handler = StripeCheckout.configure({
-	    key: 'pk_test_5Ir0zjoUeZUgOHIWP4WRYVid',
-	    //key: 'pk_test_kSNhD4BW18Yhnb8iiDnZqlfZ',
-	    //key: 'pk_live_hC6ZepVs9FaQCkuKivoiH7mB',
+	    //key: 'pk_test_5Ir0zjoUeZUgOHIWP4WRYVid', // sean test
+	    //key: 'pk_test_kSNhD4BW18Yhnb8iiDnZqlfZ', // travis test
+	    key: 'pk_live_hC6ZepVs9FaQCkuKivoiH7mB', // live
 	    image: 'img/stripe_logo.jpg',
 	    locale: 'auto',
 	    name: '<?= $name ?>',
