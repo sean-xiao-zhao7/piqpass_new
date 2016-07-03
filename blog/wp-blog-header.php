@@ -4,7 +4,7 @@
  *
  * @package WordPress
  */
-define('WP_USE_THEMES', true);
+
 if ( !isset($wp_did_header) ) {
 
 	$wp_did_header = true;

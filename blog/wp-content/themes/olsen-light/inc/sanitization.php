@@ -1,5 +1,4 @@
 <?php
-
 /////////////////////////////////////////////////////////////////////////////////////////
 //   Standard sanitization functions.
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -106,4 +105,54 @@ function olsen_light_sanitize_hex_color( $str, $return_hash = true, $return_fail
 	}
 
 	return $return_fail;
+}
+
+
+/**
+ * Return a list of allowed tags and attributes for a given context.
+ *
+ * @param string $context The context for which to retrieve tags.
+ *                        Currently available contexts: guide
+ * @return array List of allowed tags and their allowed attributes.
+ */
+function olsen_light_get_allowed_tags( $context = '' ) {
+	$allowed = array(
+		'a'       => array(
+			'href'   => true,
+			'title'  => true,
+			'class'  => true,
+			'target' => true,
+		),
+		'abbr'    => array( 'title' => true, ),
+		'acronym' => array( 'title' => true, ),
+		'b'       => array( 'class' => true, ),
+		'br'      => array(),
+		'code'    => array( 'class' => true, ),
+		'em'      => array( 'class' => true, ),
+		'i'       => array( 'class' => true, ),
+		'img'     => array(
+			'alt'    => true,
+			'class'  => true,
+			'src'    => true,
+			'width'  => true,
+			'height' => true,
+		),
+		'li'      => array( 'class' => true, ),
+		'ol'      => array( 'class' => true, ),
+		'p'       => array( 'class' => true, ),
+		'pre'     => array( 'class' => true, ),
+		'span'    => array( 'class' => true, ),
+		'strong'  => array( 'class' => true, ),
+		'ul'      => array( 'class' => true, ),
+	);
+
+	switch ( $context ) {
+		case 'guide':
+			unset( $allowed['p'] );
+			break;
+		default:
+			break;
+	}
+
+	return apply_filters( 'olsen_light_get_allowed_tags', $allowed, $context );
 }

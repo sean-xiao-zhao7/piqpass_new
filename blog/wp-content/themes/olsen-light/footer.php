@@ -48,9 +48,11 @@
 
 						<?php if ( get_theme_mod( 'footer_credits', 1 ) ) : ?>
 							<p class="tagline">
-								<?php echo sprintf( esc_html__( 'Theme by %s', 'olsen-light' ), '<a href="http://www.cssigniter.com/" rel="designer">CSSIgniter</a>' ); ?>
-								<span class="sep"> | </span>
-								<a href="<?php echo esc_url( __( 'https://wordpress.org/', 'olsen-light' ) ); ?>"><?php printf( esc_html__( 'Proudly powered by %s', 'olsen-light' ), 'WordPress' ); ?></a>
+								<?php echo wp_kses( sprintf( __( '<a href="%1$s" title="%2$s">Olsen WordPress Theme</a> by <a href="%3$s">CSSIgniter</a>', 'olsen-light' ),
+									esc_url( 'http://www.cssigniter.com/ignite/themes/olsen-light/' ),
+									esc_attr__( 'Blogging theme for WordPress', 'olsen-light' ),
+									esc_url( 'http://www.cssigniter.com/' )
+								), olsen_light_get_allowed_tags( 'guide' ) ); ?>
 							</p>
 						<?php endif; ?>
 					</div><!-- /site-logo -->

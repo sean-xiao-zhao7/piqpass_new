@@ -1,7 +1,7 @@
 <?php
 	require_once("models/config.php");
 	require_once("db/connect.php");		
-	$result = $mysqli_piq->query("select * from class where approval = 'approved' order by id limit 8");
+	$result = $mysqli_piq->query("select * from class where approval = 'approved' order by id desc limit 8");
 	$classes = [];
 	while ($row = $result->fetch_array(MYSQLI_ASSOC)) {
 		$classes[] = $row;

@@ -48,7 +48,10 @@ function olsen_light_customize_register( $wpc ) {
 		'priority' => 100
 	) );
 
-	$wpc->get_section( 'static_front_page' )->priority = 110;
+	// Section 'static_front_page' is not defined when there are no pages.
+	if ( get_pages() ) {
+		$wpc->get_section( 'static_front_page' )->priority = 110;
+	}
 
 	$wpc->add_section( 'theme_upgrade', array(
 		'title'    => esc_html_x( 'Upgrade to Pro', 'customizer section title', 'olsen-light' ),
@@ -76,6 +79,16 @@ function olsen_light_customize_register( $wpc ) {
 		),
 		'section'     => 'layout',
 		'label'       => esc_html__( 'Automatically generated excerpt length (in words)', 'olsen-light' ),
+	) );
+
+	$wpc->add_setting( 'excerpt_on_classic_layout', array(
+		'default'           => '',
+		'sanitize_callback' => 'olsen_light_sanitize_checkbox',
+	) );
+	$wpc->add_control( 'excerpt_on_classic_layout', array(
+		'type'    => 'checkbox',
+		'section' => 'layout',
+		'label'   => esc_html__( 'Display the excerpt instead of the content.', 'olsen-light' ),
 	) );
 
 	$wpc->add_setting( 'pagination_method', array(
@@ -157,6 +170,16 @@ function olsen_light_customize_register( $wpc ) {
 	//
 	// Social
 	//
+	$wpc->add_setting( 'social_target', array(
+		'default'           => 1,
+		'sanitize_callback' => 'olsen_light_sanitize_checkbox',
+	) );
+	$wpc->add_control( 'social_target', array(
+		'type'    => 'checkbox',
+		'section' => 'social',
+		'label'   => esc_html__( 'Open social and sharing links in a new tab.', 'olsen-light' ),
+	) );
+
 	$networks = olsen_light_get_social_networks();
 
 	foreach ( $networks as $network ) {

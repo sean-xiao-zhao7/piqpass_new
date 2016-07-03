@@ -121,7 +121,17 @@ require_once("models/header.php");
             <div class='col-md-12 neg-15' style='margin-top: 40px;'>
                 <div class='col-md-6' style='margin-bottom: 50px;'>
                     <div class='col-md-12 header header-large' style='margin-top: 20px;'>Create Chef Profile</div>
-                    <div class='col-md-12'><p><i>A Chef Account is used to <strong>teach</strong> cooking classes to students.</i></p></div>
+                    <div class='col-md-12'><p><i>A Chef Account is used to <strong>teach</strong> cooking classes to students.</i></p>
+                    <p><strong>How It Works</strong>:
+                      <ul>
+                          <li>Piq is an online marketplace to sell your cooking classes</li>
+                          <li>You design the class, decide the price, select the location, etc.</li>
+                          <li>Most of our chefs host classes in their homes</li>
+                          <li>Payments from students will be sent to you via Email Transfer within 24 hours of the class</li>
+                          <li>Classes are free to list; Piq takes a 10% commission on class sales only</li>
+                      </ul>
+                    </p>
+                    </div>
 
                     <div class='col-md-12' style='margin-top: 15px;'><p><i>Want to <strong>take</strong> cooking classes? <a href='register.php'>Register as a Student</a>.</i></p></div>
                     <!-- <div class='col-md-12 bg-danger' style='margin-top: 15px; padding-top: 10px;'></div> -->

@@ -18,10 +18,6 @@ function olsen_light_setup() {
 	if ( ! defined( 'CI_THEME_NAME' ) ) {
 		define( 'CI_THEME_NAME', 'olsen-light' );
 	}
-	if ( ! defined( 'CI_WHITELABEL' ) ) {
-		// Set the following to true, if you want to remove any user-facing CSSIgniter traces.
-		define( 'CI_WHITELABEL', false );
-	}
 
 	load_theme_textdomain( 'olsen-light', get_template_directory() . '/languages' );
 

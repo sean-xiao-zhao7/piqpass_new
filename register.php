@@ -121,7 +121,16 @@ require_once("models/header.php");
             <div class='col-md-12 neg-15' style='margin-top: 40px;'>
                 <div class='col-md-6' style='margin-bottom: 50px;'>
                     <div class='col-md-12 header header-large' style='margin-top: 20px;'>Create Student Account</div>
-                    <div class='col-md-12'><p><i>A Student Account is used to <strong>take</strong> cooking classes taught by other chefs.</i></p></div>
+                    <div class='col-md-12'><p><i>A Student Account is used to <strong>take</strong> cooking classes taught by other chefs.</i></p>
+                      <p><strong>Student benefits include</strong>:
+                        <ul>
+                            <li>Cooking classes are great for dating, anniversaries, or special occasions</li>
+                            <li>Alternative social activity with friends</li>
+                            <li>Meet &amp; connect with new people</li>
+                            <li>Awesome team building activity</li>
+                        </ul>
+                      </p>
+                    </div>
 
                     <div class='col-md-12' style='margin-top: 15px;'><p><i>Want to <strong>teach</strong> cooking classes? <a href='register_chef.php'>Register as a Chef</a>.</i></p></div>
                     <!-- <div class='col-md-12 bg-danger' style='margin-top: 15px; padding-top: 10px;'></div> -->

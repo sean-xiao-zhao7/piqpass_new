@@ -31,21 +31,28 @@
 		$used = $global;
 	}
 
+	// Set the target attribute for social icons.
+	$target = '';
+	if ( get_theme_mod( 'social_target', 1 ) == 1 ) {
+		$target = 'target="_blank"';
+	}
+
 	if ( ( in_the_loop() && count( $used ) > 0 ) || ( ! in_the_loop() && ( count( $used ) > 0 || $has_rss ) ) ) {
 		?>
 		<ul class="socials">
 			<?php
 				foreach ( $networks as $network ) {
 					if ( ! empty( $used[ $network['name'] ] ) ) {
-						echo sprintf( '<li><a href="%s"><i class="fa %s"></i></a></li>',
+						echo sprintf( '<li><a href="%s" %s><i class="fa %s"></i></a></li>',
 							esc_url( $used[ $network['name'] ] ),
+							$target,
 							esc_attr( $network['icon'] )
 						);
 					}
 				}
 			?>
 			<?php if( ! in_the_loop() && $has_rss ): ?>
-				<li><a href="<?php echo esc_url( get_theme_mod( 'rss_feed', get_bloginfo( 'rss2_url' ) ) ); ?>"><i class="fa fa-rss"></i></a></li>
+				<li><a href="<?php echo esc_url( get_theme_mod( 'rss_feed', get_bloginfo( 'rss2_url' ) ) ); ?>" <?php echo $target; ?>><i class="fa fa-rss"></i></a></li>
 			<?php endif; ?>
 		</ul>
 		<?php

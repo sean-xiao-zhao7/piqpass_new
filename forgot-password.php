@@ -103,7 +103,6 @@ if(!empty($_POST))
 	}
 	if(count($errors) == 0)
 	{
-
 		//Check if the user has any outstanding lost password requests
 		$userdetails = fetchUserDetails(NULL, NULL, NULL, $email);
 		if($userdetails["lost_password_request"] == 1)
@@ -210,12 +209,12 @@ require_once("models/header.php");
 
 		<div class='col-md-12' style='margin-top: 20px;'>
 
-			<form name='newLostPass' action='<?= $_SERVER['PHP_SELF'] ?>' method='post'>
+			<form id='newLostPass' action='<?= $_SERVER['PHP_SELF'] ?>' method='post'>
 			<div class="form-group">
 				<label>Email</label>
 				<input type='text' class="form-control"  name='email' placeholder="Jackie.Smith@Domain.com" />
 			</div>
-			<button name='submit' type="submit" class="btn btn-default" form='newLostPass'>Retrieve Password</button>
+			<input name='submit' type="submit" class="btn btn-default" form='newLostPass' value='Retrieve Password' />
 			</form>
 
 		</div>

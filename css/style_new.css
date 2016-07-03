@@ -1,0 +1,228 @@
+html,body {
+  margin: 0;
+}
+.row {
+  margin: 0 !important;
+}
+.main-bg {
+    height: 100vh;
+    background-image: url("../img/full-bg.jpg");
+    background-size: cover;
+    background-position: center;
+}
+p {
+    font-family: 'Open Sans', sans-serif;
+}
+a {
+    color: #FFF !important;
+    text-decoration: none;
+}
+a:hover {
+    text-decoration: none !important;
+    color: #999 !important;
+}
+.row-center {
+    margin: 0 auto;
+}
+
+.class-title-position {
+  position:fixed;
+  top: 50%;
+  left: 50%;
+  width:100%;
+}
+@media (min-width: 768px) {
+    .desktop {display: block; }
+    .mobile {display: none; }
+    .header-margin {margin-top: 105px;}
+  .story-bg {
+      height: 100vh;
+      background-image: url("../img/full-bg.jpg");
+      background-size: cover;
+      background-position: center;
+  }
+  .class1-bg {
+      height: 50vh;
+      background-image: url("../img/class1-bg.jpg");
+      background-size: cover;
+      background-position: center;
+  }
+  .benefits-bg {
+      height: 100vh;
+      background-image: url("../img/full-bg.jpg");
+      background-size: cover;
+      background-position: center;
+  }
+  .nav-top {
+      padding-top: 50px;
+  }
+  .nav-left {
+      padding-left: 55px;
+  }
+  .nav-top-text {
+      padding-top: 70px;
+  }
+  .nav {
+      font-family: 'Open Sans', sans-serif; font-weight: 800; font-size: 1.3vw; color: #fff;
+  }
+
+
+  .large-heading {
+      font-family: 'Open Sans', sans-serif;
+      font-weight: bold;
+      color: #FFF;
+      font-size: 5.5vw;
+  }
+  .small-heading {
+      font-family: 'Open Sans', sans-serif;
+      font-weight: bold;
+      color: #FFF;
+      font-size: 2.3vw;
+  }
+  .button-border {
+      border: 2px solid #ccc;
+      padding-left: 15px;
+      padding-right: 15px;
+      padding-top: 8px;
+      padding-bottom: 8px;
+      font-family: 'Open Sans', sans-serif;
+      font-size: 1.2vw;
+      color: #ccc;
+  }
+  .button-border:hover {
+      border: 2px solid #FFF !important;
+      background-color: #FFF !important;
+      color: #000 !important;
+  }
+  .title {
+      font-family: 'Open Sans', sans-serif;
+      font-weight: 200;
+      color: #000;
+      font-size: 3.5vw;
+  }
+  .class-title {
+      font-family: 'Open Sans', sans-serif;
+      font-weight: 200;
+      color: #FFF;
+      font-size: 2.5vw;
+  }
+  .class-height {
+    height: 50vh;
+  }
+  .center-p {
+    margin: 0 auto;
+    width: 90%;
+    line-height: 2.5em;
+  }
+  .story-text {
+    height: 100vh;
+  }
+  .benefits-text {
+    height: 100vh;
+  }
+  .story-top {
+    margin-top: 100px;
+  }
+  .benefits-top{
+    margin-top: 50px;
+  }
+}
+@media (min-width: 250px) and (max-width: 600px) {
+  .story-text {
+    height: 170vh;
+  }
+  .benefits-text {
+    height: 230vh;
+  }
+  .story-top {
+    margin-top: 50px;
+  }
+  .benefits-top{
+    margin-top: 50px;
+  }
+  .header-margin {margin-top: 50px;}
+    .desktop {display: none; }
+    .mobile {display: block; }
+    .story-bg {
+        height: 50vh;
+        background-image: url("../img/full-bg.jpg");
+        background-size: cover;
+        background-position: center;
+    }
+    .class1-bg {
+        height: 50vh;
+        background-image: url("../img/class1-bg.jpg");
+        background-size: cover;
+        background-position: center;
+    }
+    .benefits-bg {
+        height: 50vh;
+        background-image: url("../img/full-bg.jpg");
+        background-size: cover;
+        background-position: center;
+    }
+    .nav-top {
+        padding-top: 50px;
+    }
+    .nav-left {
+        padding-left: 60px;
+    }
+    .nav-top-text {
+        padding-top: 70px;
+    }
+    .nav {
+        font-family: 'Open Sans', sans-serif; font-weight: 800; font-size: 1.3vw; color: #fff;
+    }
+
+
+    .large-heading {
+        font-family: 'Open Sans', sans-serif;
+        font-weight: bold;
+        color: #FFF;
+        line-height: 1.2em;
+        font-size: 10vw;
+        margin-bottom: 10px;
+    }
+    .small-heading {
+        font-family: 'Open Sans', sans-serif;
+        font-weight: bold;
+        color: #FFF;
+        font-size: 4vw;
+    }
+    .button-border {
+        border: 1px solid #ccc;
+        padding-left: 15px;
+        padding-right: 15px;
+        padding-top: 8px;
+        padding-bottom: 8px;
+        font-family: 'Open Sans', sans-serif;
+        font-size: 4vw;
+        color: #ccc;
+    }
+    .button-border:hover {
+        border: 1px solid #FFF !important;
+        background-color: #FFF !important;
+        color: #000 !important;
+    }
+    .title {
+        font-family: 'Open Sans', sans-serif;
+        font-weight: 200;
+        color: #000;
+        margin-bottom: 20px;
+        font-size: 10vw;
+    }
+    .class-title {
+        font-family: 'Open Sans', sans-serif;
+        font-weight: 200;
+        color: #FFF;
+        font-size: 10vw;
+    }
+    .class-height {
+      height: 90vh
+    }
+    .center-p {
+      margin: 0 auto;
+      width: 90%;
+      line-height: 2.5em;
+    }
+}

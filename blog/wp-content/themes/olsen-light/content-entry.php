@@ -27,7 +27,11 @@
 	<?php endif; ?>
 
 	<div class="entry-content" itemprop="text">
-		<?php the_content( '' ); ?>
+		<?php if ( ! get_theme_mod( 'excerpt_on_classic_layout' ) ) {
+			the_content( '' );
+		} else {
+			the_excerpt();
+		} ?>
 	</div>
 
 	<div class="entry-utils group">

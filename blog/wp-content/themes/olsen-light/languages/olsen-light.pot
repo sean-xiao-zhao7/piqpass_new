@@ -3,14 +3,14 @@ msgid ""
 msgstr ""
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 "Project-Id-Version: Olsen Light\n"
-"POT-Creation-Date: 2016-01-26 18:13+0200\n"
+"POT-Creation-Date: 2016-03-19 03:17+0200\n"
 "PO-Revision-Date: 2015-10-10 19:53+0300\n"
 "Last-Translator: Anastis Sourgoutsidis <anastis@cssigniter.com>\n"
 "Language-Team: Anastis Sourgoutsidis <anastis@cssigniter.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 1.8.6\n"
+"X-Generator: Poedit 1.8.7\n"
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-WPHeader: style.css\n"
 "X-Poedit-SourceCharset: UTF-8\n"
@@ -32,76 +32,74 @@ msgstr ""
 msgid "Please do not load this page directly. Thanks!"
 msgstr ""
 
-#: content-entry.php:34
+#: content-entry.php:38
 msgid "Continue Reading"
 msgstr ""
 
 #: footer.php:51
 #, php-format
-msgid "Theme by %s"
+msgid ""
+"<a href=\"%1$s\" title=\"%2$s\">Olsen WordPress Theme</a> by <a href=\"%3$s"
+"\">CSSIgniter</a>"
 msgstr ""
 
+#. Description of the plugin/theme
 #: footer.php:53
-msgid "https://wordpress.org/"
+msgid "Blogging theme for WordPress"
 msgstr ""
 
-#: footer.php:53
-#, php-format
-msgid "Proudly powered by %s"
-msgstr ""
-
-#: functions.php:52
+#: functions.php:48
 msgid "Main Menu"
 msgstr ""
 
-#: functions.php:53
+#: functions.php:49
 msgid "Footer Menu"
 msgstr ""
 
 #. translators: If there are characters in your language that are not supported by Lora and Lato, translate this to 'off'. Do not translate into your own language.
-#: functions.php:86
+#: functions.php:82
 msgctxt "Lora and Lato fonts: on or off"
 msgid "on"
 msgstr ""
 
-#: functions.php:161 inc/customizer.php:217
+#: functions.php:157 inc/customizer.php:240
 msgid "Documentation"
 msgstr ""
 
-#: functions.php:162
+#: functions.php:158
 msgid "Upgrade to Pro"
 msgstr ""
 
-#: functions.php:203
+#: functions.php:199
 msgctxt "widget area"
 msgid "Blog"
 msgstr ""
 
-#: functions.php:205
+#: functions.php:201
 msgid "This is the main sidebar."
 msgstr ""
 
-#: functions.php:213
+#: functions.php:209
 msgctxt "widget area"
 msgid "Pages"
 msgstr ""
 
-#: functions.php:215
+#: functions.php:211
 msgid ""
 "This sidebar appears on your static pages. If empty, the Blog sidebar will "
 "be shown instead."
 msgstr ""
 
-#: functions.php:223
+#: functions.php:219
 msgctxt "widget area"
 msgid "Footer Sidebar"
 msgstr ""
 
-#: functions.php:225
+#: functions.php:221
 msgid "Special site-wide sidebar for the WP Instagram Widget plugin."
 msgstr ""
 
-#: functions.php:285
+#: functions.php:281
 msgid "Pages:"
 msgstr ""
 
@@ -153,114 +151,122 @@ msgctxt "customizer section title"
 msgid "Footer Options"
 msgstr ""
 
-#: inc/customizer.php:54
+#: inc/customizer.php:57
 msgctxt "customizer section title"
 msgid "Upgrade to Pro"
 msgstr ""
 
-#: inc/customizer.php:78
+#: inc/customizer.php:81
 msgid "Automatically generated excerpt length (in words)"
 msgstr ""
 
-#: inc/customizer.php:88
+#: inc/customizer.php:91
+msgid "Display the excerpt instead of the content."
+msgstr ""
+
+#: inc/customizer.php:101
 msgid "Pagination method"
 msgstr ""
 
-#: inc/customizer.php:90
+#: inc/customizer.php:103
 msgctxt "pagination method"
 msgid "Numbered links"
 msgstr ""
 
-#: inc/customizer.php:91
+#: inc/customizer.php:104
 msgctxt "pagination method"
 msgid "\"Previous - Next\" links"
 msgstr ""
 
-#: inc/customizer.php:106 inc/customizer.php:120
+#: inc/customizer.php:119 inc/customizer.php:133
 msgid "Show social icons."
 msgstr ""
 
-#: inc/customizer.php:130
+#: inc/customizer.php:143
 msgid "Show credits text."
 msgstr ""
 
-#: inc/customizer.php:142
+#: inc/customizer.php:155
 msgid "WP Instagram: Slideshow."
 msgstr ""
 
-#: inc/customizer.php:152
+#: inc/customizer.php:165
 msgid "WP Instagram: Slideshow Speed."
 msgstr ""
 
-#: inc/customizer.php:170
+#: inc/customizer.php:180
+msgid "Open social and sharing links in a new tab."
+msgstr ""
+
+#: inc/customizer.php:193
 #, php-format
 msgctxt "social network url"
 msgid "%s URL"
 msgstr ""
 
-#: inc/customizer.php:181
+#: inc/customizer.php:204
 msgid "RSS Feed"
 msgstr ""
 
-#: inc/customizer.php:189 part-related.php:4 part-related.php:5
+#: inc/customizer.php:212 part-related.php:4 part-related.php:5
 msgid "You may also like"
 msgstr ""
 
-#: inc/customizer.php:195
+#: inc/customizer.php:218
 msgid "Related Posts section title"
 msgstr ""
 
-#: inc/customizer.php:207
+#: inc/customizer.php:230
 msgid "Olsen Pro"
 msgstr ""
 
-#: inc/customizer.php:209
+#: inc/customizer.php:232
 msgid "Do you enjoy Olsen Light? Upgrade to Pro now and get:"
 msgstr ""
 
-#: inc/customizer.php:211
+#: inc/customizer.php:234
 msgid "Multiple layouts"
 msgstr ""
 
-#: inc/customizer.php:212
+#: inc/customizer.php:235
 msgid "Infinite style variations"
 msgstr ""
 
-#: inc/customizer.php:213
+#: inc/customizer.php:236
 msgid "Post formats support"
 msgstr ""
 
-#: inc/customizer.php:214
+#: inc/customizer.php:237
 msgid "More Customizer options"
 msgstr ""
 
-#: inc/customizer.php:216
+#: inc/customizer.php:239
 msgid "Upgrade To Pro"
 msgstr ""
 
-#: inc/customizer.php:231
+#: inc/customizer.php:254
 msgid "Logo"
 msgstr ""
 
-#: inc/customizer.php:232
+#: inc/customizer.php:255
 msgid ""
 "If an image is selected, it will replace the default textual logo (site "
 "name) on the header."
 msgstr ""
 
-#: inc/customizer.php:242
+#: inc/customizer.php:265
 msgid "Logo top padding"
 msgstr ""
 
-#: inc/customizer.php:252
+#: inc/customizer.php:275
 msgid "Logo bottom padding"
 msgstr ""
 
-#: inc/customizer.php:261
+#: inc/customizer.php:284
 msgid "Footer logo"
 msgstr ""
 
-#: inc/customizer.php:262
+#: inc/customizer.php:285
 msgid ""
 "If an image is selected, it will replace the default textual logo (site "
 "name) on the footer."
@@ -548,10 +554,6 @@ msgstr ""
 
 #. Theme URI of the plugin/theme
 msgid "http://www.cssigniter.com/ignite/themes/olsen-light/"
-msgstr ""
-
-#. Description of the plugin/theme
-msgid "Blogging theme for WordPress"
 msgstr ""
 
 #. Author of the plugin/theme

@@ -248,20 +248,12 @@ require_once("models/header.php");
                         <textarea name='class_description' class="form-control" id='class_description' rows="3"><?= $description ?></textarea>
                       </div>
                       <div class="form-group">
-                        <label for="exampleInputEmail1">Major Intersection (Displayed to Public)</label>
-                        <input name="intersection" class="form-control" id="name" placeholder="eg. Yonge and Eglinton"  value="<?= $intersection ?>">
-                      </div>
-                      <div class="form-group">
                         <label for="exampleInputEmail1">Exact Address (Sent to Confirmed Students)</label>
                         <input name="address" class="form-control" id="name" placeholder="eg. 12 Soudan Dr., Toronto, Ontario M3K 1K3"  value="<?= $address ?>">
                       </div>
                       <div class="form-group">
                         <label for="exampleInputEmail1">Class Fee (Number Only)</label>
                         <input name="price" class="form-control" id="price" placeholder="25"  value="<?= $price ?>">
-                      </div>
-		 <div class="form-group">
-                        <label for="exampleInputEmail1">Request Form (Request from Admin)</label>
-                        <input type='text' name="request_form" class="form-control" id="request_form" value="<?= $request_form ?>">
                       </div>
 			<input name="user_id" type='hidden' value='<?= $loggedInUser->user_id; ?>'>
 			<input name="class_id" type='hidden' value='<?= $class_id; ?>'>
