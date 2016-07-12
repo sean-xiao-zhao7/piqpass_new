@@ -1,6 +1,6 @@
 <?php
 	require_once("models/config.php");
-	require_once("db/connect.php");		
+	require_once("db/connect.php");
 	$result = $mysqli_piq->query("select * from class where approval = 'approved' order by id desc limit 8");
 	$classes = [];
 	while ($row = $result->fetch_array(MYSQLI_ASSOC)) {
@@ -26,174 +26,133 @@
         <!-- Place favicon.ico in the root directory -->
 
         <link rel="stylesheet" href="css/normalize.css">
-        <link rel="stylesheet" href="css/main.css">
+				<link rel="stylesheet" href="css/style_new.css">
 
-        <link rel="stylesheet" href="css/style.css">
         <script src="js/vendor/modernizr-2.8.3.min.js"></script>
         <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,800' rel='stylesheet' type='text/css'>
         <script src="//load.sumome.com/" data-sumo-site-id="5e445f80d3e8e136270db5056c7a69fd73be6ee2dc7d167cd25ad34e2dc09fe1" async="async"></script>
     </head>
-    <body style='margin-top: 40px;'>
-      <div id="fb-root"></div>
-      <script>(function(d, s, id) {
-        var js, fjs = d.getElementsByTagName(s)[0];
-        if (d.getElementById(id)) return;
-        js = d.createElement(s); js.id = id;
-        js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.6&appId=377900289009078";
-        fjs.parentNode.insertBefore(js, fjs);
-      }(document, 'script', 'facebook-jssdk'));</script>
+    <body>
+			<div id="fb-root"></div>
+			<script>(function(d, s, id) {
+				var js, fjs = d.getElementsByTagName(s)[0];
+				if (d.getElementById(id)) return;
+				js = d.createElement(s); js.id = id;
+				js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.6&appId=377900289009078";
+				fjs.parentNode.insertBefore(js, fjs);
+			}(document, 'script', 'facebook-jssdk'));</script>
 
+			<div class='row' style='width: 100%;'>
+					<div class='col-md-12 main-bg'>
+							<div class='col-md-12'>
+								<div class='col-md-3 nav-top nav-left' align='center'><img src='img/logo_transparent.png' /></div>
+								<!-- Desktop Nav -->
+								<div class='col-md-9 desktop'>
+										<div class='col-md-6 nav-top-text'><span class='nav'><a href='#story'>Our Story</a> &nbsp;&nbsp;&nbsp;&nbsp; <a href='#benefits'>Benefits</a> &nbsp;&nbsp;&nbsp;&nbsp; <a href='browse.php'>Classes</a></span></div>
+										<div class='col-md-3 nav-top-text' style='float: right; margin-right: 0px;'><span class='nav'><a href='login.php' class='button-border'>Login</a></span></div>
+								</div>
+								<!-- Mobile Nav -->
+								<div class='col-md-9 mobile'>
+											<!--Account-->
+											<div class='dropdown row-center' align='center' style='padding-top: 20px;'>
+												<button class='btn btn-default btn-sm dropdown-toggle' type='button' id='mode' data-toggle='dropdown' aria-haspopup='true' aria-expanded='true'>
+													Menu
+													<span class='caret'></span>
+												</button>
+												<ul class='dropdown-menu' aria-labelledby='mode'>
+												  <li><a href='#story' ><span style='color: #000;'>Our Story</span></a></li>
+													<li><a href='#benefits'><span style='color: #000;'>Benefits</span></a></li>
+													<li><a href='#contact'><span style='color: #000;'>Contact</span></a></li>
+													<li role='separator' class='divider'></li>
+													<li><a href='login.php'><span style='color: #000;'>Login</span></a></li>
+													<li><a href='register.php'><span style='color: #000;'>Student Registration</span></a></li>
+													<li><a href='register_chef.php'><span style='color: #000;'>Chef Registration</span></a></li>
+												</ul>
+											</div>
 
-        <!--[if lt IE 8]>
-            <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
-        <![endif]-->
+								</div>
 
-        <!-- Add your site or application content here -->
-        <div class='row center-row'>
-            <!--header-->
-            <div class='col-md-12'>
-                <div class='col-md-2'><img src='img/piqlanding1.png' width="90%" height='90%'/></div>
-                <!--Account-->
-              	<div class='col-md-10 desktop neg-15' style='margin-top: 9px;'>
-              		<p align='right'>
-              			<div class='dropdown' style='float: right; margin-left: 8px;'><a href='login.php' class='btn btn-default btn-sm'>Login</a></div>
-              			<div class='dropdown' style='float: right; margin-left: 15px;'>
-              				<button class='btn btn-success btn-sm dropdown-toggle' type='button' id='mode' data-toggle='dropdown' aria-haspopup='true' aria-expanded='true'>
-              					Register
-              					<span class='caret'></span>
-              				</button>
-              				<ul class='dropdown-menu' aria-labelledby='mode'>
-              					<li><a href='register.php'>Student Registration</a></li>
-              					<li><a href='register_chef.php'>Chef Registration</a></li>
-              				</ul>
-              			</div>
-              		</p>
-              	</div>
-                <div class='col-md-10 mobile' style='margin-top: 30px;'>
-              		<p align='left'>
-              			<div class='dropdown' style='float: left; margin-left: 15px;'>
-              				<button class='btn btn-success btn-sm dropdown-toggle' type='button' id='mode' data-toggle='dropdown' aria-haspopup='true' aria-expanded='true'>
-              					Register
-              					<span class='caret'></span>
-              				</button>
-              				<ul class='dropdown-menu' aria-labelledby='mode'>
-              					<li><a href='register.php'>Student Registration</a></li>
-              					<li><a href='register_chef.php'>Chef Registration</a></li>
-              				</ul>
-              			</div>
-              			<div class='dropdown' style='float: left; margin-left: 8px;'><a href='login.php' class='btn btn-default btn-sm'>Login</a></div>
+							</div>
+							<div class='col-md-12 header-margin'>
+									<div class='col-md-12 large-heading'><center><i><u>Social</u></i> Cooking Classes.</center></div>
+									<div class='col-md-12 small-heading'><center>Meet New People, Share Life Stories.</center></div>
+									<div class='col-md-12 desktop' style='margin-top: 50px;'><center><a href='browse.php' class='button-border'>I Want To <strong><i>Take</i></strong> Classes</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='register_chef.php' class='button-border'>I Want To <strong><i>Teach</i></strong> Classes</a></center></div>
+									<div class='col-md-12 mobile' style='margin-top: 50px;'><center><a href='browse.php' class='button-border'>I Want To <strong><i>Take</i></strong> Classes</a><br /><br /><a href='register_chef.php' class='button-border'>I Want To <strong><i>Teach</i></strong> Classes</a></center></div>
+									<div class='col-md-12' style='margin-top: 70px; margin-left: 5px;'><center><span style='color: #FFF; font-size: 5vw;' class="glyphicon glyphicon-menu-down" aria-hidden="true"></span></center></div>
+							</div>
+					</div>
 
-              		</p>
-              	</div>
-            </div>
-            <div class='col-md-12' align='left' style='margin-top: 20px; margin-left: 15px;'>
-              <div align='left' class="fb-like" data-href="https://www.facebook.com/trypiq" data-layout="standard" data-action="like" data-show-faces="false" data-share="true"></div>
-            </div>
-            <!--end header-->
-            <!--body-->
-            <div class='col-md-12' style='margin-top: 40px; margin-bottom: 50px;'>
-                <div class='col-md-12'>
-                    <!--Big Screen-->
-                    <div class='col-md-12 pic-bg'>
-                        <div class='col-md-12 dark-header'><span class='intro-heading intro-dark'>SOCIAL COOKING CLASSES.</span></div>
-                        <div class='col-md-12 dark-header-2nd'><span class='intro-heading-2nd intro-dark'>HOSTED BY PROFESSIONAL CHEFS AND HOBBYISTS.</span></div>
-                        <!--<div class='col-md-12 dark-sub-header'><span class='sub-heading sub-intro-dark'>CUISINES INCLUDE FRENCH, CHINESE, GREEK, ITALIAN, INDIAN, AND SO MUCH MORE.</span></div>
-                        -->
-                          <div class='col-md-12 header-button'>
-                            <div class='browse-class'><center><a class="sub-heading" href="browse.php" data-mode="1" target="_blank">BROWSE CLASSES</a></center></div>
-                          </div>
-                    </div>
-                    <div class='col-md-12 neg-15' style='margin-top: 10px;'><hr /></div>
-                    <!--How It Works-->
-                    <div class='col-md-12 neg-15'>
-                        <div class='col-md-12' align='center' style='margin-top: 20px; margin-bottom: 20px;'>
-                          <span class='header header-large'><strong>How It Works</strong></span>
-                        </div>
-                        <div class='col-md-4' align='center'style='margin-top: 20px;'>
-                            <span class="glyphicon glyphicon-map-marker" aria-hidden="true" style='font-size: 10vw; color: #999;'></span><br /><br />
-                            <p><span class='header header-large'>1. Browse</span><br />
-                              Discover curated culinary experiences.</p>
-                        </div>
-                        <div class='col-md-4' align='center'style='margin-top: 20px;'>
-                            <span class="glyphicon glyphicon-check" aria-hidden="true" style='font-size: 10vw; color: #999;'></span><br /><br />
-                            <p><span class='header header-large'>2. Book</span><br />
-                              Pay to register for the class.</p>
-                        </div>
-                        <div class='col-md-4' align='center'style='margin-top: 20px;'>
-                            <span class="glyphicon glyphicon-heart" aria-hidden="true" style='font-size: 10vw; color: #999;'></span><br /><br />
-                            <p><span class='header header-large'>3. Enjoy</span><br />
-                              Arrive and experience the culinary joy.</p>
-                        </div>
-                    </div>
-                    <!--Upcoming Classes-->
+					<div class='col-md-12' style='margin-bottom: 50px;'>
+							<div class='col-md-12 title' style='margin-top: 40px;'><center><p>Featured Class</p></center></div>
+							<div class='col-md-12'>
+									<p class='center-p' align='center'>Piq runs a several promotions every week; come check us out tomorrow! Subscribe in the bar above to get notified on latest promotions :)</p>
+							</div>
+					</div>
 
-                    <div class='col-md-12 neg-15'>
-                        <div class='col-md-12' align='center' style='margin-top: 20px; margin-bottom: 40px;'>
-                          <span class='header header-large'><strong>Upcoming Classes</strong></span>
-                        </div>
-	
-			<?php 
-				foreach ($classes as $class) {	
-			?>
+					<!--Class 1-->
+					<div class='col-md-6 class1-bg'>
+							<div class='col-md-12' style='top: 35%;'><span class='class-title'><center>The Art of Indian Cooking</center></span></div>
+					</div>
+					<div class='col-md-6 class-height'>
+							<div class='col-md-12' style='margin-top: 40px;'>
+									<p class='center-p'>
+											<strong>Instructor:</strong> Chef Dimple Mehta of Healthy Bellee<br />
+											<strong>Location:</strong> Home kitchen of Chef Dimple (Etobicoke, Toronto)<br />
+											<strong>Address:</strong> Exact address will only be sent to registered guests<br />
+											<strong>Seats:</strong> 6 seats available<br />
+											<strong>Price:</strong> <strike>$60.50</strike> <span style='color: #ff0000;'>$54.00</span> / person<br /><br />
+											<a href='http://trypiq.com/class_stripe.php?class_id=52' class='btn btn-md btn-success'><span style='color: #fff;'>View Class</span></a>
+									</p>
+							</div>
+					</div>
 
-                        <div class='col-md-6 neg-15 desktop-padright' style='margin-bottom: 35px;'>
-                          <div class='col-md-12 neg-15' style='height: 350px; background-image: url("<?= IMAGE_PATH . $class['image'] ?>"); background-position: center; background-size: cover;'>&nbsp;</div>
-                          <div class='col-md-12 neg-15 header course-title' style='margin-top: 15px;'><a href='http://trypiq.com/class_stripe.php?class_id=<?= $class['id'] ?>' ><?= $class['name'] ?></a></div>
-			<!--
-                          <div class='col-md-12 neg-15'><p><strong>Chef:</strong> Giovanni La Grotta<br />
-                            <strong>Occupation:</strong> Senior Chef, Canadian Forces Army Reserve - 32 Service Battalion</br >
-                            <strong>Area:</strong> Mississauga<br />
-                            </p>
-                          </div>
-			-->
-                          <div class='col-md-12 neg-15'><a href='http://trypiq.com/class_stripe.php?class_id=<?= $class['id'] ?>' class='btn btn-default btn-success'>View Class</a></div>
-                        </div>
-	
-			<?php 
-				}
-			?>	
+					<div class='col-md-12' style='margin-bottom: 50px;'>
+							<div class='col-md-12' style='margin-top: 40px;'><span class='title'><center>Follow Piq on Facebook</center></span></div>
+							<div class='col-md-12' align='center' style='margin-top: 20px;'>
+	              <div class="fb-like" align='center' style='width: 100%; overflow: hidden;' data-href="https://www.facebook.com/trypiq" data-layout="standard" data-action="like" data-show-faces="false" data-share="true"></div>
+	            </div>
+					</div>
 
-                    <div class='col-md-12 neg-15' style='margin-top: 10px;'><hr /></div>
+					<div class='col-md-6 story-bg' id='story'>&nbsp;</div>
+					<div class='col-md-6 story-text'>
+							<div class='col-md-12 story-top'><span class='title'><center>Our Story</center></span></div>
+							<div class='col-md-12' style='margin-top: 35px;'>
+									<p class='center-p'>Piq is a social marketplace for cooking classes, which allow professional chefs and hobbyists share their knowledge to those around them. The idea of Piq is grounded in connections. Each individual in every community has a story...a story that reflects their past…a story that is reflected in the meals they create. Whether they are great chefs or not, there is history and meaning their culinary creations. Wouldn’t it be interesting to connect with those in your community? Or those in communities you visit? Or those from your homeland? We definitely think so.</p>
+							</div>
+					</div>
 
-                    <div class='col-md-12 neg-15'>
-                        <div class='col-md-8 neg-15 pad-right'>
-                          <div class='col-md-12 neg-15' style='margin-top: 40px;'>
-                            <span class='header header-large'>The Story</span>
-                          </div>
-                          <div class='col-md-12 neg-15' style='margin-top: 15px;'>
-                            <p>Some of us might be professional chefs, while others may have other occupations. Regardless, we all come from different walks of life...and these paths have influenced the dishes we make. Wouldn't you like to experience the lives of others in your city?</p>
-                            <p>Piq is a social marketplace to take cooking classes from your neighbours. Experience where the people in your city come from, how they lived their lives, and the type of people they are through the dishes they pass onto you.</p>
-                          </div>
-                          <div class='col-md-12 neg-15' style='margin-top: 40px;'>
-                            <span class='header header-large'>Who Are The Chefs?</span>
-                          </div>
-                          <div class='col-md-12 neg-15' style='margin-top: 15px;'>
-                            <p>The chefs on Piq are anyone that is confident in their cooking. They can either be professionals with over 20+ years of experience, or hobbyists looking to share their dishes.</p>
-                            <p>The classes, like tutoring classes, take place in the home of the chefs. And at the discretion of the chefs, classes may also be held in professional kitchens.</p>
-                          </div>
-                        </div>
+					<div class='col-md-6 benefits-bg mobile'>&nbsp;</div>
+					<div id='benefits' class='col-md-6 benefits-text'>
+							<div class='col-md-12 benefits-top'><span class='title'><center>Benefits</center></span></div>
+							<div class='col-md-12' style='margin-top: 25px;'>
 
-                        <div class='col-md-4'>
-                          <div class="fb-page" data-href="https://www.facebook.com/trypiq/" data-tabs="timeline" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true" style='margin-top: 40px;'><div class="fb-xfbml-parse-ignore"><blockquote cite="https://www.facebook.com/trypiq/"><a href="https://www.facebook.com/trypiq/">Piq - Toronto Cooking Classes</a></blockquote></div></div>
-                        </div>
-                    </div>
-                    <div class='col-md-12 neg-15' style='margin-top: 10px;'><hr /></div>
-                    <!--Social Media-->
-                    <div class='col-md-12 neg-15' align='center' style='margin-top: 20px; margin-bottom: 20px;'>
-                      <span class='header header-large'>Support Us on Social Media</span>
-                    </div>
-                    <div class='col-md-12 neg-15' align='center'>
-                      <ul class="soc">
-                        <li><a class="soc-facebook" href="http://www.facebook.com/trypiq" target="_blank"></a></li>
-                        <li><a class="soc-instagram" href="http://www.instagram.com/trypiq" target="_blank"></a></li>
-                        <li><a class="soc-twitter " href="http://www.twitter.com/piq_toronto" target="_blank"></a></li>
-                        <li><a class="soc-email2 soc-icon-last" href="travis@piqpass.com"></a></li>
-                      </ul>
-                    </div>
-                    <div class='col-md-12' align='center' style='margin-top: 50px;'>
-                      <p>&copy; 2016 All Right Reserved. Piq.</p>
-                    </div>
+									<p class='center-p'>
+											<strong>1. Dating, Anniversaries, or Special Occasions:</strong> What a memorable way to enjoy a morning or afternoon spicing up interesting and exotic dishes in a cooking class! We have many classes at different prices making it appropriate for a first date or a 5 year anniversary!<br />
+											<strong>2. Social Activity with Friends:</strong> Why do the same thing every week? Change up the routine and explore!<br />
+											<strong>3. Meet &amp; Connect with New People:</strong> The classes are typically small sized between 4-6 people in an intimate setting.<br />
+											<strong>4. Team Building:</strong> Cooking classes are a great option for team building through collaborating the meal prep and feasting on the finished results.<br />
+											<strong>5. An Experience:</strong> End of the day, classes offered on Piq are experiences. Meeting new people, trying new food, and sharing stories is an experience that is difficult to find elsewhere.
+									</p>
+							</div>
+					</div>
+					<div class='col-md-6 benefits-bg desktop'>&nbsp;</div>
+			</div>
 
-        <?php include "footer.php"; ?>
+			<script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
+			<script>window.jQuery || document.write('<script src="js/vendor/jquery-1.12.0.min.js"><\/script>')</script>
+			<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+			<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+			<script src="js/plugins.js"></script>
+			<script src="js/main.js"></script>
+
+			<!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
+			<script>
+			(function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
+			function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
+			e=o.createElement(i);r=o.getElementsByTagName(i)[0];
+			e.src='https://www.google-analytics.com/analytics.js';
+			r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
+			ga('create','UA-76836253-1','auto');ga('send','pageview');
+			</script>
     </body>
 </html>

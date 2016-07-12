@@ -13,12 +13,18 @@ if (!$loggedInUser->checkPermission(array(2)))
 
 require_once("db/connect.php");
 
-if (isset($_GET['class_id'])) {
-	$stmt = $mysqli_piq->prepare("update class set approval = 'approved' where id = ?");
+if (isset($_GET['unapprove'])) {
+	$stmt = $mysqli_piq->prepare("update class set approval = 'pending' where id = ?");
 	$approved = $_GET['class_id'];
 	$stmt->bind_param("s", $approved);
 	$stmt->execute();
 	$stmt->close();
+} else if (isset($_GET['class_id'])) {
+        $stmt = $mysqli_piq->prepare("update class set approval = 'approved' where id = ?");
+        $approved = $_GET['class_id'];
+        $stmt->bind_param("s", $approved);
+        $stmt->execute();
+        $stmt->close();
 }
 
 if (!($result = $mysqli_piq->query("select * from class"))) {
@@ -91,7 +97,7 @@ $result->close();
             <!--end header-->
             <div class='col-md-12 bg-warning' style='margin-top: 50px; padding: 10px;'>
                <p align='center'>Added your first class? Head over to <a href='sessions_dashboard.php'>Sessions</a> to schedule times and dates for your class to happen. <a href='sessions_dashboard.php'>Schedule your classes here</a>.</p>
-            </div>
+            /div>
             <!--Class List-->
             <div class='col-md-12 header header-large' style='margin-top: 50px; margin-bottom: 30px'>Your Classes</div>
 		<?php
@@ -102,8 +108,8 @@ $result->close();
         			<div class='col-md-7 mobile-neg-15'>
         			    <div class='col-md-12 mobile-neg-15'><span class='header header-large'><a href='class_stripe.php?class_id=<?= $class['id'] ?>'><?= $class['name']; ?></a></span></div>
         			    <div class='col-md-12 mobile-neg-15' style='margin-top: 10px;'><p><?= $class['description']; ?></p></div>
-        			    <div class='col-md-12 mobile-neg-15' style='margin-top: 10px;'><p><?= $chefs[$class['id']][0]; ?></p></div>
-        			    <div class='col-md-12 mobile-neg-15' style='margin-top: 10px;'><p><?= $chefs[$class['id']][1]; ?></p></div>
+        			    <div class='col-md-12 mobile-neg-15' style='margin-top: 10px;'><p><?= $chefs[$class['user_id']][0]; ?></p></div>
+        			    <div class='col-md-12 mobile-neg-15' style='margin-top: 10px;'><p><?= $chefs[$class['user_id']][1]; ?></p></div>
         			    <div class='col-md-12 mobile-neg-15' style='margin-top: 10px;'>
               				<a href='class_stripe.php?class_id=<?= $class['id'] ?>' class='btn btn-sm btn-default'>View</a>
               				<a href='edit_class.php?class_id=<?= $class['id'] ?>' class='btn btn-sm btn-default'>Edit</a>
@@ -111,6 +117,7 @@ $result->close();
 						if ($class['approval'] == 'approved') {
 					?>
 					Approved
+	              				<a href='<?= $_SERVER['PHP_SELF'] . '?class_id=' . $class['id'] ?>&unapprove=1' class='btn btn-sm btn-default'>Unapprove</a>
 					<?php } else { ?>			
 	              				<a href='<?= $_SERVER['PHP_SELF'] . '?class_id=' . $class['id'] ?>' class='btn btn-sm btn-default'>Approve</a>
 					<?php } ?>

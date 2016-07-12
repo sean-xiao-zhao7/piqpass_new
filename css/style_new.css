@@ -37,7 +37,7 @@ a:hover {
     .header-margin {margin-top: 105px;}
   .story-bg {
       height: 100vh;
-      background-image: url("../img/full-bg.jpg");
+      background-image: url("../img/story-bg.jpg");
       background-size: cover;
       background-position: center;
   }
@@ -49,7 +49,7 @@ a:hover {
   }
   .benefits-bg {
       height: 100vh;
-      background-image: url("../img/full-bg.jpg");
+      background-image: url("../img/benefits-bg.jpg");
       background-size: cover;
       background-position: center;
   }

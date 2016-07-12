@@ -139,8 +139,8 @@ require_once("models/header.php");
                       </div>
                       <button type="submit" class="btn btn-default">Login</button>
                       </form>
+											<p>Forgot password? Please give travis@trypiq.com a shout to reset your password.</p>
 
-			<a href='forgot-password.php'>Forgot password?</a>
                     </div>
                 </div>
             </div>

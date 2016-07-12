@@ -9,7 +9,7 @@ if (!securePage($_SERVER['PHP_SELF'])){die();}
 
 require_once("db/connect.php");
 
-if (!($result = $mysqli_piq->query("select * from class where approval = 'approved'"))) {
+if (!($result = $mysqli_piq->query("select * from class where approval = 'approved' order by id desc"))) {
         echo "Prepare failed: (" . $mysqli_piq->errno . ") " . $mysqli_piq->error;
 } else {
         $classes = [];

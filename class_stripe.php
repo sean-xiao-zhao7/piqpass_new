@@ -260,12 +260,30 @@ $price = $price * 1.1;
 				<span> / </span>
 				<input type="text" size="4" class="card-expiry-year"/>
 			</div>
-		</div>	
+		</div>
 -->
 			<?php
 				if (!$loggedInUser->user_id) {
                         ?>
-					<a class='btn btn-lg btn-success' href='register.php'>Register Now</a>
+            <div class='col-md-12' style='margin-left: -15px;'>
+                          <select name='session' class="form-control" id='sessions_select'>
+                            <option>Select Time</option>
+      			<?php
+      				$total_seats = 0;
+      				foreach ($sessions as $session) {
+      					if ($session['seats'] > 0) {
+      						$total_seats += $session['seats'];
+      						$session_time = strtotime($session['date']);
+      						$day = date('l, F jS', $session_time);
+      			?>
+      						<option value='<?= $session['id'] ?>'>(<?= $session['seats'] . " Slots) " . date('G:iA', $session_time) . " - " . $day; ?></option>
+      			<?php
+      					}
+      				}
+      			 ?>
+                          </select>
+                        </div>
+                        <div class='col-md-12' style='margin-top: 15px;'><center><a class='btn btn-sm btn-success' href='register.php'>Register Now</a></center></div>
                         <?php
                                 } else {
                         ?>
@@ -291,7 +309,7 @@ $price = $price * 1.1;
 
                   <div class='col-md-12' style='margin-top: 10px; margin-left: -15px;'			>
                     <center>
-				<?php					
+				<?php
 					if ($total_seats > 0) {
 				?>
 			                     <a id='bookButton' class='btn btn-lg btn-success' href='<?= $request_form ?>' onClick="_gaq.push(['_trackEvent', 'Book Now', 'click', '<?= $name ?>', '0']);" target='_blank'><strong>Book Now</strong></a>
@@ -300,7 +318,7 @@ $price = $price * 1.1;
 				<?php } ?>
                     </center>
                   </div>
-	
+
 		<?php
 			}
 		?>
