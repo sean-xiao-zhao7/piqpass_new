@@ -139,7 +139,7 @@ $result->close();
 		                <div class='col-md-12' style='margin-left: -15px;' ><p>Seat: 1 Person</p></div>
 		                <div class='col-md-12' style='margin-left: -15px;'><p>Address: <?= $addresses[$request['class_id']] ?></p></div>
                     <div class='col-md-12' style='margin-left: -15px;'>
-                        <a href="class_stripe.php?id=<?= $request['class_id'] ?>" class='btn btn-default btn-sm'>View Class</a>
+                        <a href="class_stripe.php?class_id=<?= $request['class_id'] ?>" class='btn btn-default btn-sm'>View Class</a>
                     </div>
                 </div>
                 <?php }
