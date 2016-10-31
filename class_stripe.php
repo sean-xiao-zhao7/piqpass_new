@@ -16,14 +16,17 @@ require_once("models/header.php");
 \Stripe\Stripe::setApiKey("sk_live_KC2m6m6mExkcDQuBIYnY81BB"); // live
 
 if (!empty($_POST)) {
+
   // Get the credit card details submitted by the form
   $token = $_POST['stripeToken'];
   //echo "We got the token $token";
 
   // Create the charge on Stripe's servers - this will charge the user's card
   try {
+	$result_amount = round($_POST['amount'], 2) * 100;
+	error_log("The amount to be charged is " . $result_amount . " the original amount is " . $_POST['amount']);
     $charge = \Stripe\Charge::create(array(
-      "amount" => $_POST['amount'], // amount in cents, again
+      "amount" => $result_amount, // amount in cents, again
       "currency" => "CAD",
       "source" => $token,
       "description" => $_POST['class_name'] . ' - ' . $_POST['session']
@@ -408,7 +411,7 @@ $price = $price * 1.1;
 	    locale: 'auto',
 	    name: '<?= $name ?>',
 	    description: $('#sessions_select').find(":selected").text(),
-	    amount: '<?= $price * 1.13 * 100 ?>',
+	    amount: '<?= $price * 1.13 ?>',
 	    currency: "CAD",
 	    token: function(token) {
 	      //console.log("token is " + token.id)
@@ -416,7 +419,7 @@ $price = $price * 1.1;
 				'<?= $_SERVER['PHP_SELF'] ?>',
 				{
 					'stripeToken': token.id,
-					'amount': <?= $price * 1.13 * 100 ?>,
+					'amount': <?= $price * 1.13 ?>,
 					'class_name': '<?= $name ?>',
 					'class_id': '<?= $class_id ?>',
 					'chef_id': '<?= $user_id ?>',
