@@ -1,0 +1,40 @@
+/* general */
+
+div.header {
+	float:none; //overriding float left from bootstrap
+}
+
+main#trypiq_main {
+	margin:1em;	
+}
+
+/* header sub menu/nav */
+
+ul#sub_nav {
+	clear: both;
+	margin: 0;
+	padding: 0;
+	padding-top:15px; //pushing the menu down temporarily
+}
+
+#sub_nav li {
+	display:inline;
+	border:solid 1px;
+	margin:0 5px;
+	padding: 5px;
+}
+
+#sub_nav li a {
+	display:inline-block;
+	color:inherit;
+	text-decoration:none;
+}
+
+/* referrals page */
+
+.credits {
+	color:green;
+}
+
+/* dashboard for none admins */
+
